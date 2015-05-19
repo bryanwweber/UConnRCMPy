@@ -1,2 +1,3 @@
 *.pickle
 *.sublime-workspace
+__pycache__
