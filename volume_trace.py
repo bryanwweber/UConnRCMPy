@@ -6,7 +6,7 @@ Created on Tue May 19 09:13:12 2015
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from pressure_traces import smoothing, compress, pressure_to_volume, pressure_to_temperature, volume_to_pressure, filename_parse, copy
+from pressure_traces import smoothing, compress, pressure_to_volume, pressure_to_temperature, volume_to_pressure, filename_parse, copy, pressure_fit
 
 nonrfile = 'NR_00_in_00_mm_311K-1115t-40x-15-May-15-1425.txt'
 reacfile = '00_in_00_mm_311K-1118t-40x-15-May-15-1301.txt'
@@ -36,6 +36,9 @@ nonrfreq = np.rint(1/nonrtime[1])
 nonrendidx = nonrend/1000*nonrfreq
 reacendidx = reacend/1000*reacfreq
 startpoint = comptime/1000*reacfreq
+
+reacp = pressure_fit(smpr, reacpci, reacfreq)
+line = np.polyval(reacp, reactime)
 stroke_pressure = reacsmpr[(reacpci - startpoint):(reacpci + 1 + reacoffs)]
 post_pressure = nonrsmpr[(nonrpci + nonroffs):(nonrpci +
                          nonrendidx + nonroffs - reacoffs)]
@@ -56,6 +59,7 @@ ax = fig.add_subplot(1, 1, 1)
 ax.plot(reacztim, reacsmpr)
 ax.plot(time[:len(print_pressure)], print_pressure)
 ax.plot(time, pressure)
+ax.plot(reacztim, line)
 m = plt.get_current_fig_manager()
 m.window.showMaximized()
 

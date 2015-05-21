@@ -107,3 +107,12 @@ def volume_to_pressure(volume, P_in, T_in):
         gas.SV = initial_entropy, v*initial_volume
         pressure[i] = gas.P/1E5
     return pressure
+
+
+def pressure_fit(pressure, pci, sampfreq):
+    beg_compress = np.floor(pci - 0.08*sampfreq)
+    pressure[:9] = pressure[10]
+    time = np.linspace(0, (beg_compress - 1)/sampfreq, beg_compress)
+    fit_pres = pressure[:beg_compress]
+    polyn = np.polyfit(time, fit_pres, 1)
+    return polyn
