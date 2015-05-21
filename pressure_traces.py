@@ -54,16 +54,15 @@ def smoothing(pressure, span=21):
     return smooth
 
 
-def derivative(freq, pressure):
+def derivative(time, pressure):
     """
 
     """
     m = len(pressure)
     dpdt = np.zeros(m)
-    delt = 1/freq
     for i in range(m-2):
         dpdt[i] = (-pressure[i+2] + 4*pressure[i+1] -
-                   3*pressure[i])/(2*(delt))
+                   3*pressure[i])/(2*(time[i+1]-time[i]))
     dpdt[np.isinf(dpdt)] = 0
     dpdt[-1:] = dpdt[-2]
     return dpdt
