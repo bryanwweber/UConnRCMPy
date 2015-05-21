@@ -6,7 +6,7 @@ Created on Tue May 19 09:13:12 2015
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from pressure_traces import smoothing, compress, pressure_to_volume, pressure_to_temperature, volume_to_pressure, filename_parse
+from pressure_traces import smoothing, compress, pressure_to_volume, pressure_to_temperature, volume_to_pressure, filename_parse, copy
 
 nonrfile = 'NR_00_in_00_mm_311K-1115t-40x-15-May-15-1425.txt'
 reacfile = '00_in_00_mm_311K-1118t-40x-15-May-15-1301.txt'
@@ -54,10 +54,13 @@ pressure = volume_to_pressure(volume, stroke_pressure[0]*1E5, reacTin)
 fig = plt.figure(1)
 ax = fig.add_subplot(1, 1, 1)
 ax.plot(reacztim, reacsmpr)
-ax.plot(time[0:len(print_pressure)], print_pressure)
+ax.plot(time[:len(print_pressure)], print_pressure)
 ax.plot(time, pressure)
 m = plt.get_current_fig_manager()
 m.window.showMaximized()
+
+print('{:.4f}'.format(stroke_pressure[0]))
+copy('{:.4f}'.format(stroke_pressure[0]))
 
 volout = np.vstack((time[::5] + comptime/1000, volume[::5])).transpose()
 presout = np.vstack((time[:len(print_pressure):5] + comptime/1000, print_pressure[::5])).transpose()
