@@ -36,7 +36,7 @@ nonrfreq = np.rint(1/nonrtime[1])
 nonrendidx = nonrend/1000*nonrfreq
 reacendidx = reacend/1000*reacfreq
 startpoint = comptime/1000*reacfreq
-stroke_pressure = reacsmpr[(reacpci - startpoint):(reacpci + reacoffs)]
+stroke_pressure = reacsmpr[(reacpci - startpoint):(reacpci + 1 + reacoffs)]
 post_pressure = nonrsmpr[(nonrpci + nonroffs):(nonrpci +
                          nonrendidx + nonroffs - reacoffs)]
 print_pressure = reacsmpr[(reacpci - startpoint):(reacpci + reacendidx)]
@@ -48,7 +48,7 @@ compressed_temperature = stroke_temperature[-1]
 post_volume = pressure_to_volume(post_pressure,
                                  compressed_temperature,
                                  compressed_volume)
-volume = np.concatenate((stroke_volume, post_volume))
+volume = np.concatenate((stroke_volume, post_volume[1:]))
 pressure = volume_to_pressure(volume, stroke_pressure[0]*1E5, reacTin)
 
 fig = plt.figure(1)
