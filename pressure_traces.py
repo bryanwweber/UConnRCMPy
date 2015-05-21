@@ -1,7 +1,6 @@
 from __future__ import print_function
 import numpy as np
 from datetime import datetime
-import matplotlib.pyplot as plt
 import win32clipboard
 import cantera as ct
 
@@ -84,36 +83,6 @@ def pressure_to_temperature(pressure, T_in):
         gas.SP = initial_entropy, p*1E5
         temperature[i] = gas.T
     return temperature
-
-
-def nonreactive(first_run=False):
-    nonrfile = input('Non-reactive filename: ')
-    if first_run:
-        reacfile = input('Reactive filename: ')
-        redata = file_loader(reacfile)
-        _, _, _, rpin, rfactor, _ = filename_parse(reacfile)
-        repres = redata[:, 1]*rfactor + rpin*1.01325/760
-        smrepr = smoothing(repres)
-        _, rpci = compress(smrepr)
-        ztimere = redata[:, 0] - redata[rpci, 0]
-        fig = plt.figure(3)
-        ax = fig.add_subplot(111)
-        ax.plot(ztimere, smrepr)
-
-    spacers, shims, Tin, npin, nfactor, data_date = filename_parse(nonrfile)
-    nrdata = file_loader(nonrfile)
-    nrpres = nrdata[:, 1]*nfactor + npin*1.01325/760
-    nrsmpr = smoothing(nrpres)
-    maxnr = np.amax(nrsmpr)
-    maxnri = np.argmax(nrsmpr)
-    ztimenr = nrdata[:, 0] - nrdata[maxnri, 0]
-    fig = plt.figure(3)
-    ax = fig.add_subplot(111)
-    ax.plot(ztimenr, nrsmpr)
-    timeofday = '{:02d}{:02d}'.format(data_date.hour, data_date.minute)
-    copy('\t'.join(map(str, [
-        timeofday, npin, Tin, maxnr, 'NR', 'NR', '', spacers, shims
-        ])))
 
 
 def pressure_to_volume(pressure, T_in, V_initial=1):
