@@ -23,7 +23,7 @@ offt = 0.001
 iofig = np.argmax(smdp[(pci + offt*freq):(pci + offt*freq + 200000)])
 firststage = 0.0
 timeofig = time[iofig + freq*offt]*1000
-timeofday = '{:02d}{:02d}'.format(data_date.hour, data_date.minute)
+timeofday = data_date.strftime('%H%M')
 tempp = pres[(pci - 0.03*freq):(pci)]
 temperature = pressure_to_temperature(tempp, Tin)
 T_EOC = max(temperature)
@@ -33,13 +33,13 @@ copy('\t'.join(map(str, [
     ])))
 fig1 = plt.figure(1)
 ax1 = fig1.add_subplot(111)
-ax1.plot(ztim, smpr)
+ax1.plot(ztim, smpr, label=data_date.strftime('%d-%b-%H%M'))
 m = plt.get_current_fig_manager()
 m.window.showMaximized()
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(111)
 ax2.plot(ztim, smpr)
-ax2.plot(ztim, smdp/10000)
+ax2.plot(ztim, smdp/1000)
 ax2.plot(ztim, pres)
 m = plt.get_current_fig_manager()
 m.window.showMaximized()
