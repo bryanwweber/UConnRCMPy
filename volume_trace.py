@@ -37,7 +37,7 @@ nonrendidx = nonrend/1000*nonrfreq
 reacendidx = reacend/1000*reacfreq
 startpoint = comptime/1000*reacfreq
 
-reacp = pressure_fit(smpr, reacpci, reacfreq)
+reacp = pressure_fit(reacsmpr, reacpci, reacfreq)
 line = np.polyval(reacp, reactime)
 stroke_pressure = reacsmpr[(reacpci - startpoint):(reacpci + 1 + reacoffs)]
 post_pressure = nonrsmpr[(nonrpci + nonroffs):(nonrpci +
