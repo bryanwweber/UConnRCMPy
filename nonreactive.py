@@ -12,6 +12,8 @@ try:
     first_run
 except NameError:
     first_run = True
+else:
+    first_run = False
 
 if first_run:
     reacfile = input('Reactive filename: ')
