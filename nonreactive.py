@@ -37,6 +37,8 @@ ztimenr = nrdata[:, 0] - nrdata[maxnri, 0]
 fig = plt.figure(3)
 ax = fig.add_subplot(111)
 ax.plot(ztimenr, nrsmpr)
+m = plt.get_current_fig_manager()
+m.window.showMaximized()
 timeofday = '{:02d}{:02d}'.format(data_date.hour, data_date.minute)
 copy('\t'.join(map(str, [
     timeofday, npin, Tin, maxnr, 'NR', 'NR', '', spacers, shims
