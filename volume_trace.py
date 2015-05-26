@@ -6,21 +6,33 @@ Created on Tue May 19 09:13:12 2015
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import yaml
 from pressure_traces import smoothing, compress, pressure_to_volume, pressure_to_temperature, volume_to_pressure, filename_parse, copy, pressure_fit
 
-nonrfile = 'NR_00_in_00_mm_311K-1115t-40x-15-May-15-1425.txt'
-reacfile = '00_in_00_mm_311K-1118t-40x-15-May-15-1301.txt'
+with open('volume-trace.yaml') as yaml_file:
+    y = yaml.load(yaml_file)
+
+nonrfile = y['nonrfile']
+reacfile = y['reacfile']
+comptime = y['comptime']
+nonrend = y['nonrend']
+reacend = y['reacend']
+try:
+    reacoffs = y['reacoffs']
+except KeyError:
+    reacoffs = 0
+
+try:
+    nonroffs = y['nonroffs']
+except KeyError:
+    nonroffs = 0
+
 nonrdata = np.fromfile(nonrfile, sep=' ')
 nonrdata = np.reshape(nonrdata, (len(nonrdata)/2, 2))
 _, _, _, npin, nfactor, _ = filename_parse(nonrfile)
 reacdata = np.fromfile(reacfile, sep=' ')
 reacdata = np.reshape(reacdata, (len(reacdata)/2, 2))
 _, _, reacTin, rpin, rfactor, _ = filename_parse(reacfile)
-reacoffs = 0
-nonroffs = 0
-comptime = 32
-nonrend = 400
-reacend = 80
 reactime = reacdata[:, 0]
 reacpres = reacdata[:, 1]*rfactor + rpin*1.01325/760
 nonrtime = nonrdata[:, 0]
