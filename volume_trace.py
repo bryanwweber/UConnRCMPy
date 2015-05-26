@@ -68,6 +68,7 @@ pressure = volume_to_pressure(volume, stroke_pressure[0]*1E5, reacTin)
 
 fig = plt.figure(1)
 ax = fig.add_subplot(1, 1, 1)
+ax.cla()
 ax.plot(reacztim, reacsmpr)
 ax.plot(time[:len(print_pressure)], print_pressure)
 ax.plot(time, pressure)
