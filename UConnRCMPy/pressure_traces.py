@@ -20,18 +20,20 @@ def compress(pressure):
     return pc, pci
 
 
-def filename_parse(filename):
-    filename = filename.lstrip('NR_')
-    filename = filename.rstrip('.txt')
-    name_split = filename.split('_')
-    spacers = int(name_split[0])/10
-    shims = int(name_split[2])
-    name_split = name_split[4].split('-', maxsplit=3)
-    Tin = int(name_split[0][:-1])
-    pin = int(name_split[1][:-1])
-    factor = int(name_split[2][:-1])
-    data_date = datetime.strptime(name_split[3], '%d-%b-%y-%H%M')
-    return spacers, shims, Tin, pin, factor, data_date
+class ParsedFilename(object):
+    """
+
+    def __init__(self, filename):
+        filename = filename.lstrip('NR_')
+        filename = filename.rstrip('.txt')
+        name_split = filename.split('_')
+        self.spacers = int(name_split[0])/10
+        self.shims = int(name_split[2])
+        name_split = name_split[4].split('-', maxsplit=3)
+        self.Tin = int(name_split[0][:-1])
+        self.pin = int(name_split[1][:-1])
+        self.factor = int(name_split[2][:-1])
+        self.data_date = datetime.strptime(name_split[3], '%d-%b-%y-%H%M')
 
 
 def file_loader(filename):
