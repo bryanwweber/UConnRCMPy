@@ -15,7 +15,7 @@ import yaml
 from .pressure_traces import copy, derivative
 
 
-def compare_to_sim():
+def compare_to_sim(simname='export.csv'):
     """
     Compare a reactive pressure trace to the corresponding simulation.
 
@@ -27,7 +27,7 @@ def compare_to_sim():
     """
 
     # Load the simulation data file
-    simdata = np.genfromtxt('export.csv', delimiter=',', skip_header=1)
+    simdata = np.genfromtxt(simname, delimiter=',', skip_header=1)
     simtime = simdata[:, 0]
     # simvolume = simdata[:, 1]
     simtemperature = simdata[:, 2]
