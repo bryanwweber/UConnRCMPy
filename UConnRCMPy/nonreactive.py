@@ -2,6 +2,7 @@
 """
 Nonreactive pressure trace processor
 """
+
 # System imports
 
 # Third-party imports
@@ -9,8 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Local imports
-from pressure_traces import (compress, copy, file_loader,
-                             ParsedFilename, smoothing)
+from .pressure_traces import (compress, copy, file_loader,
+                              ParsedFilename, smoothing)
 
 
 def nonreactive():
@@ -20,6 +21,7 @@ def nonreactive():
     nonreactive trace to allow aligning of the compression stroke of the
     nonreactive and reactive cases.
     """
+
     nonrfile = input('Non-reactive filename: ')
 
     # Here plot_reactive is set based on the defined variables at
