@@ -65,8 +65,7 @@ def nonreactive():
     ax.plot(ztimenr, nrsmpr)
     m = plt.get_current_fig_manager()
     m.window.showMaximized()
-    timeofday = nfile_info.data_date.strftime('%H%M')
     copy('\t'.join(map(str, [
-        timeofday, nfile_info.npin, nfile_info.Tin, maxnr, 'NR', 'NR', '',
-        nfile_info.spacers, nfile_info.shims
+        rfile_info.timeofday, nfile_info.npin, nfile_info.Tin, maxnr, 'NR',
+        'NR', '', nfile_info.spacers, nfile_info.shims
         ])))
