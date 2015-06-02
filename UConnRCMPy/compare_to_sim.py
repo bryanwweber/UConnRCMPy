@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Compare simulated reactive pressure trace to the corresponding reactive trace
+Compare simulated pressure trace to the corresponding reactive trace
 """
+
 # System imports
 from glob import glob
 
@@ -16,12 +17,15 @@ from .pressure_traces import copy, derivative
 
 def compare_to_sim():
     """
+    Compare a reactive pressure trace to the corresponding simulation.
+
     This function reads the experimental pressure trace from output in
     the volumetrace function and the output from a CHEMKIN-Pro simulation
     and plots them to verify that the pressure traces match. It copies either
     the simulated ignition delay or the EOC temperature to the clipboard,
     depending on the maximum temperature.
     """
+
     # Load the simulation data file
     simdata = np.genfromtxt('export.csv', delimiter=',', skip_header=1)
     simtime = simdata[:, 0]

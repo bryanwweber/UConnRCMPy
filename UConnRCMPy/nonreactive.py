@@ -16,15 +16,18 @@ from .pressure_traces import (compress, copy, file_loader,
 
 def nonreactive():
     """
-    This file compares the nonreactive trace with the corresponding reactive
-    trace for the condition. It provides a method of user-set offset of the
-    nonreactive trace to allow aligning of the compression stroke of the
-    nonreactive and reactive cases.
+    Process a non-reactive pressure trace and compare to the reactive.
+
+    This function is intended for use in an interactive console, e.g.,
+    IPython or Spyder. It reads the non-reactive pressure trace
+    and the reactive pressure trace (if optionally enabled) filenames
+    from standard input and plots them on the same graph for
+    comparison.
     """
 
     nonrfile = input('Non-reactive filename: ')
 
-    # Here plot_reactive is set based on the defined variables at
+    # Here plot_reactive is set based on the variables defined at
     # runtime. If plot_reactive exists in the list, we don't need
     # to plot the reactive trace again, so we don't even process it.
     # If the variable doesn't exist, we want to plot the reactive
