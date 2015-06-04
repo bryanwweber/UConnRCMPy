@@ -106,16 +106,16 @@ class ParsedFilename(object):
     """
 
     def __init__(self, filename):
-        filename = filename.lstrip('NR_')
-        filename = filename.rstrip('.txt')
-        name_split = filename.split('_')
-        self.spacers = int(name_split[0])/10
-        self.shims = int(name_split[2])
-        name_split = name_split[4].split('-', maxsplit=3)
-        self.Tin = int(name_split[0][:-1])
-        self.pin = int(name_split[1][:-1])
-        self.factor = int(name_split[2][:-1])
-        self.data_date = datetime.strptime(name_split[3], '%d-%b-%y-%H%M')
+        self.fname = filename.lstrip('NR_')
+        self.fname = self.fname.rstrip('.txt')
+        self.name_split = self.fname.split('_')
+        self.spacers = int(self.name_split[0])/10
+        self.shims = int(self.name_split[2])
+        self.self.name_split = self.name_split[4].split('-', maxsplit=3)
+        self.Tin = int(self.name_split[0][:-1])
+        self.pin = int(self.name_split[1][:-1])
+        self.factor = int(self.name_split[2][:-1])
+        self.data_date = datetime.strptime(self.name_split[3], '%d-%b-%y-%H%M')
         self.timeofday = self.data_date.strftime('%H%M')
         self.date = self.data_date.strftime('%d-%b-%H%M')
 
