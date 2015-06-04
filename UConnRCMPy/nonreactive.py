@@ -44,7 +44,7 @@ def nonreactive():
         reacfile = input('Reactive filename: ')
         redata = file_loader(reacfile)
         rfile_info = ParsedFilename(reacfile)
-        repres = redata[:, 1]*rfile_info.factor + rfile_info.rpin*1.01325/760
+        repres = redata[:, 1]*rfile_info.factor + rfile_info.pin*1.01325/760
         smrepr = smoothing(repres)
         _, rpci = compress(smrepr)
         ztimere = redata[:, 0] - redata[rpci, 0]
@@ -55,7 +55,7 @@ def nonreactive():
     # Process the non-reactive pressure trace
     nfile_info = ParsedFilename(nonrfile)
     nrdata = file_loader(nonrfile)
-    nrpres = nrdata[:, 1]*nfile_info.nfactor + nfile_info.npin*1.01325/760
+    nrpres = nrdata[:, 1]*nfile_info.factor + nfile_info.pin*1.01325/760
     nrsmpr = smoothing(nrpres)
     maxnr = np.amax(nrsmpr)
     maxnri = np.argmax(nrsmpr)
@@ -66,6 +66,6 @@ def nonreactive():
     m = plt.get_current_fig_manager()
     m.window.showMaximized()
     copy('\t'.join(map(str, [
-        rfile_info.timeofday, nfile_info.npin, nfile_info.Tin, maxnr, 'NR',
+        rfile_info.timeofday, nfile_info.pin, nfile_info.Tin, maxnr, 'NR',
         'NR', '', nfile_info.spacers, nfile_info.shims
         ])))
