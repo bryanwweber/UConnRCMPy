@@ -5,6 +5,76 @@ import win32clipboard
 import cantera as ct
 
 
+class PressureTrace(object):
+    """Generic class for pressure traces"""
+
+    def file_loader(self, filename):
+        """
+        Load a voltage trace from a text file.
+
+        Load a voltage trace from a text file. Check if the file exists
+        and if not, try again after adding the proper file extension.
+        """
+        self.data = None
+        try:
+            self.data = np.genfromtxt(filename)
+        except OSError:
+            filename += '.txt'
+            self.data = np.genfromtxt(filename)
+        if self.data is None:
+            raise OSError('Data file not found')
+
+    def smoothing(self, span=21):
+        window = np.ones(span)/span
+        self.smooth = np.convolve(self.pressure, window, 'same')
+
+    def pressure_to_temperature(self):
+        gas = ct.Solution('species.cti')
+        gas.TP = self.T_in, self.pressure[0]*1E5
+        initial_entropy = gas.entropy_mass
+        self.temperature = np.zeros((len(self.pressure)))
+        for i, p in enumerate(self.pressure):
+            gas.SP = initial_entropy, p*1E5
+            self.temperature[i] = gas.T
+
+    def pressure_to_volume(self, V_initial=1):
+        gas = ct.Solution('species.cti')
+        gas.TP = self.T_in, self.pressure[0]*1E5
+        initial_entropy = gas.entropy_mass
+        initial_density = gas.density
+        self.volume = np.zeros((len(self.pressure)))
+        for i, p in enumerate(self.pressure):
+            gas.SP = initial_entropy, p*1E5
+            self.volume[i] = V_initial*initial_density/gas.density
+
+    def volume_to_pressure(self, P_in):
+        gas = ct.Solution('species.cti')
+        gas.TP = self.T_in, P_in
+        initial_volume = gas.volume_mass
+        initial_entropy = gas.entropy_mass
+        pressure = np.zeros((len(self.volume)))
+        for i, v in enumerate(self.volume):
+            gas.SV = initial_entropy, v*initial_volume
+            pressure[i] = gas.P/1E5
+        return pressure
+
+    def pressure_fit(pressure, pci, sampfreq):
+        beg_compress = np.floor(pci - 0.08*sampfreq)
+        pressure[:9] = pressure[10]
+        time = np.linspace(0, (beg_compress - 1)/sampfreq, beg_compress)
+        fit_pres = pressure[:beg_compress]
+        polyn = np.polyfit(time, fit_pres, 1)
+        return polyn
+
+
+class ReactivePressureTrace(PressureTrace):
+    pass
+
+
+class NonReactivePressureTrace(PressureTrace):
+    pass
+
+
 def compress(pressure):
     maxp = np.amax(pressure)
     maxpi = np.argmax(pressure)
