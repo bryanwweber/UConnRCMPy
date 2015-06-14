@@ -31,68 +31,134 @@ class PressureTrace(object):
 
     def smoothing(self, span=21):
         window = np.ones(span)/span
-        self.smooth = np.convolve(self.pressure, window, 'same')
+        self.pressure = np.convolve(self.pres, window, 'same')
 
-    def pressure_to_temperature(self):
-        gas = ct.Solution('species.cti')
-        gas.TP = self.T_in, self.pressure[0]*1E5
-        initial_entropy = gas.entropy_mass
-        self.temperature = np.zeros((len(self.pressure)))
-        for i, p in enumerate(self.pressure):
-            gas.SP = initial_entropy, p*1E5
-            self.temperature[i] = gas.T
+    def pressure_fit(self):
+        beg_compress = np.floor(self.pci - 0.08*self.sampfreq)
+        time = np.linspace(0, (beg_compress - 1)/self.sampfreq, beg_compress)
+        fit_pres = self.pressure[:beg_compress]
+        fit_pres[0:9] = fit_pres[10]
+        self.linear_fit = np.polyfit(time, fit_pres, 1)
 
-    def pressure_to_volume(self, V_initial=1):
-        gas = ct.Solution('species.cti')
-        gas.TP = self.T_in, self.pressure[0]*1E5
-        initial_entropy = gas.entropy_mass
-        initial_density = gas.density
-        self.volume = np.zeros((len(self.pressure)))
-        for i, p in enumerate(self.pressure):
-            gas.SP = initial_entropy, p*1E5
-            self.volume[i] = V_initial*initial_density/gas.density
+    def compress(self):
+        self.maxp = np.amax(self.pressure)
+        self.maxpi = np.argmax(self.pressure)
+        minpi = self.maxpi - 100
+        while self.pressure[minpi] >= self.pressure[minpi - 100]:
+            minpi -= 1
 
-    def volume_to_pressure(self, P_in):
+        self.pc = np.amax(self.pressure[0:minpi])
+        self.pci = np.argmax(self.pressure[0:minpi])
+        diff = abs(self.pressure[self.pci] - self.pressure[15])
+        if diff < 5:
+            self.pc, self.pci = self.maxp, self.maxpi
+
+    def derivative(self):
+        """
+
+        """
+        m = len(self.pressure)
+        self.dpdt = np.zeros(m)
+        for i in range(m-2):
+            self.dpdt[i] = (-self.pressure[i+2] + 4*self.pressure[i+1] -
+                            3*self.pressure[i])/(2*(self.time[i+1] -
+                                                    self.time[i]))
+        self.dpdt[np.isinf(self.dpdt)] = 0
+
+
+class PressureFromTemperature(PressureTrace):
+    """Class for pressure trace computed from a temperature trace."""
+
+    def __init__(self, temperature, P_in):
+        """Create a pressure trace given a temperature trace.
+
+        The required method to set the temperature and entropy of the
+        Solution to set the state are not implemented, so this method
+        is a stub for now.
+        """
+        pass
+        # gas = ct.Solution('species.cti')
+        # gas.TP = temperature[0], P_in
+        # initial_entropy = gas.entropy_mass
+        # self.pressure = np.zeros((len(temperature)))
+        # for i, v in enumerate(temperature):
+        #     gas.ST = initial_entropy, temperature[i]
+
+
+class PressureFromVolume(PressureTrace):
+    """ Class for pressure trace computed from a volume trace."""
+
+    def __init__(self, volume, P_in, T_in=None):
         gas = ct.Solution('species.cti')
-        gas.TP = self.T_in, P_in
+        if cantera_version[2] >= 1 and cantera_version[1] >= 2:
+            gas.DP = 1.0/volume[0], P_in*one_bar_in_pa
+        elif T_in is None:
+            raise OSError
+        else:
+            gas.TP = T_in, P_in
         initial_volume = gas.volume_mass
         initial_entropy = gas.entropy_mass
-        pressure = np.zeros((len(self.volume)))
-        for i, v in enumerate(self.volume):
+        self.pressure = np.zeros((len(volume)))
+        for i, v in enumerate(volume):
             gas.SV = initial_entropy, v*initial_volume
-            pressure[i] = gas.P/1E5
-        return pressure
-
-    def pressure_fit(pressure, pci, sampfreq):
-        beg_compress = np.floor(pci - 0.08*sampfreq)
-        pressure[:9] = pressure[10]
-        time = np.linspace(0, (beg_compress - 1)/sampfreq, beg_compress)
-        fit_pres = pressure[:beg_compress]
-        polyn = np.polyfit(time, fit_pres, 1)
-        return polyn
+            self.pressure[i] = gas.P/one_bar_in_pa
 
 
 class ReactivePressureTrace(PressureTrace):
-    pass
+    """Class for reactive pressure traces."""
+
+    def __init__(self, filename):
+        self.file_loader(filename)
+
+        file_info = ParsedFilename(filename)
+        initial_pressure_in_bar = file_info.pin*one_atm_in_bar/one_atm_in_torr
+        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*file_info.factor
+        self.pres += initial_pressure_in_bar
+        self.time = self.voltage[:, 0]
+
+        self.smoothing()
+        self.compress()
+        self.derivative()
 
 
 class NonReactivePressureTrace(PressureTrace):
-    pass
+    """Class for non-reactive pressure traces."""
+
+    def __init__(self, filename):
+        self.file_loader(filename)
+
+        file_info = ParsedFilename(filename)
+        initial_pressure_in_bar = file_info.pin*one_atm_in_bar/one_atm_in_torr
+        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*file_info.factor
+        self.pres += initial_pressure_in_bar
+        self.time = self.voltage[:, 0]
+
+        self.smoothing()
+        self.compress()
 
 
-def compress(pressure):
-    maxp = np.amax(pressure)
-    maxpi = np.argmax(pressure)
-    minpi = maxpi - 100
-    while pressure[minpi] >= pressure[minpi - 100]:
-        minpi -= 1
+class SimulatedPressureTrace(PressureTrace):
+    """Class for pressure traces derived from simulations."""
 
-    pc = np.amax(pressure[0:minpi])
-    pci = np.argmax(pressure[0:minpi])
-    diff = abs(pressure[pci] - pressure[15])
-    if diff < 5:
-        pc, pci = maxp, maxpi
-    return pc, pci
+    def __init__(self, filename='export.csv'):
+        self.data = np.genfromtxt(filename, delimiter=',', names=True)
+
+        self.pres = self.data['Pressure_(bar)']
+        self.time = self.data['Time_(sec)']
+
+    def derivative(self):
+        m = len(self.pres)
+        self.dpdt = np.zeros(m)
+        for i in range(1, m-2):
+            x = self.time[i]
+            x_min = self.time[i-1]
+            x_plu = self.time[i+1]
+            y = self.pressure[i]
+            y_min = self.pressure[i-1]
+            y_plu = self.pressure[i+1]
+            self.dpdt[i] = (y_min*(x - x_plu)/((x_min - x)*(x_min - x_plu)) +
+                            y*(2*x - x_min - x_plu)/((x - x_min)*(x - x_plu)) +
+                            y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
 
 
 class ParsedFilename(object):
@@ -125,85 +191,8 @@ class ParsedFilename(object):
         self.date = self.data_date.strftime('%d-%b-%H%M')
 
 
-def file_loader(filename):
-    data = None
-    try:
-        data = np.genfromtxt(filename)
-    except OSError:
-        filename += '.txt'
-        data = np.genfromtxt(filename)
-    if data is not None:
-        return data
-    else:
-        raise OSError('Data file not found')
-
-
-def smoothing(pressure, span=21):
-    window = np.ones(span)/span
-    smooth = np.convolve(pressure, window, 'same')
-    return smooth
-
-
-def derivative(time, pressure):
-    """
-
-    """
-    m = len(pressure)
-    dpdt = np.zeros(m)
-    for i in range(m-2):
-        dpdt[i] = (-pressure[i+2] + 4*pressure[i+1] -
-                   3*pressure[i])/(2*(time[i+1]-time[i]))
-    dpdt[np.isinf(dpdt)] = 0
-    dpdt[-1:] = dpdt[-2]
-    return dpdt
-
-
 def copy(text):
     win32clipboard.OpenClipboard()
     win32clipboard.EmptyClipboard()
     win32clipboard.SetClipboardText(text)
     win32clipboard.CloseClipboard()
-
-
-def pressure_to_temperature(pressure, T_in):
-    gas = ct.Solution('species.cti')
-    gas.TP = T_in, pressure[0]*1E5
-    initial_entropy = gas.entropy_mass
-    temperature = np.zeros((len(pressure)))
-    for i, p in enumerate(pressure):
-        gas.SP = initial_entropy, p*1E5
-        temperature[i] = gas.T
-    return temperature
-
-
-def pressure_to_volume(pressure, T_in, V_initial=1):
-    gas = ct.Solution('species.cti')
-    gas.TP = T_in, pressure[0]*1E5
-    initial_entropy = gas.entropy_mass
-    initial_density = gas.density
-    volume = np.zeros((len(pressure)))
-    for i, p in enumerate(pressure):
-        gas.SP = initial_entropy, p*1E5
-        volume[i] = V_initial*initial_density/gas.density
-    return volume
-
-
-def volume_to_pressure(volume, P_in, T_in):
-    gas = ct.Solution('species.cti')
-    gas.TP = T_in, P_in
-    initial_volume = gas.volume_mass
-    initial_entropy = gas.entropy_mass
-    pressure = np.zeros((len(volume)))
-    for i, v in enumerate(volume):
-        gas.SV = initial_entropy, v*initial_volume
-        pressure[i] = gas.P/1E5
-    return pressure
-
-
-def pressure_fit(pressure, pci, sampfreq):
-    beg_compress = np.floor(pci - 0.08*sampfreq)
-    pressure[:9] = pressure[10]
-    time = np.linspace(0, (beg_compress - 1)/sampfreq, beg_compress)
-    fit_pres = pressure[:beg_compress]
-    polyn = np.polyfit(time, fit_pres, 1)
-    return polyn
