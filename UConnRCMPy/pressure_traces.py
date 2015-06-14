@@ -23,13 +23,13 @@ class PressureTrace(object):
         Load a voltage trace from a text file. Check if the file exists
         and if not, try again after adding the proper file extension.
         """
-        self.data = None
+        self.voltage = None
         try:
-            self.data = np.genfromtxt(filename)
+            self.voltage = np.genfromtxt(filename)
         except OSError:
             filename += '.txt'
-            self.data = np.genfromtxt(filename)
-        if self.data is None:
+            self.voltage = np.genfromtxt(filename)
+        if self.voltage is None:
             raise OSError('Data file not found')
 
     def smoothing(self, span=21):
