@@ -4,6 +4,14 @@ from datetime import datetime
 import win32clipboard
 import cantera as ct
 
+one_atm_in_torr = 760.0
+one_atm_in_bar = 1.01325
+try:
+    cantera_version = map(int, ct.__version__.split('.'))
+except ValueError:
+    cantera_version = map(int, ct.__version__.split('.')[0:2])
+    cantera_version.append(int(ct.__version__.split('.')[2][0]))
+
 
 class PressureTrace(object):
     """Generic class for pressure traces"""
