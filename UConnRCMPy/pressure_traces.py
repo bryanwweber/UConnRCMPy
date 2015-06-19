@@ -52,17 +52,18 @@ class PressureTrace(object):
         if diff < 5:
             self.p_EOC, self.p_EOC_idx = self.max_p, self.max_p_idx
 
-    def derivative(self):
+    def derivative(self, dep_var, indep_var):
         """
 
         """
-        m = len(self.pressure)
-        self.dpdt = np.zeros(m)
+        m = len(dep_var)
+        ddt = np.zeros(m)
         for i in range(m-2):
-            self.dpdt[i] = (-self.pressure[i+2] + 4*self.pressure[i+1] -
-                            3*self.pressure[i])/(2*(self.time[i+1] -
-                                                    self.time[i]))
-        self.dpdt[np.isinf(self.dpdt)] = 0
+            ddt[i] = (-dep_var[i+2] + 4*dep_var[i+1] -
+                      3*dep_var[i])/(2*(indep_var[i+1] -
+                                        indep_var[i]))
+        ddt[np.isinf(ddt)] = 0
+        return ddt
 
 
 class PressureFromTemperature(PressureTrace):
@@ -116,9 +117,11 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
         self.pres += initial_pressure_in_bar
         self.time = self.voltage[:, 0]
 
-        self.smoothing()
-        self.derivative()
+
+        self.pressure = self.smoothing(self.pres)
         self.find_EOC()
+        self.dpdt = self.derivative(self.pres, self.time)
+        self.smdp = self.smoothing(self.dpdt, span=5)
 
 
 class NonReactivePressureTrace(PressureTrace):
@@ -133,7 +136,7 @@ class NonReactivePressureTrace(PressureTrace):
         self.pres += initial_pressure_in_bar
         self.time = self.voltage[:, 0]
 
-        self.smoothing()
+        self.pressure = self.smoothing(self.pres)
         self.find_EOC()
 
 
@@ -146,17 +149,19 @@ class SimulatedPressureTrace(PressureTrace):
         self.pres = self.data['Pressure_(bar)']
         self.time = self.data['Time_(sec)']
 
-    def derivative(self):
-        m = len(self.pres)
-        self.dpdt = np.zeros(m)
-        for i in range(1, m-2):
-            x = self.time[i]
-            x_min = self.time[i-1]
-            x_plu = self.time[i+1]
-            y = self.pressure[i]
-            y_min = self.pressure[i-1]
-            y_plu = self.pressure[i+1]
-            self.dpdt[i] = (y_min*(x - x_plu)/((x_min - x)*(x_min - x_plu)) +
-                            y*(2*x - x_min - x_plu)/((x - x_min)*(x - x_plu)) +
-                            y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
+        self.dpdt = self.derivative(self.pres, self.time)
 
+    def derivative(self, dep_var, indep_var):
+        m = len(dep_var)
+        ddt = np.zeros(m)
+        for i in range(1, m-2):
+            x = indep_var[i]
+            x_min = indep_var[i-1]
+            x_plu = indep_var[i+1]
+            y = dep_var[i]
+            y_min = dep_var[i-1]
+            y_plu = dep_var[i+1]
+            ddt[i] = (y_min*(x - x_plu)/((x_min - x)*(x_min - x_plu)) +
+                      y*(2*x - x_min - x_plu)/((x - x_min)*(x - x_plu)) +
+                      y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
+            return ddt
