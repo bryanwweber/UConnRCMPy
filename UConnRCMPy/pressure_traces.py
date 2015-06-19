@@ -32,7 +32,7 @@ class PressureTrace(object):
         return np.convolve(pres, window, 'same')
 
     def pressure_fit(self):
-        beg_compress = np.floor(self.pci - 0.08*self.sampfreq)
+        beg_compress = np.floor(self.p_EOC_idx - 0.08*self.sampfreq)
         time = np.linspace(0, (beg_compress - 1)/self.sampfreq, beg_compress)
         fit_pres = self.pressure[:beg_compress]
         fit_pres[0:9] = fit_pres[10]
@@ -45,11 +45,11 @@ class PressureTrace(object):
         while self.pressure[minpi] >= self.pressure[minpi - 100]:
             minpi -= 1
 
-        self.pc = np.amax(self.pressure[0:minpi])
-        self.pci = np.argmax(self.pressure[0:minpi])
-        diff = abs(self.pressure[self.pci] - self.pressure[15])
+        self.p_EOC = np.amax(self.pressure[0:minpi])
+        self.p_EOC_idx = np.argmax(self.pressure[0:minpi])
+        diff = abs(self.pressure[self.p_EOC_idx] - self.pressure[15])
         if diff < 5:
-            self.pc, self.pci = self.maxp, self.maxpi
+            self.p_EOC, self.p_EOC_idx = self.maxp, self.maxpi
 
     def derivative(self):
         """
