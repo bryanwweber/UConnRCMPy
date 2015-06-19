@@ -42,12 +42,12 @@ class PressureTrace(object):
     def find_EOC(self):
         self.max_p = np.amax(self.pressure)
         self.max_p_idx = np.argmax(self.pressure)
-        minpi = self.maxpi - 100
-        while self.pressure[minpi] >= self.pressure[minpi - 100]:
-            minpi -= 1
+        min_p_idx = self.max_p_idx - 100
+        while self.pressure[min_p_idx] >= self.pressure[min_p_idx - 100]:
+            min_p_idx -= 1
 
-        self.p_EOC = np.amax(self.pressure[0:minpi])
-        self.p_EOC_idx = np.argmax(self.pressure[0:minpi])
+        self.p_EOC = np.amax(self.pressure[0:min_p_idx])
+        self.p_EOC_idx = np.argmax(self.pressure[0:min_p_idx])
         diff = abs(self.pressure[self.p_EOC_idx] - self.pressure[15])
         if diff < 5:
             self.p_EOC, self.p_EOC_idx = self.max_p, self.max_p_idx
