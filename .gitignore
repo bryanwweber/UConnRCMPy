@@ -1,3 +1,4 @@
 *.pickle
 *.sublime-workspace
 __pycache__
+*.egg-info/
