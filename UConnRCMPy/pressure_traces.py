@@ -40,8 +40,8 @@ class PressureTrace(object):
         self.linear_fit = np.polyfit(time, fit_pres, 1)
 
     def find_EOC(self):
-        self.maxp = np.amax(self.pressure)
-        self.maxpi = np.argmax(self.pressure)
+        self.max_p = np.amax(self.pressure)
+        self.max_p_idx = np.argmax(self.pressure)
         minpi = self.maxpi - 100
         while self.pressure[minpi] >= self.pressure[minpi - 100]:
             minpi -= 1
@@ -50,7 +50,7 @@ class PressureTrace(object):
         self.p_EOC_idx = np.argmax(self.pressure[0:minpi])
         diff = abs(self.pressure[self.p_EOC_idx] - self.pressure[15])
         if diff < 5:
-            self.p_EOC, self.p_EOC_idx = self.maxp, self.maxpi
+            self.p_EOC, self.p_EOC_idx = self.max_p, self.max_p_idx
 
     def derivative(self):
         """
