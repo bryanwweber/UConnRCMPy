@@ -129,7 +129,7 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
 
         self.pressure = self.smoothing(self.pres)
         self.find_EOC()
-        self.dpdt = self.derivative(self.pres, self.time)
+        self.dpdt = self.derivative(self.pressure, self.time)
         self.smdp = self.smoothing(self.dpdt, span=5)
         self.ztim = self.time - self.time[self.p_EOC_idx]
 
