@@ -4,7 +4,7 @@ Utilities for UConnRCMPy
 # System imports
 from datetime import datetime
 
-# Library imports
+# Third Party imports
 import win32clipboard
 
 

@@ -37,6 +37,9 @@ class PressureTrace(object):
             raise OSError('Data file not found')
 
     def smoothing(self, data, span=21):
+        """Smooth the input data using a moving average of width span.
+
+        """
         window = np.ones(span)/span
         return np.convolve(data, window, 'same')
 

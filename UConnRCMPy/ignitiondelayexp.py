@@ -18,7 +18,10 @@ class ExperimentalIgnitionDelay(ReactivePressureTrace):
     """Class storing one experimental ignition delay case."""
 
     def __init__(self):
+        # First, initialize the pressure trace by calling the __init__
+        # of the ReactivePressureTrace class we're inheriting from
         super().__init__()
+
         # offset_points is an offset from the EOC to ensure that if
         # ignition is weak, the peak in dP/dt from the compression
         # stroke is not treated as the ignition event. Define points
