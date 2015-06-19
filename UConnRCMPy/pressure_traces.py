@@ -134,10 +134,9 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
         self.ztim = self.time - self.time[self.p_EOC_idx]
 
 
-class NonReactivePressureTrace(PressureTrace):
+class NonReactivePressureTrace(PressureTrace, ParsedFilename):
     """Class for non-reactive pressure traces."""
 
-    def __init__(self, filename):
     @property
     def frequency(self):
         return self._frequency
@@ -149,10 +148,10 @@ class NonReactivePressureTrace(PressureTrace):
     def __init__(self):
         filename = input('Filename: ')
         self.file_loader(filename)
+        super().__init__(filename)
 
-        file_info = ParsedFilename(filename)
-        initial_pressure_in_bar = file_info.pin*one_atm_in_bar/one_atm_in_torr
-        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*file_info.factor
+        initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
+        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
         self.pres += initial_pressure_in_bar
         self.time = self.voltage[:, 0]
 
