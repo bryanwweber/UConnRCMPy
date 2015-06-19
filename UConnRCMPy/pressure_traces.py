@@ -1,6 +1,14 @@
-from __future__ import print_function
+"""
+Classes related to pressure traces.
+"""
+
+# System imports
+
+# Third party imports
 import numpy as np
 import cantera as ct
+
+# Local imports
 from .constants import (cantera_version,
                         one_atm_in_bar,
                         one_atm_in_torr,
