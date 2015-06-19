@@ -33,8 +33,8 @@ class PressureTrace(object):
         return np.convolve(data, window, 'same')
 
     def pressure_fit(self):
-        beg_compress = np.floor(self.p_EOC_idx - 0.08*self.sampfreq)
-        time = np.linspace(0, (beg_compress - 1)/self.sampfreq, beg_compress)
+        beg_compress = np.floor(self.p_EOC_idx - 0.08*self.frequency)
+        time = np.linspace(0, (beg_compress - 1)/self.frequency, beg_compress)
         fit_pres = self.pressure[:beg_compress]
         fit_pres[0:9] = fit_pres[10]
         self.linear_fit = np.polyfit(time, fit_pres, 1)
