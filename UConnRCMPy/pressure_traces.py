@@ -28,9 +28,9 @@ class PressureTrace(object):
         if self.voltage is None:
             raise OSError('Data file not found')
 
-    def smoothing(self, pres, span=21):
+    def smoothing(self, data, span=21):
         window = np.ones(span)/span
-        return np.convolve(pres, window, 'same')
+        return np.convolve(data, window, 'same')
 
     def pressure_fit(self):
         beg_compress = np.floor(self.p_EOC_idx - 0.08*self.sampfreq)
