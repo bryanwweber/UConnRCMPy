@@ -39,7 +39,7 @@ class PressureTrace(object):
         fit_pres[0:9] = fit_pres[10]
         self.linear_fit = np.polyfit(time, fit_pres, 1)
 
-    def compress(self):
+    def find_EOC(self):
         self.maxp = np.amax(self.pressure)
         self.maxpi = np.argmax(self.pressure)
         minpi = self.maxpi - 100
@@ -117,8 +117,8 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
         self.time = self.voltage[:, 0]
 
         self.smoothing()
-        self.compress()
         self.derivative()
+        self.find_EOC()
 
 
 class NonReactivePressureTrace(PressureTrace):
@@ -134,7 +134,7 @@ class NonReactivePressureTrace(PressureTrace):
         self.time = self.voltage[:, 0]
 
         self.smoothing()
-        self.compress()
+        self.find_EOC()
 
 
 class SimulatedPressureTrace(PressureTrace):
