@@ -107,6 +107,14 @@ class PressureFromVolume(PressureTrace):
 class ReactivePressureTrace(PressureTrace, ParsedFilename):
     """Class for reactive pressure traces."""
 
+    @property
+    def frequency(self):
+        return self._frequency
+
+    @frequency.setter
+    def frequency(self, value):
+        self._frequency = value
+
     def __init__(self):
         filename = input('Filename: ')
         self.file_loader(filename)
@@ -117,6 +125,7 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
         self.pres += initial_pressure_in_bar
         self.time = self.voltage[:, 0]
 
+        self.frequency = np.rint(1/self.time[1])
 
         self.pressure = self.smoothing(self.pres)
         self.find_EOC()
@@ -128,6 +137,16 @@ class NonReactivePressureTrace(PressureTrace):
     """Class for non-reactive pressure traces."""
 
     def __init__(self, filename):
+    @property
+    def frequency(self):
+        return self._frequency
+
+    @frequency.setter
+    def frequency(self, value):
+        self._frequency = value
+
+    def __init__(self):
+        filename = input('Filename: ')
         self.file_loader(filename)
 
         file_info = ParsedFilename(filename)
@@ -138,6 +157,8 @@ class NonReactivePressureTrace(PressureTrace):
 
         self.pressure = self.smoothing(self.pres)
         self.find_EOC()
+
+        self.frequency = np.rint(1/self.time[1])
 
 
 class SimulatedPressureTrace(PressureTrace):
