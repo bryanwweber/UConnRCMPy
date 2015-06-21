@@ -199,7 +199,7 @@ class NonReactivePressureTrace(PressureTrace, ParsedFilename):
         Load and process a non-reactive pressure trace from the data
         file.
         """
-        filename = input('Filename: ')
+        filename = input('Non-reactive filename: ')
         self.file_loader(filename)
         super().__init__(filename)
 
