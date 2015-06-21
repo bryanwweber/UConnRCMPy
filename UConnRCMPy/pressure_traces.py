@@ -16,14 +16,21 @@ from .constants import (cantera_version,
                         )
 from .utilities import ParsedFilename
 
+__pdoc__ = {
+    'ParsedFilename': None,
+    'cantera_version': None,
+    'one_atm_in_bar': None,
+    'one_atm_in_torr': None,
+    'one_bar_in_pa': None,
+    'k': None,
+}
+
 
 class PressureTrace(object):
     """Generic class for pressure traces"""
 
     def file_loader(self, filename):
         """
-        Load a voltage trace from a text file.
-
         Load a voltage trace from a text file. Check if the file exists
         and if not, try again after adding the proper file extension.
         """
@@ -37,13 +44,17 @@ class PressureTrace(object):
             raise OSError('Data file not found')
 
     def smoothing(self, data, span=21):
-        """Smooth the input data using a moving average of width span.
-
+        """
+        Smooth the input `data` using a moving average of width `span`.
         """
         window = np.ones(span)/span
         return np.convolve(data, window, 'same')
 
     def pressure_fit(self):
+        """
+        Fit a line to the part of the pressure trace before compression
+        starts.
+        """
         beg_compress = np.floor(self.p_EOC_idx - 0.08*self.frequency)
         time = np.linspace(0, (beg_compress - 1)/self.frequency, beg_compress)
         fit_pres = self.pressure[:beg_compress]
@@ -51,6 +62,12 @@ class PressureTrace(object):
         self.linear_fit = np.polyfit(time, fit_pres, 1)
 
     def find_EOC(self):
+        """
+        Find the end of compression point and pressure of the pressure
+        trace. If the pressure is close to the initial pressure, assume
+        the case is non-reactive and set the pressure at the end of
+        compression and the index to the max pressure point.
+        """
         self.max_p = np.amax(self.pressure)
         self.max_p_idx = np.argmax(self.pressure)
         min_p_idx = self.max_p_idx - 100
@@ -65,7 +82,9 @@ class PressureTrace(object):
 
     def derivative(self, dep_var, indep_var):
         """
-
+        Calculate the derivative of the `dep_var` with respect to the
+        `indep_var` using a second order forward difference. Set any
+        points where the derivative is infinite to zero.
         """
         m = len(dep_var)
         ddt = np.zeros(m)
@@ -84,8 +103,8 @@ class PressureFromTemperature(PressureTrace):
         """Create a pressure trace given a temperature trace.
 
         The required method to set the temperature and entropy of the
-        Solution to set the state are not implemented, so this method
-        is a stub for now.
+        Cantera Solution to set the state are not implemented, so this
+        class is a stub for now.
         """
         pass
         # gas = ct.Solution('species.cti')
@@ -100,10 +119,19 @@ class PressureFromVolume(PressureTrace):
     """ Class for pressure trace computed from a volume trace."""
 
     def __init__(self, volume, P_in, T_in=None):
+        """Create a pressure trace given a volume trace.
+
+        Compute a pressure trace given a `volume` trace. Also requires
+        inputs of initial pressure `p_initial`, and if Cantera is less
+        than version 2.2.1, `T_initial`. If Cantera is greater than or
+        equal to version 2.2.1, it is possible to set the state by
+        pressure and density, so compute the density as the inverse of
+        the initial volume.
+        """
         gas = ct.Solution('species.cti')
         if cantera_version[2] >= 1 and cantera_version[1] >= 2:
-            gas.DP = 1.0/volume[0], P_in*one_bar_in_pa
-        elif T_in is None:
+            gas.DP = 1.0/volume[0], p_initial*one_bar_in_pa
+        elif T_initial is None:
             raise OSError
         else:
             gas.TP = T_in, P_in
@@ -127,22 +155,32 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
         self._frequency = value
 
     def __init__(self):
+        """
+        Load and process a reactive pressure trace from the data file.
+        """
         filename = input('Filename: ')
         self.file_loader(filename)
         super().__init__(filename)
 
         initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
         self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
+        """The raw pressure trace processed from the voltage trace."""
         self.pres += initial_pressure_in_bar
         self.time = self.voltage[:, 0]
+        """The time loaded from the voltage trace."""
 
         self.frequency = np.rint(1/self.time[1])
+        """The sampling frequency of the pressure trace."""
 
         self.pressure = self.smoothing(self.pres)
+        """The smoothed pressure trace."""
         self.find_EOC()
         self.dpdt = self.derivative(self.pressure, self.time)
+        """The raw derivative calculated from the smoothed pressure."""
         self.smdp = self.smoothing(self.dpdt, span=5)
+        """The smoothed derivative."""
         self.ztim = self.time - self.time[self.p_EOC_idx]
+        """A time array where the zero point is at the EOC."""
 
 
 class NonReactivePressureTrace(PressureTrace, ParsedFilename):
@@ -157,35 +195,64 @@ class NonReactivePressureTrace(PressureTrace, ParsedFilename):
         self._frequency = value
 
     def __init__(self):
+        """
+        Load and process a non-reactive pressure trace from the data
+        file.
+        """
         filename = input('Filename: ')
         self.file_loader(filename)
         super().__init__(filename)
 
         initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
         self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
+        """The raw pressure trace processed from the voltage trace."""
         self.pres += initial_pressure_in_bar
         self.time = self.voltage[:, 0]
+        """The time loaded from the voltage trace."""
 
         self.pressure = self.smoothing(self.pres)
+        """The smoothed pressure trace."""
         self.find_EOC()
 
         self.ztim = self.time - self.time[self.p_EOC_idx]
+        """The time array where the zero point is at the EOC."""
 
         self.frequency = np.rint(1/self.time[1])
+        """The sampling frequency of the pressure trace."""
 
 
 class SimulatedPressureTrace(PressureTrace):
     """Class for pressure traces derived from simulations."""
 
     def __init__(self, filename='export.csv'):
+        """
+        Load the pressure trace from the simulation file. The default
+        filename is `export.csv`, which can be overridden by passing
+        the new filename to the constructor. The data is expected to be
+        in csv format with a header row of names. The header for the
+        pressure is expected to be `'Pressure_(bar)'` and the header
+        for the time is expected to be `'Time_(sec)'`.
+        """
         self.data = np.genfromtxt(filename, delimiter=',', names=True)
+        """The data from the simulation file."""
 
         self.pres = self.data['Pressure_(bar)']
+        """The simulated pressure trace."""
         self.time = self.data['Time_(sec)']
+        """The simulated time trace."""
 
         self.dpdt = self.derivative(self.pres, self.time)
+        """The derivative calculated from the simulated pressure trace."""
 
     def derivative(self, dep_var, indep_var):
+        """
+        Calculated the derivative of the `dep_var` with respect to the
+        `indep_var`. The derivative is calculated by computing the
+        first order Lagrange polynomial fit to the point under
+        consideration and its nearest neighbors. The Lagrange
+        polynomial is used because of the unequal spacing of the
+        simulated data.
+        """
         m = len(dep_var)
         ddt = np.zeros(m)
         for i in range(1, m-2):
@@ -199,3 +266,16 @@ class SimulatedPressureTrace(PressureTrace):
                       y*(2*x - x_min - x_plu)/((x - x_min)*(x - x_plu)) +
                       y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
             return ddt
+
+
+for k in PressureTrace.__dict__.keys():
+    if k != '__init__':
+        __pdoc__['PressureFromTemperature.{}'.format(k)] = None
+        __pdoc__['PressureFromVolume.{}'.format(k)] = None
+        __pdoc__['ReactivePressureTrace.{}'.format(k)] = None
+        __pdoc__['NonReactivePressureTrace.{}'.format(k)] = None
+        __pdoc__['SimulatedPressureTrace.{}'.format(k)] = None
+
+for k in SimulatedPressureTrace.__dict__.keys():
+    if 'SimulatedPressureTrace.{}'.format(k) in __pdoc__:
+        del __pdoc__['SimulatedPressureTrace.{}'.format(k)]
