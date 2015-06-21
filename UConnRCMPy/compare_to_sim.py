@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Compare simulated pressure trace to the corresponding reactive trace
 """
