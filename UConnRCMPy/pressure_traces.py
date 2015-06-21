@@ -118,7 +118,7 @@ class PressureFromTemperature(PressureTrace):
 class PressureFromVolume(PressureTrace):
     """ Class for pressure trace computed from a volume trace."""
 
-    def __init__(self, volume, P_in, T_in=None):
+    def __init__(self, volume, p_initial, T_initial=None):
         """Create a pressure trace given a volume trace.
 
         Compute a pressure trace given a `volume` trace. Also requires
@@ -134,7 +134,7 @@ class PressureFromVolume(PressureTrace):
         elif T_initial is None:
             raise OSError
         else:
-            gas.TP = T_in, P_in
+            gas.TP = T_initial, p_initial
         initial_volume = gas.volume_mass
         initial_entropy = gas.entropy_mass
         self.pressure = np.zeros((len(volume)))
