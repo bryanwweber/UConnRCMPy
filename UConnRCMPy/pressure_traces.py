@@ -154,13 +154,18 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
     def frequency(self, value):
         self._frequency = value
 
-    def __init__(self):
+    def __init__(self, filename=None):
         """
         Load and process a reactive pressure trace from the data file.
         """
-        filename = input('Filename: ')
-        self.file_loader(filename)
+        if filename is None:
+            filename = input('Filename: ')
+
         super().__init__(filename)
+        self.process_pressure_trace(filename)
+
+    def process_pressure_trace(self, filename):
+        self.file_loader(filename)
 
         initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
         self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
@@ -194,14 +199,19 @@ class NonReactivePressureTrace(PressureTrace, ParsedFilename):
     def frequency(self, value):
         self._frequency = value
 
-    def __init__(self):
+    def __init__(self, filename=None):
         """
         Load and process a non-reactive pressure trace from the data
         file.
         """
-        filename = input('Non-reactive filename: ')
-        self.file_loader(filename)
+        if filename is None:
+            filename = input('Non-reactive filename: ')
+
         super().__init__(filename)
+        self.process_pressure_trace(filename)
+
+    def process_pressure_trace(self, filename):
+        self.file_loader(filename)
 
         initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
         self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
