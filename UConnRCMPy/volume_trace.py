@@ -1,12 +1,108 @@
 """
-Created on Tue May 19 09:13:12 2015
-
-@author: weber
+Create a volume trace for a given condition
 """
 import numpy as np
 import matplotlib.pyplot as plt
 import yaml
-from pressure_traces import smoothing, compress, pressure_to_volume, pressure_to_temperature, volume_to_pressure, filename_parse, copy, pressure_fit
+from .pressure_traces import (ReactivePressureTrace,
+                              NonReactivePressureTrace,
+                              PressureFromVolume,
+                              )
+from .volume_traces import VolumeFromPressure
+from .temperature_traces import TemperatureFromPressure
+from .utilities import copy
+
+
+class VolumeTraceBuilder(object):
+    """Class to build a volume trace from an experiment."""
+
+    def __init__(self):
+        pass
+
+    def load_yaml(self):
+        with open('volume-trace.yaml') as yaml_file:
+            self.yaml_data = yaml.load(yaml_file)
+            self.nonrfile = self.yaml_data['nonrfile']
+            self.reacfile = self.yaml_data['reacfile']
+            self.comptime = self.yaml_data['comptime']
+            self.nonrend = self.yaml_data['nonrend']
+            self.reacend = self.yaml_data['reacend']
+            self.reacoffs = self.yaml_data.get('reacoffs', 0)
+            self.nonroffs = self.yaml_data.get('nonroffs', 0)
+
+    def create_volume_trace(self):
+        self.load_yaml()
+        self.reactive_trace = ReactivePressureTrace(self.reacfile)
+        self.nonreactive_trace = NonReactivePressureTrace(self.nonrfile)
+        self.reactive_trace.pressure_fit()
+        self.reactive_line = np.polyval(self.reactive_trace.linear_fit,
+                                        self.reactive_trace.time)
+
+        self.nonreactive_end_idx = (
+            self.nonreactive_trace.p_EOC_idx +
+            self.nonrend/1000.0*self.nonreactive_trace.frequency
+        )
+        self.reactive_end_idx = (
+            self.reactive_trace.p_EOC_idx +
+            self.reacend/1000.0*self.reactive_trace.frequency
+        )
+        self.reactive_start_point = (
+            self.reactive_trace._EOC_idx -
+            self.comptime/1000.0*self.reactive_trace.frequency
+        )
+        self.stroke_pressure = self.reactive_trace.pressure[
+            (self.reactive_start_point):(self.reactive_trace.p_EOC_idx + 1 + self.reacoffs)
+        ]
+        self.post_pressure = self.nonreactive_trace.pressure[
+            (self.nonreactive_trace.p_EOC_idx + self.nonroffs):(self.nonreactive_end_idx + self.nonroffs - self.reacoffs)
+        ]
+        self.print_pressure = self.reactive_trace.pressure[
+            (self.reactive_start_point):(self.reactive_end_idx)
+        ]
+        self.time = np.linspace(-self.comptime/1000, self.nonrend/1000,
+                                1/self.reactive_trace.frequency)
+        self.stroke_volume = VolumeFromPressure(self.stroke_pressure, 1.0,
+                                                self.reactive_trace.Tin).volume
+        self.stroke_temperature = TemperatureFromPressure(
+            self.stroke_pressure,
+            self.reactive_trace.Tin
+        ).temperature
+        self.post_volume = VolumeFromPressure(
+            self.post_pressure,
+            self.stroke_volume[-1],
+            self.stroke_temperature[-1],
+        )
+        self.volume = np.concatenate((self.stroke_volume,
+                                      self.post_volume[1:]))
+
+        self.computed_pressure = PressureFromVolume(
+            self.volume,
+            self.stroke_pressure[0]*1E5,
+            self.reactive_trace.Tin,
+        )
+        self.plot_figure()
+
+        print('{:.4f}'.format(stroke_pressure[0]))
+        copy('{:.4f}'.format(stroke_pressure[0]))
+
+        volout = np.vstack((self.time[::5] + self.comptime/1000, self.volume[::5])).transpose()
+        presout = np.vstack((self.time[:len(self.print_pressure):5] + self.comptime/1000, self.print_pressure[::5])).transpose()
+        np.savetxt('volume.csv', volout, delimiter=',')
+        np.savetxt('Tc__P0__T0_{}K_pressure.txt'.format(
+            self.reactive_trace.Tin
+            ), presout, delimiter='\t')
+
+    def plot_figure(self):
+        self.fig = plt.figure(1)
+        self.ax = self.fig.add_subplot(1, 1, 1)
+        self.ax.cla()
+        self.ax.plot(self.reactive_trace.ztim, self.reactive_trace.pressure)
+        self.ax.plot(self.time[:len(self.print_pressure)], self.print_pressure)
+        self.ax.plot(self.time, self.computed_pressure)
+        self.ax.plot(self.reactive_trace.ztim, self.reactive_line)
+        m = plt.get_current_fig_manager()
+        m.window.showMaximized()
+
 
 with open('volume-trace.yaml') as yaml_file:
     y = yaml.load(yaml_file)
