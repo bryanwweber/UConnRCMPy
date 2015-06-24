@@ -13,7 +13,7 @@ cantera_version = None
 """Installed version of Cantera software."""
 
 try:
-    cantera_version = map(int, cantera.__version__.split('.'))
+    cantera_version = list(map(int, cantera.__version__.split('.')))
 except ValueError:
-    cantera_version = map(int, cantera.__version__.split('.')[0:2])
+    cantera_version = list(map(int, cantera.__version__.split('.')[0:2]))
     cantera_version.append(int(cantera.__version__.split('.')[2][0]))
