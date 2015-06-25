@@ -17,7 +17,7 @@ class VolumeTraceBuilder(object):
     """Class to build a volume trace from an experiment."""
 
     def __init__(self):
-        self.create_volume_trace()
+        self.__call__()
 
     def load_yaml(self):
         with open('volume-trace.yaml') as yaml_file:
@@ -84,11 +84,8 @@ class VolumeTraceBuilder(object):
             self.stroke_pressure[0]*1E5,
             self.reactive_trace.Tin,
         ).pressure
-        self.plot_figure()
 
-        print('{:.4f}'.format(self.stroke_pressure[0]))
-        copy('{:.4f}'.format(self.stroke_pressure[0]))
-
+    def write_output(self):
         volout = np.vstack(
             (self.time[::5] + self.comptime/1000, self.volume[::5])
         ).transpose()
@@ -114,3 +111,9 @@ class VolumeTraceBuilder(object):
 
     def __call__(self):
         self.create_volume_trace()
+        self.plot_figure()
+
+        print('{:.4f}'.format(self.stroke_pressure[0]))
+        copy('{:.4f}'.format(self.stroke_pressure[0]))
+
+        self.write_output()
