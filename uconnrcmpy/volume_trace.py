@@ -80,7 +80,7 @@ class VolumeTraceBuilder(object):
                                       self.post_volume[1:]))
 
         self.computed_pressure = PressureFromVolume(
-            self.volume,
+            self.volume[::5],
             self.stroke_pressure[0]*1E5,
             self.reactive_trace.Tin,
         ).pressure
@@ -103,8 +103,8 @@ class VolumeTraceBuilder(object):
         self.ax = self.fig.add_subplot(1, 1, 1)
         self.ax.cla()
         self.ax.plot(self.reactive_trace.ztim, self.reactive_trace.pressure)
-        self.ax.plot(self.time[:self.n_print_pts], self.print_pressure)
-        self.ax.plot(self.time, self.computed_pressure)
+        self.ax.plot(self.time[:self.n_print_pts:5], self.print_pressure[::5])
+        self.ax.plot(self.time[::5], self.computed_pressure)
         self.ax.plot(self.reactive_trace.ztim, self.reactive_line)
         m = plt.get_current_fig_manager()
         m.window.showMaximized()
