@@ -234,7 +234,7 @@ class NonReactivePressureTrace(PressureTrace, ParsedFilename):
 class SimulatedPressureTrace(PressureTrace):
     """Class for pressure traces derived from simulations."""
 
-    def __init__(self, filename='export.csv'):
+    def __init__(self, filename='export.csv', data=None):
         """
         Load the pressure trace from the simulation file. The default
         filename is `export.csv`, which can be overridden by passing
@@ -243,7 +243,10 @@ class SimulatedPressureTrace(PressureTrace):
         pressure is expected to be `'Pressure_(bar)'` and the header
         for the time is expected to be `'Time_(sec)'`.
         """
-        self.data = np.genfromtxt(filename, delimiter=',', names=True)
+        if data is None:
+            self.data = np.genfromtxt(filename, delimiter=',', names=True)
+        else:
+            self.data = data
         """The data from the simulation file."""
 
         self.pres = self.data['Pressure_(bar)']
