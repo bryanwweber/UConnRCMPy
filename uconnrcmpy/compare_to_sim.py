@@ -93,7 +93,7 @@ class Simulation(object):
         self.pressure_trace = SimulatedPressureTrace(data=pres_trace)
 
 
-def compare_to_sim():
+class CompareToSimulation():
     """
     Compare a reactive pressure trace to the corresponding simulation.
 
@@ -106,43 +106,49 @@ def compare_to_sim():
     simulated ignition delay or the EOC temperature to the clipboard.
     """
 
-    # Load the experimental pressure trace. Try the glob function first
-    # and if it fails, ask the user for help.
-    flist = glob('*pressure.txt')
-    if not len(flist) == 1:
-        flist = [input('Input the experimental pressure trace file name: ')]
-    expdata = np.genfromtxt(flist[0])
-    exptime = expdata[:, 0]
-    exppressure = expdata[:, 1]
-    initial_pressure = exppressure[0]*1E5
-    initial_temperature = int(flist[0].split('_')[5].strip('K'))
+    def __init__(self, reactive_sim=False):
 
-    nonreactive_sim = Simulation(initial_temperature,
-                                 initial_pressure,
-                                 is_reactive=False,
-                                 )
-    reactive_sim = Simulation(initial_temperature,
-                              initial_pressure,
-                              is_reactive=True,
-                              )
+        self.reactive_sim = reactive_sim
 
-    # Plot the pressure traces together
-    fig = plt.figure('Simulation Comparison')
-    ax = fig.add_subplot(1, 1, 1)
-    ax.plot(exptime, exppressure)
-    ax.plot(nonreactive_sim.time, nonreactive_sim.pres)
-    ax.plot(reactive_sim.time, reactive_sim.pres)
-    ax.plot(reactive_sim.time, reactive_sim.pressure_trace.dpdt/1E6)
-    m = plt.get_current_fig_manager()
-    m.window.showMaximized()
+        # Load the experimental pressure trace. Try the glob function first
+        # and if it fails, ask the user for help.
+        flist = glob('*pressure.txt')
+        if not len(flist) == 1:
+            flist = [input('Input the experimental pressure trace file name: ')]
+        expdata = np.genfromtxt(flist[0])
+        exptime = expdata[:, 0]
+        exppressure = expdata[:, 1]
+        initial_pressure = exppressure[0]*1E5
+        initial_temperature = int(flist[0].split('_')[5].strip('K'))
 
-    # Compute the temperature at the end of compression and the
-    # ignition delay from the corresponding simulated case. Copy
-    # them to the clipboard.
-    T_EOC = np.amax(nonreactive_sim.temp)
-    ign_delay = (
-        reactive_sim.time[np.argmax(reactive_sim.pressure_trace.dpdt)]*1000 -
-        reactive_sim.comptime
-    )
-    print('{:.0f}, {:.6f}'.format(T_EOC, ign_delay))
-    copy('{}\t\t\t\t{}'.format(T_EOC, ign_delay))
+        if self.reactive_sim:
+            reactive_sim = Simulation(initial_temperature,
+                                      initial_pressure,
+                                      is_reactive=True,
+                                      )
+        else:
+            nonreactive_sim = Simulation(initial_temperature,
+                                         initial_pressure,
+                                         is_reactive=False,
+                                         )
+
+        # Plot the pressure traces together
+        fig = plt.figure('Simulation Comparison')
+        ax = fig.add_subplot(1, 1, 1)
+        ax.plot(exptime, exppressure)
+        ax.plot(nonreactive_sim.time, nonreactive_sim.pres)
+        ax.plot(reactive_sim.time, reactive_sim.pres)
+        ax.plot(reactive_sim.time, reactive_sim.pressure_trace.dpdt/1E6)
+        m = plt.get_current_fig_manager()
+        m.window.showMaximized()
+
+        # Compute the temperature at the end of compression and the
+        # ignition delay from the corresponding simulated case. Copy
+        # them to the clipboard.
+        T_EOC = np.amax(nonreactive_sim.temp)
+        ign_delay = (
+            reactive_sim.time[np.argmax(reactive_sim.pressure_trace.dpdt)]*1000 -
+            reactive_sim.comptime
+        )
+        print('{:.0f}, {:.6f}'.format(T_EOC, ign_delay))
+        copy('{}\t\t\t\t{}'.format(T_EOC, ign_delay))
