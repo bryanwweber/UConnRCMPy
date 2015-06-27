@@ -278,7 +278,8 @@ class SimulatedPressureTrace(PressureTrace):
             ddt[i] = (y_min*(x - x_plu)/((x_min - x)*(x_min - x_plu)) +
                       y*(2*x - x_min - x_plu)/((x - x_min)*(x - x_plu)) +
                       y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
-            return ddt
+
+        return ddt
 
 
 for k in PressureTrace.__dict__.keys():
