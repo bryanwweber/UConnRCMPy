@@ -20,7 +20,7 @@ from .utilities import copy
 class Simulation(object):
     """Class for simulations of experiments."""
 
-    def __init__(self, is_reactive):
+    def __init__(self, initial_temperature, initial_pressure, is_reactive):
         self.keywords = {}
         self.time = []
         self.temp = []
@@ -28,12 +28,15 @@ class Simulation(object):
         self.volm = []
         self.load_yaml()
         self.is_reactive = is_reactive
-        self.setup_simulation(self.is_reactive)
+        self.setup_simulation(initial_temperature,
+                              initial_pressure,
+                              self.is_reactive,
+                              )
         self.run_simulation()
         self.process_simulation()
 
     def load_yaml(self):
-        with open('volume-trace.yml') as yaml_file:
+        with open('volume-trace.yaml') as yaml_file:
             yaml_data = yaml.load(yaml_file)
             self.comptime = yaml_data['comptime']
 
@@ -52,8 +55,13 @@ class Simulation(object):
         self.pres.append(self.gas.P/1E5)
         self.volm.append(self.reac.volume)
 
-    def setup_simulation(self, is_reactive=True):
+    def setup_simulation(self,
+                         initial_temperature,
+                         initial_pressure,
+                         is_reactive=True,
+                         ):
         self.gas = ct.Solution('species.cti')
+        self.gas.TP = initial_temperature, initial_pressure
         if not is_reactive:
             self.gas.set_multiplier(0)
         self.reac = ct.IdealGasReactor(self.gas)
@@ -64,13 +72,13 @@ class Simulation(object):
         self.netw.set_max_time_step(self.keywords['vproTime'][1])
         self.append_to_data_arrays()
 
-    def run_simulation(self, end_Temp=2000, end_time=0.2):
+    def run_simulation(self, end_Temp=2500, end_time=0.2):
         while self.reac.T < end_Temp and self.netw.time < end_time:
             self.netw.step(1)
             self.append_to_data_arrays()
 
     def process_simulation(self):
-        self.pressure_trace = self.create_pressure_trace()
+        self.create_pressure_trace()
         self.time = np.array(self.time)
         self.temp = np.array(self.temp)
         self.pres = np.array(self.pres)
@@ -98,9 +106,6 @@ def compare_to_sim():
     simulated ignition delay or the EOC temperature to the clipboard.
     """
 
-    nonreactive_sim = Simulation(is_reactive=False)
-    reactive_sim = Simulation(is_reactive=True)
-
     # Load the experimental pressure trace. Try the glob function first
     # and if it fails, ask the user for help.
     flist = glob('*pressure.txt')
@@ -109,6 +114,17 @@ def compare_to_sim():
     expdata = np.genfromtxt(flist[0])
     exptime = expdata[:, 0]
     exppressure = expdata[:, 1]
+    initial_pressure = exppressure[0]*1E5
+    initial_temperature = int(flist[0].split('_')[5].strip('K'))
+
+    nonreactive_sim = Simulation(initial_temperature,
+                                 initial_pressure,
+                                 is_reactive=False,
+                                 )
+    reactive_sim = Simulation(initial_temperature,
+                              initial_pressure,
+                              is_reactive=True,
+                              )
 
     # Plot the pressure traces together
     fig = plt.figure('Simulation Comparison')
@@ -116,6 +132,7 @@ def compare_to_sim():
     ax.plot(exptime, exppressure)
     ax.plot(nonreactive_sim.time, nonreactive_sim.pres)
     ax.plot(reactive_sim.time, reactive_sim.pres)
+    ax.plot(reactive_sim.time, reactive_sim.pressure_trace.dpdt/1E6)
     m = plt.get_current_fig_manager()
     m.window.showMaximized()
 
@@ -123,7 +140,9 @@ def compare_to_sim():
     # ignition delay from the corresponding simulated case. Copy
     # them to the clipboard.
     T_EOC = np.amax(nonreactive_sim.temp)
-    ign_delay = (reactive_sim.time[np.argmax(reactive_sim.dpdt)]*1000 -
-                 reactive_sim.comptime)
+    ign_delay = (
+        reactive_sim.time[np.argmax(reactive_sim.pressure_trace.dpdt)]*1000 -
+        reactive_sim.comptime
+    )
     print('{:.0f}, {:.6f}'.format(T_EOC, ign_delay))
-    copy('{}\t\t\t{}'.format(T_EOC, ign_delay))
+    copy('{}\t\t\t\t{}'.format(T_EOC, ign_delay))
