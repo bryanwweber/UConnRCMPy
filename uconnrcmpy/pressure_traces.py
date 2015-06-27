@@ -259,7 +259,7 @@ class SimulatedPressureTrace(PressureTrace):
 
     def derivative(self, dep_var, indep_var):
         """
-        Calculated the derivative of the `dep_var` with respect to the
+        Calculate the derivative of the `dep_var` with respect to the
         `indep_var`. The derivative is calculated by computing the
         first order Lagrange polynomial fit to the point under
         consideration and its nearest neighbors. The Lagrange
