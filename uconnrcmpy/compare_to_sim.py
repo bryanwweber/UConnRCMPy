@@ -106,49 +106,106 @@ class CompareToSimulation():
     simulated ignition delay or the EOC temperature to the clipboard.
     """
 
-    def __init__(self, reactive_sim=False):
-
-        self.reactive_sim = reactive_sim
+    def __init__(self, run_reactive=False, run_nonreactive=True):
 
         # Load the experimental pressure trace. Try the glob function first
         # and if it fails, ask the user for help.
         flist = glob('*pressure.txt')
         if not len(flist) == 1:
-            flist = [input('Input the experimental pressure trace file name: ')]
-        expdata = np.genfromtxt(flist[0])
-        exptime = expdata[:, 0]
-        exppressure = expdata[:, 1]
-        initial_pressure = exppressure[0]*1E5
-        initial_temperature = int(flist[0].split('_')[5].strip('K'))
+            flist = [
+                input('Input the experimental pressure trace file name: ')
+            ]
+        self.expdata = np.genfromtxt(flist[0])
+        self.exptime = self.expdata[:, 0]
+        self.exppressure = self.expdata[:, 1]
+        self.initial_pressure = self.exppressure[0]*1E5
+        self.initial_temperature = int(flist[0].split('_')[5].strip('K'))
 
-        if self.reactive_sim:
-            reactive_sim = Simulation(initial_temperature,
-                                      initial_pressure,
-                                      is_reactive=True,
-                                      )
+        if run_nonreactive:
+            self.nonreactive_sim = self.run_simulation(is_reactive=False)
         else:
-            nonreactive_sim = Simulation(initial_temperature,
-                                         initial_pressure,
-                                         is_reactive=False,
-                                         )
+            self.nonreactive_sim = None
 
+        if run_reactive:
+            self.reactive_sim = self.run_simulation(is_reactive=True)
+        else:
+            self.reactive_sim = None
+
+        self.plot_traces()
+        self.process_traces()
+
+    def run_simulation(self, is_reactive):
+        return Simulation(self.initial_temperature,
+                          self.initial_pressure,
+                          is_reactive,
+                          )
+
+    def process_choice(type):
+        choice = input('y or n')
+        if choice.startswith('n'):
+            return False
+        elif choice.startswith('y'):
+            return True
+        else:
+            raise IOError('Invalid input')
+
+    def add_simulation(self, run_reactive=False, run_nonreactive=False):
+        if run_reactive:
+            if self.reactive_sim is not None:
+                if self.process_choice('reactive'):
+                    self.reactive_sim = self.run_simulation(
+                        is_reactive=True)
+                else:
+                    print('Nothing was done.')
+            else:
+                self.reactive_sim = self.run_simulation(
+                    is_reactive=True)
+
+        if run_nonreactive:
+            if self.nonreactive_sim is not None:
+                if self.process_choice('non-reactive'):
+                    self.nonreactive_sim = self.run_simulation(
+                        is_reactive=False)
+                else:
+                    print('Nothing was done.')
+            else:
+                self.nonreactive_sim = self.run_simulation(
+                    is_reactive=False)
+
+        self.process_traces()
+
+    def add_nonreactive_simulation(self):
+        self.add_simulation(run_nonreactive=True)
+
+    def add_reactive_simulation(self):
+        self.add_simulation(run_reactive=True)
+
+    def plot_traces(self):
         # Plot the pressure traces together
-        fig = plt.figure('Simulation Comparison')
-        ax = fig.add_subplot(1, 1, 1)
-        ax.plot(exptime, exppressure)
-        ax.plot(nonreactive_sim.time, nonreactive_sim.pres)
-        ax.plot(reactive_sim.time, reactive_sim.pres)
-        ax.plot(reactive_sim.time, reactive_sim.pressure_trace.dpdt/1E6)
+        self.fig = plt.figure('Simulation Comparison')
+        self.ax = self.fig.add_subplot(1, 1, 1)
+        self.ax.plot(self.exptime, self.exppressure)
+        if self.nonreactive_sim is not None:
+            self.ax.plot(self.nonreactive_sim.time, self.nonreactive_sim.pres)
+        if self.reactive_sim is not None:
+            self.ax.plot(self.reactive_sim.time, self.reactive_sim.pres)
+            self.ax.plot(self.reactive_sim.time,
+                         self.reactive_sim.pressure_trace.dpdt/1E6)
         m = plt.get_current_fig_manager()
         m.window.showMaximized()
 
+    def process_traces(self):
         # Compute the temperature at the end of compression and the
         # ignition delay from the corresponding simulated case. Copy
         # them to the clipboard.
-        T_EOC = np.amax(nonreactive_sim.temp)
-        ign_delay = (
-            reactive_sim.time[np.argmax(reactive_sim.pressure_trace.dpdt)]*1000 -
-            reactive_sim.comptime
-        )
+        if self.nonreactive_sim is not None:
+            T_EOC = np.amax(self.nonreactive_sim.temp)
+        if self.reactive_sim is not None:
+            ignition_idx = np.argmax(self.reactive_sim.pressure_trace.dpdt)
+            ignition_delay = (
+                self.reactive_sim.time[ignition_idx]*1000 -
+                self.reactive_sim.comptime
+            )
+
         print('{:.0f}, {:.6f}'.format(T_EOC, ign_delay))
         copy('{}\t\t\t\t{}'.format(T_EOC, ign_delay))
