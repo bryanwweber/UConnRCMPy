@@ -25,14 +25,26 @@ for k in dir(ReactivePressureTrace):
 class ExperimentalIgnitionDelay(ReactivePressureTrace):
     """Class storing one experimental ignition delay case."""
 
-    def __init__(self):
+    def __init__(self, filename=None):
         """
         Process one reactive experimental trace to find the ignition
         delay.
         """
         # First, initialize the pressure trace by calling the __init__
         # of the ReactivePressureTrace class we're inheriting from
-        super().__init__()
+        super().__init__(filename)
+        self.calculate_ignition_delay()
+        self.calculate_EOC_temperature()
+        self.plot_figures()
+
+        # Copy the relevant information to the clipboard for pasting
+        # into a spreadsheet
+        copy('\t'.join(map(str, [
+            self.time_of_day, self.pin, self.Tin, self.p_EOC,
+            self.ignition_delay, self.first_stage, self.T_EOC, self.spacers,
+            self.shims])))
+
+    def calculate_ignition_delay(self):
 
         # offset_points is an offset from the EOC to ensure that if
         # ignition is weak, the peak in dP/dt from the compression
@@ -60,19 +72,15 @@ class ExperimentalIgnitionDelay(ReactivePressureTrace):
         self.first_stage = 0.0
         """The first stage ignition delay."""
 
+    def calculate_EOC_temperature(self):
+
         pres_to_temp_start_idx = self.p_EOC_idx - 0.03*self.frequency
         tempp = self.pressure[(pres_to_temp_start_idx):(self.p_EOC_idx)]
         temperature_trace = TemperatureFromPressure(tempp, self.Tin)
         self.T_EOC = np.amax(temperature_trace.temperature)
         """The estimated temperature at the end of compression."""
 
-        # Copy the relevant information to the clipboard for pasting
-        # into a spreadsheet
-        copy('\t'.join(map(str, [
-            self.time_of_day, self.pin, self.Tin, self.p_EOC,
-            self.ignition_delay, self.first_stage, self.T_EOC, self.spacers,
-            self.shims])))
-
+    def plot_figures(self):
         # Plot the smoothed pressure and overlay future runs
         fig1 = plt.figure(1)
         ax1 = fig1.add_subplot(1, 1, 1)
