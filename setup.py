@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'process-ignition-loop=uconnrcmpy.ign_loop:main',
+            'ignloop=uconnrcmpy.ign_loop:main',
         ],
     },
 )
