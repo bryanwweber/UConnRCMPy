@@ -198,14 +198,21 @@ class CompareToSimulation():
         # Compute the temperature at the end of compression and the
         # ignition delay from the corresponding simulated case. Copy
         # them to the clipboard.
+        print_str = ''
+        copy_str = ''
+
         if self.nonreactive_sim is not None:
             T_EOC = np.amax(self.nonreactive_sim.temp)
+            print_str += '{:.0f}\t'.format(T_EOC)
+            copy_str += '{}\t\t\t\t'.format(T_EOC)
         if self.reactive_sim is not None:
             ignition_idx = np.argmax(self.reactive_sim.pressure_trace.dpdt)
             ignition_delay = (
                 self.reactive_sim.time[ignition_idx]*1000 -
                 self.reactive_sim.comptime
             )
+            print_str += '{:.6f}'.format(ignition_delay)
+            copy_str += '{}'.format(ignition_delay)
 
-        print('{:.0f}, {:.6f}'.format(T_EOC, ign_delay))
-        copy('{}\t\t\t\t{}'.format(T_EOC, ign_delay))
+        print(print_str)
+        copy(copy_str)
