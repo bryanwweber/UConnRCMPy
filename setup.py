@@ -17,4 +17,9 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     packages=find_packages(),
+    entry_points={
+        'console_scripts': [
+            'process-ignition-loop=uconnrcmpy.ign_loop:main',
+        ],
+    },
 )
