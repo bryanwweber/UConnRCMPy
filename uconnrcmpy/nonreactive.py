@@ -6,6 +6,7 @@ Nonreactive pressure trace processor
 # Third-party imports
 import numpy as np
 import matplotlib.pyplot as plt
+import yaml
 
 # Local imports
 from .pressure_traces import NonReactivePressureTrace, ReactivePressureTrace
@@ -23,7 +24,11 @@ class NonReactiveExperiments(object):
         When the class is initialized, load the reactive pressure trace
         and then add one non-reactive pressure trace.
         """
-        self.reactive_case = ReactivePressureTrace()
+        with open('volume-trace.yaml') as yaml_file:
+            self.yaml_data = yaml.load(yaml_file)
+            self.reacfile = self.yaml_data['reacfile']
+
+        self.reactive_case = ReactivePressureTrace(self.reacfile)
         """Associated reactive experiment."""
 
         self.fig = plt.figure('Non-Reactive Comparison')
