@@ -33,15 +33,15 @@ class NonReactiveExperiments(object):
 
         self.fig = plt.figure('Non-Reactive Comparison')
         """The figure for plotting."""
-        self.ax = self.fig.add_subplot(111)
+        self.ax = self.fig.add_subplot(1, 1, 1)
         """The axes for plotting."""
         self.ax.plot(self.reactive_case.ztim, self.reactive_case.pressure)
-        m = plt.get_current_fig_manager()
-        m.window.showMaximized()
 
         self.nonreactive_cases = {}
         """Dictionary of the cases of non-reactive experiments."""
         self.add_nonreactive_experiment()
+        m = plt.get_current_fig_manager()
+        m.window.showMaximized()
 
     def add_nonreactive_experiment(self):
         """
