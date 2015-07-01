@@ -59,13 +59,14 @@ class VolumeTraceBuilder(object):
         """
         with open('volume-trace.yaml') as yaml_file:
             self.yaml_data = yaml.load(yaml_file)
-            self.nonrfile = self.yaml_data['nonrfile']
-            self.reacfile = self.yaml_data['reacfile']
-            self.comptime = self.yaml_data['comptime']
-            self.nonrend = self.yaml_data['nonrend']
-            self.reacend = self.yaml_data['reacend']
-            self.reacoffs = self.yaml_data.get('reacoffs', 0)
-            self.nonroffs = self.yaml_data.get('nonroffs', 0)
+
+        self.nonrfile = self.yaml_data['nonrfile']
+        self.reacfile = self.yaml_data['reacfile']
+        self.comptime = self.yaml_data['comptime']
+        self.nonrend = self.yaml_data['nonrend']
+        self.reacend = self.yaml_data['reacend']
+        self.reacoffs = self.yaml_data.get('reacoffs', 0)
+        self.nonroffs = self.yaml_data.get('nonroffs', 0)
 
     def create_volume_trace(self):
         """
