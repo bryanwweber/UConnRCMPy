@@ -26,8 +26,16 @@ __pdoc__ = {
 }
 
 
-class PressureTrace(object):
+class ExperimentalPressureTrace(object):
     """Generic class for pressure traces"""
+
+    @property
+    def frequency(self):
+        return self._frequency
+
+    @frequency.setter
+    def frequency(self, value):
+        self._frequency = value
 
     def file_loader(self, filename):
         """
@@ -49,6 +57,29 @@ class PressureTrace(object):
         """
         window = np.ones(span)/span
         return np.convolve(data, window, 'same')
+    def process_pressure_trace(self, filename):
+        self.file_loader(filename)
+
+        initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
+        self.smoothed_voltage = self.smoothing(self.voltage[:, 1])
+        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
+        """The raw pressure trace processed from the voltage trace."""
+        self.pres += initial_pressure_in_bar
+        self.time = self.voltage[:, 0]
+        """The time loaded from the voltage trace."""
+
+        self.frequency = np.rint(1/self.time[1])
+        """The sampling frequency of the pressure trace."""
+
+        self.pressure = self.smoothing(self.pres)
+        """The smoothed pressure trace."""
+        self.find_EOC()
+        self.dpdt = self.derivative(self.pressure, self.time)
+        """The raw derivative calculated from the smoothed pressure."""
+        self.smdp = self.smoothing(self.dpdt, span=5)
+        """The smoothed derivative."""
+        self.ztim = self.time - self.time[self.p_EOC_idx]
+        """A time array where the zero point is at the EOC."""
 
     def pressure_fit(self):
         """
@@ -96,7 +127,7 @@ class PressureTrace(object):
         return ddt
 
 
-class PressureFromTemperature(PressureTrace):
+class PressureFromTemperature(ExperimentalPressureTrace):
     """Class for pressure trace computed from a temperature trace."""
 
     def __init__(self, temperature, P_in):
@@ -115,7 +146,7 @@ class PressureFromTemperature(PressureTrace):
         #     gas.ST = initial_entropy, temperature[i]
 
 
-class PressureFromVolume(PressureTrace):
+class PressureFromVolume(ExperimentalPressureTrace):
     """ Class for pressure trace computed from a volume trace."""
 
     def __init__(self, volume, p_initial, T_initial=None):
@@ -143,16 +174,8 @@ class PressureFromVolume(PressureTrace):
             self.pressure[i] = gas.P/one_bar_in_pa
 
 
-class ReactivePressureTrace(PressureTrace, ParsedFilename):
+class ReactivePressureTrace(ExperimentalPressureTrace, ParsedFilename):
     """Class for reactive pressure traces."""
-
-    @property
-    def frequency(self):
-        return self._frequency
-
-    @frequency.setter
-    def frequency(self, value):
-        self._frequency = value
 
     def __init__(self, filename=None):
         """
@@ -164,40 +187,9 @@ class ReactivePressureTrace(PressureTrace, ParsedFilename):
         super().__init__(filename)
         self.process_pressure_trace(filename)
 
-    def process_pressure_trace(self, filename):
-        self.file_loader(filename)
 
-        initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
-        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
-        """The raw pressure trace processed from the voltage trace."""
-        self.pres += initial_pressure_in_bar
-        self.time = self.voltage[:, 0]
-        """The time loaded from the voltage trace."""
-
-        self.frequency = np.rint(1/self.time[1])
-        """The sampling frequency of the pressure trace."""
-
-        self.pressure = self.smoothing(self.pres)
-        """The smoothed pressure trace."""
-        self.find_EOC()
-        self.dpdt = self.derivative(self.pressure, self.time)
-        """The raw derivative calculated from the smoothed pressure."""
-        self.smdp = self.smoothing(self.dpdt, span=5)
-        """The smoothed derivative."""
-        self.ztim = self.time - self.time[self.p_EOC_idx]
-        """A time array where the zero point is at the EOC."""
-
-
-class NonReactivePressureTrace(PressureTrace, ParsedFilename):
+class NonReactivePressureTrace(ExperimentalPressureTrace, ParsedFilename):
     """Class for non-reactive pressure traces."""
-
-    @property
-    def frequency(self):
-        return self._frequency
-
-    @frequency.setter
-    def frequency(self, value):
-        self._frequency = value
 
     def __init__(self, filename=None):
         """
@@ -210,28 +202,8 @@ class NonReactivePressureTrace(PressureTrace, ParsedFilename):
         super().__init__(filename)
         self.process_pressure_trace(filename)
 
-    def process_pressure_trace(self, filename):
-        self.file_loader(filename)
 
-        initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
-        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
-        """The raw pressure trace processed from the voltage trace."""
-        self.pres += initial_pressure_in_bar
-        self.time = self.voltage[:, 0]
-        """The time loaded from the voltage trace."""
-
-        self.pressure = self.smoothing(self.pres)
-        """The smoothed pressure trace."""
-        self.find_EOC()
-
-        self.ztim = self.time - self.time[self.p_EOC_idx]
-        """The time array where the zero point is at the EOC."""
-
-        self.frequency = np.rint(1/self.time[1])
-        """The sampling frequency of the pressure trace."""
-
-
-class SimulatedPressureTrace(PressureTrace):
+class SimulatedPressureTrace(object):
     """Class for pressure traces derived from simulations."""
 
     def __init__(self, filename='export.csv', data=None):
@@ -282,7 +254,7 @@ class SimulatedPressureTrace(PressureTrace):
         return ddt
 
 
-for k in PressureTrace.__dict__.keys():
+for k in ExperimentalPressureTrace.__dict__.keys():
     if k != '__init__':
         __pdoc__['PressureFromTemperature.{}'.format(k)] = None
         __pdoc__['PressureFromVolume.{}'.format(k)] = None
