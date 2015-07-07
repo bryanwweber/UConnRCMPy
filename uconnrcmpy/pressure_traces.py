@@ -56,7 +56,11 @@ class ExperimentalPressureTrace(object):
         Smooth the input `data` using a moving average of width `span`.
         """
         window = np.ones(span)/span
-        return np.convolve(data, window, 'same')
+        output = np.convolve(data, window, 'same')
+        midpoint = (span - 1)/2
+        output[:midpoint] = output[midpoint]
+        return output
+
     def process_pressure_trace(self, filename):
         self.file_loader(filename)
 
