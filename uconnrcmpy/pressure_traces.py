@@ -39,16 +39,16 @@ class ExperimentalPressureTrace(object):
 
     def file_loader(self, filename):
         """
-        Load a voltage trace from a text file. Check if the file exists
+        Load a signal trace from a text file. Check if the file exists
         and if not, try again after adding the proper file extension.
         """
-        self.voltage = None
+        self.signal = None
         try:
-            self.voltage = np.genfromtxt(filename)
+            self.signal = np.genfromtxt(filename)
         except OSError:
             filename += '.txt'
-            self.voltage = np.genfromtxt(filename)
-        if self.voltage is None:
+            self.signal = np.genfromtxt(filename)
+        if self.signal is None:
             raise OSError('Data file not found')
 
     def smoothing(self, data, span=21):
@@ -64,6 +64,7 @@ class ExperimentalPressureTrace(object):
     def process_pressure_trace(self, filename):
         self.file_loader(filename)
 
+        self.time = self.signal[:, 0]
         initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
         self.smoothed_voltage = self.smoothing(self.voltage[:, 1])
         self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
