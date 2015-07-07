@@ -65,19 +65,18 @@ class ExperimentalPressureTrace(object):
         self.file_loader(filename)
 
         self.time = self.signal[:, 0]
+        """The time loaded from the signal trace."""
+        self.smoothed_voltage = self.smoothing(self.signal[:, 1])
+
         initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
-        self.smoothed_voltage = self.smoothing(self.voltage[:, 1])
-        self.pres = (self.voltage[:, 1] - self.voltage[0, 1])*self.factor
-        """The raw pressure trace processed from the voltage trace."""
-        self.pres += initial_pressure_in_bar
-        self.time = self.voltage[:, 0]
-        """The time loaded from the voltage trace."""
+        self.pressure = (self.smoothed_voltage - self.smoothed_voltage[0])
+        """The smoothed pressure trace."""
+        self.pressure *= self.factor
+        self.pressure += initial_pressure_in_bar
 
         self.frequency = np.rint(1/self.time[1])
         """The sampling frequency of the pressure trace."""
 
-        self.pressure = self.smoothing(self.pres)
-        """The smoothed pressure trace."""
         self.find_EOC()
         self.dpdt = self.derivative(self.pressure, self.time)
         """The raw derivative calculated from the smoothed pressure."""

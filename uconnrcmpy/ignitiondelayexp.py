@@ -94,6 +94,5 @@ class ExperimentalIgnitionDelay(ReactivePressureTrace):
         ax2 = fig2.add_subplot(1, 1, 1)
         ax2.plot(self.ztim, self.pressure)
         ax2.plot(self.ztim, self.smdp/1000)
-        ax2.plot(self.ztim, self.pres)
         m = plt.get_current_fig_manager()
         m.window.showMaximized()
