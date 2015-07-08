@@ -2,6 +2,7 @@
 Nonreactive pressure trace processor
 """
 # System imports
+from pathlib import Path
 
 # Third-party imports
 import numpy as np
@@ -26,7 +27,7 @@ class NonReactiveExperiments(object):
         """
         with open('volume-trace.yaml') as yaml_file:
             self.yaml_data = yaml.load(yaml_file)
-            self.reacfile = self.yaml_data['reacfile']
+            self.reacfile = Path(self.yaml_data['reacfile'])
 
         self.reactive_case = ReactivePressureTrace(self.reacfile)
         """Associated reactive experiment."""

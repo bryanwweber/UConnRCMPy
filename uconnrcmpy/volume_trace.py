@@ -2,6 +2,7 @@
 Create a volume trace for a given condition
 """
 # System imports
+from pathlib import Path
 
 # Third-party imports
 import numpy as np
@@ -60,8 +61,8 @@ class VolumeTraceBuilder(object):
         with open('volume-trace.yaml') as yaml_file:
             self.yaml_data = yaml.load(yaml_file)
 
-        self.nonrfile = self.yaml_data['nonrfile']
-        self.reacfile = self.yaml_data['reacfile']
+        self.nonrfile = Path(self.yaml_data['nonrfile'])
+        self.reacfile = Path(self.yaml_data['reacfile'])
         self.comptime = self.yaml_data['comptime']
         self.nonrend = self.yaml_data['nonrend']
         self.reacend = self.yaml_data['reacend']
