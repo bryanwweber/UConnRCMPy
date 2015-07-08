@@ -16,7 +16,7 @@ class ParsedFilename(object):
     def __init__(self, filename):
         """
         Given a filename of the form
-        `[NR_]XX_in_YY_mm_ZZZK-AAAAt-BBBx-Mon-DD-YY-Time.txt,`
+        `[NR_]XX_in_YY_mm_ZZZK-AAAAt-BBBx-DD-Mon-YY-Time.txt,`
         parse the filename for the experimental conditions.
 
         * `[NR_] = Optional non-reactive indicator
@@ -25,7 +25,7 @@ class ParsedFilename(object):
         * `ZZZ` = Initial temperature in Kelvin
         * `AAAA` = Initial pressure in Torr
         * `BBB` = Multiplication factor set on the charge amplifier
-        * `Mon-DD-YY-Time` = Month, day, year, and time of experiment
+        * `DD-Mon-YY-Time` = Day, Month, year, and time of experiment
         """
         self.fname = filename.lstrip('NR_')
         """Processed filename."""
