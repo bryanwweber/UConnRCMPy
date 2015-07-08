@@ -3,6 +3,7 @@ Classes related to pressure traces.
 """
 
 # System imports
+from pathlib import Path
 
 # Third party imports
 import numpy as np
@@ -37,19 +38,11 @@ class ExperimentalPressureTrace(object):
     def frequency(self, value):
         self._frequency = value
 
-    def file_loader(self, filename):
+    def file_loader(self):
         """
-        Load a signal trace from a text file. Check if the file exists
-        and if not, try again after adding the proper file extension.
+        Load a signal trace from a text file.
         """
-        self.signal = None
-        try:
-            self.signal = np.genfromtxt(filename)
-        except OSError:
-            filename += '.txt'
-            self.signal = np.genfromtxt(filename)
-        if self.signal is None:
-            raise OSError('Data file not found')
+        self.signal = np.genfromtxt(str(self.file_path))
 
     def smoothing(self, data, span=21):
         """
@@ -61,8 +54,8 @@ class ExperimentalPressureTrace(object):
         output[:midpoint] = output[midpoint]
         return output
 
-    def process_pressure_trace(self, filename):
-        self.file_loader(filename)
+    def process_pressure_trace(self):
+        self.file_loader()
 
         self.time = self.signal[:, 0]
         """The time loaded from the signal trace."""
@@ -181,30 +174,44 @@ class PressureFromVolume(ExperimentalPressureTrace):
 class ReactivePressureTrace(ExperimentalPressureTrace, ParsedFilename):
     """Class for reactive pressure traces."""
 
-    def __init__(self, filename=None):
+    def __init__(self, file_path=None):
         """
         Load and process a reactive pressure trace from the data file.
         """
-        if filename is None:
-            filename = input('Filename: ')
+        if file_path is None:
+            fname = input('Filename: ')
+            try:
+                self.file_path = Path(fname).resolve()
+            except FileNotFoundError:
+                fname += '.txt'
+                self.file_path = Path(fname).resolve()
+        else:
+            self.file_path = file_path.resolve()
 
-        super().__init__(filename)
-        self.process_pressure_trace(filename)
+        super().__init__(self.file_path)
+        self.process_pressure_trace()
 
 
 class NonReactivePressureTrace(ExperimentalPressureTrace, ParsedFilename):
     """Class for non-reactive pressure traces."""
 
-    def __init__(self, filename=None):
+    def __init__(self, file_path=None):
         """
         Load and process a non-reactive pressure trace from the data
         file.
         """
-        if filename is None:
-            filename = input('Non-reactive filename: ')
+        if file_path is None:
+            fname = input('Non-reactive filename: ')
+            try:
+                self.file_path = Path(fname).resolve()
+            except FileNotFoundError:
+                fname += '.txt'
+                self.file_path = Path(fname).resolve()
+        else:
+            self.file_path = file_path.resolve()
 
-        super().__init__(filename)
-        self.process_pressure_trace(filename)
+        super().__init__(self.file_path)
+        self.process_pressure_trace()
 
 
 class SimulatedPressureTrace(object):

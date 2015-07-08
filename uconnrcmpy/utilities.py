@@ -13,7 +13,7 @@ class ParsedFilename(object):
     Parse a filename for experimental conditions.
     """
 
-    def __init__(self, filename):
+    def __init__(self, file_path):
         """
         Given a filename of the form
         `[NR_]XX_in_YY_mm_ZZZK-AAAAt-BBBx-DD-Mon-YY-Time.txt,`
@@ -27,10 +27,10 @@ class ParsedFilename(object):
         * `BBB` = Multiplication factor set on the charge amplifier
         * `DD-Mon-YY-Time` = Day, Month, year, and time of experiment
         """
-        self.fname = filename.lstrip('NR_')
+        fname = file_path.name.lstrip('NR_')
         """Processed filename."""
-        self.fname = self.fname.rstrip('.txt')
-        self.name_split = self.fname.split('_')
+        fname = fname.rstrip('.txt')
+        self.name_split = fname.split('_')
         """Split list of filename parts."""
         self.spacers = int(self.name_split[0])/10
         """Inches of spacers."""
