@@ -3,9 +3,6 @@ from .pressure_traces import ReactivePressureTrace
 from .utilities import copy
 import os
 
-pth = os.listdir('.')
-result = []
-
 
 class LoopIgnitionDelay(ExperimentalIgnitionDelay):
 
@@ -17,6 +14,9 @@ class LoopIgnitionDelay(ExperimentalIgnitionDelay):
 
 
 def main():
+    pth = os.listdir('.')
+    result = []
+
     for filename in pth:
         if filename[:1].isdigit():
             print(filename)
