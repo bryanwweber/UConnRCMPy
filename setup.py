@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='UConnRCMPy',
-    version='1.0.4',
+    version='1.0.5',
     description='A package to process RCM data',
     url='https://github.com/bryanwweber/UConnRCMPy',
     author='Bryan W. Weber',
