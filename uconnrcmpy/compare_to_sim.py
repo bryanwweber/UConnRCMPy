@@ -20,18 +20,20 @@ from .utilities import copy
 class Simulation(object):
     """Class for simulations of experiments."""
 
-    def __init__(self, initial_temperature, initial_pressure, is_reactive):
+    def __init__(self, initial_temperature, initial_pressure, is_reactive,
+                 end_temp=2500., end_time=0.2):
         self.keywords = {}
         self.time = []
         self.temp = []
         self.pres = []
         self.volm = []
-        self.load_yaml()
+        self.initial_pressure = initial_pressure
+        self.initial_temperature = initial_temperature
         self.is_reactive = is_reactive
-        self.setup_simulation(initial_temperature,
-                              initial_pressure,
-                              self.is_reactive,
-                              )
+        self.end_temp = end_temp
+        self.end_time = end_time
+        self.load_yaml()
+        self.setup_simulation()
         self.run_simulation()
         self.process_simulation()
 
@@ -55,14 +57,10 @@ class Simulation(object):
         self.pres.append(self.gas.P/1E5)
         self.volm.append(self.reac.volume)
 
-    def setup_simulation(self,
-                         initial_temperature,
-                         initial_pressure,
-                         is_reactive=True,
-                         ):
+    def setup_simulation(self):
         self.gas = ct.Solution('species.cti')
-        self.gas.TP = initial_temperature, initial_pressure
-        if not is_reactive:
+        self.gas.TP = self.initial_temperature, self.initial_pressure
+        if not self.is_reactive:
             self.gas.set_multiplier(0)
         self.reac = ct.IdealGasReactor(self.gas)
         env = ct.Reservoir(ct.Solution('air.xml'))
@@ -72,8 +70,8 @@ class Simulation(object):
         self.netw.set_max_time_step(self.keywords['vproTime'][1])
         self.append_to_data_arrays()
 
-    def run_simulation(self, end_Temp=2500, end_time=0.2):
-        while self.reac.T < end_Temp and self.netw.time < end_time:
+    def run_simulation(self):
+        while self.reac.T < self.end_temp and self.netw.time < self.end_time:
             self.netw.step(1)
             self.append_to_data_arrays()
 
@@ -106,7 +104,8 @@ class CompareToSimulation():
     simulated ignition delay or the EOC temperature to the clipboard.
     """
 
-    def __init__(self, run_reactive=False, run_nonreactive=True):
+    def __init__(self, run_reactive=False, run_nonreactive=True,
+                 end_temp=2500, end_time=0.2):
 
         # Load the experimental pressure trace. Try the glob function first
         # and if it fails, ask the user for help.
@@ -122,23 +121,30 @@ class CompareToSimulation():
         self.initial_temperature = int(flist[0].split('_')[5].strip('K'))
 
         if run_nonreactive:
-            self.nonreactive_sim = self.run_simulation(is_reactive=False)
+            self.nonreactive_sim = self.run_simulation(is_reactive=False,
+                                                       end_temp=end_temp,
+                                                       end_time=end_time)
         else:
             self.nonreactive_sim = None
 
         if run_reactive:
-            self.reactive_sim = self.run_simulation(is_reactive=True)
+            self.reactive_sim = self.run_simulation(is_reactive=True,
+                                                    end_temp=end_temp,
+                                                    end_time=end_time)
         else:
             self.reactive_sim = None
 
         self.plot_traces()
         self.process_traces()
 
-    def run_simulation(self, is_reactive):
-        return Simulation(self.initial_temperature,
-                          self.initial_pressure,
-                          is_reactive,
-                          )
+    def run_simulation(self, is_reactive, end_temp, end_time):
+        return Simulation(
+          self.initial_temperature,
+          self.initial_pressure,
+          is_reactive,
+          end_temp,
+          end_time,
+          )
 
     def process_choice(type):
         choice = input('y or n')
@@ -203,9 +209,12 @@ class CompareToSimulation():
 
         if self.nonreactive_sim is not None:
             T_EOC = np.amax(self.nonreactive_sim.temp)
-            print_str += '{:.0f}\t'.format(T_EOC)
-            copy_str += '{}\t\t\t\t'.format(T_EOC)
+            print_str += '{:.0f}'.format(T_EOC)
+            copy_str += '{}'.format(T_EOC)
         if self.reactive_sim is not None:
+            if self.nonreactive_sim is not None:
+                print_str += '\t'
+                copy_str += '\t\t\t\t'
             ignition_idx = np.argmax(self.reactive_sim.pressure_trace.dpdt)
             ignition_delay = (
                 self.reactive_sim.time[ignition_idx]*1000 -
