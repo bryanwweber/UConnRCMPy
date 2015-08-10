@@ -34,7 +34,11 @@ class ExperimentalIgnitionDelay(ReactivePressureTrace):
         # of the ReactivePressureTrace class we're inheriting from
         super().__init__(filename)
         self.calculate_ignition_delay()
-        self.calculate_EOC_temperature()
+        try:
+            self.calculate_EOC_temperature()
+        except RuntimeError:
+            self.T_EOC = 0
+            print('Exception in computing the temperature at EOC')
         self.plot_figures()
 
         # Copy the relevant information to the clipboard for pasting
