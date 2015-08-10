@@ -54,7 +54,7 @@ class ExperimentalIgnitionDelay(ReactivePressureTrace):
         # ignition is weak, the peak in dP/dt from the compression
         # stroke is not treated as the ignition event. Define points
         # to start looking for and stop looking for ignition.
-        offset_points = 0.005*self.frequency
+        offset_points = 0.002*self.frequency
         start_point = self.p_EOC_idx + offset_points
         end_point = self.p_EOC_idx + offset_points + 100000
 
