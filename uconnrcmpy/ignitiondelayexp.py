@@ -73,7 +73,8 @@ class ExperimentalIgnitionDelay(ReactivePressureTrace):
         compression and the point of ignition. It is stored in units of
         milliseconds.
         """
-        self.first_stage = 0.0
+        self.idx_of_first_stage = np.argmax(self.smdp[start_point:(start_point + self.idx_of_ig - 4*offset_points)])
+        self.first_stage = self.time[self.idx_of_first_stage + offset_points]*1000
         """The first stage ignition delay."""
 
     def calculate_EOC_temperature(self):
