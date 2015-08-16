@@ -55,6 +55,16 @@ class ExperimentalPressureTrace(object):
         output[:midpoint] = output[midpoint]
         return output
 
+    def filtering(self, data, cutoff_hz=10000):
+        nyquist_freq = self.frequency/2.0
+        n_taps = 2**14
+        low_pass_filter = sig.firwin(
+            n_taps,
+            cutoff_hz/nyquist_freq,
+            window='blackman',
+        )
+        return sig.fftconvolve(data, low_pass_filter, mode='same')
+
     def process_pressure_trace(self):
         self.file_loader()
 
