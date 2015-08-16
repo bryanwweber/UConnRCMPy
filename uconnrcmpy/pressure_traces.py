@@ -8,6 +8,7 @@ from pathlib import Path
 # Third party imports
 import numpy as np
 import cantera as ct
+from scipy import signal as sig
 
 # Local imports
 from .constants import (cantera_version,
@@ -49,7 +50,7 @@ class ExperimentalPressureTrace(object):
         Smooth the input `data` using a moving average of width `span`.
         """
         window = np.ones(span)/span
-        output = np.convolve(data, window, 'same')
+        output = sig.fftconvolve(data, window, mode='same')
         midpoint = (span - 1)/2
         output[:midpoint] = output[midpoint]
         return output
