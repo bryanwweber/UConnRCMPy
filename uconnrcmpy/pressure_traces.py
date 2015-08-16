@@ -88,7 +88,7 @@ class ExperimentalPressureTrace(object):
         self.find_EOC()
         self.dpdt = self.derivative(self.pressure, self.time)
         """The raw derivative calculated from the smoothed pressure."""
-        self.smdp = self.smoothing(self.dpdt, span=5)
+        self.smdp = self.smoothing(self.dpdt, span=151)
         """The smoothed derivative."""
         self.ztim = self.time - self.time[self.p_EOC_idx]
         """A time array where the zero point is at the EOC."""
