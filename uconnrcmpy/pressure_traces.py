@@ -56,6 +56,9 @@ class ExperimentalPressureTrace(object):
         return output
 
     def filtering(self, data, cutoff_hz=10000):
+        """
+        Filter the input `data` using a low-pass filter with cutoff at 10 kHz
+        """
         nyquist_freq = self.frequency/2.0
         n_taps = 2**14
         low_pass_filter = sig.firwin(
@@ -70,16 +73,17 @@ class ExperimentalPressureTrace(object):
 
         self.time = self.signal[:, 0]
         """The time loaded from the signal trace."""
-        self.smoothed_voltage = self.smoothing(self.signal[:, 1])
+        self.frequency = np.rint(1/self.time[1])
+        """The sampling frequency of the pressure trace."""
+
+        self.filtered_voltage = self.filtering(self.signal[:, 1])
+        self.smoothed_voltage = self.smoothing(self.filtered_voltage)
 
         initial_pressure_in_bar = self.pin*one_atm_in_bar/one_atm_in_torr
         self.pressure = (self.smoothed_voltage - self.smoothed_voltage[0])
         """The smoothed pressure trace."""
         self.pressure *= self.factor
         self.pressure += initial_pressure_in_bar
-
-        self.frequency = np.rint(1/self.time[1])
-        """The sampling frequency of the pressure trace."""
 
         self.find_EOC()
         self.dpdt = self.derivative(self.pressure, self.time)
