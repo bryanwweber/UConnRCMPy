@@ -79,7 +79,7 @@ class VolumeTraceBuilder(object):
         """The reactive pressure trace from the experiment."""
         self.nonreactive_trace = NonReactivePressureTrace(self.nonrfile)
         """The non-reactive pressure trace from the experiment."""
-        self.reactive_trace.pressure_fit()
+        self.reactive_trace.pressure_fit(comptime=self.comptime/1000)
         self.reactive_line = np.polyval(self.reactive_trace.linear_fit,
                                         self.reactive_trace.time)
         """

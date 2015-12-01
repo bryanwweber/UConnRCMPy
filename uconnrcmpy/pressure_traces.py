@@ -93,12 +93,12 @@ class ExperimentalPressureTrace(object):
         self.ztim = self.time - self.time[self.p_EOC_idx]
         """A time array where the zero point is at the EOC."""
 
-    def pressure_fit(self):
+    def pressure_fit(self, comptime=0.08):
         """
         Fit a line to the part of the pressure trace before compression
         starts.
         """
-        beg_compress = np.floor(self.p_EOC_idx - 0.08*self.frequency)
+        beg_compress = np.floor(self.p_EOC_idx - comptime*self.frequency)
         time = np.linspace(0, (beg_compress - 1)/self.frequency, beg_compress)
         fit_pres = self.pressure[:beg_compress]
         fit_pres[0:9] = fit_pres[10]
