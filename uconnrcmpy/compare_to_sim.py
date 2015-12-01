@@ -15,6 +15,7 @@ import cantera as ct
 # Local imports
 from .pressure_traces import SimulatedPressureTrace
 from .utilities import copy
+from .constants import cantera_version
 
 
 class Simulation(object):
@@ -72,7 +73,10 @@ class Simulation(object):
 
     def run_simulation(self):
         while self.reac.T < self.end_temp and self.netw.time < self.end_time:
-            self.netw.step(1)
+            if cantera_version[1] > 2:
+                self.netw.step()
+            else:
+                self.netw.step(1)
             self.append_to_data_arrays()
 
     def process_simulation(self):
