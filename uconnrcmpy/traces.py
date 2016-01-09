@@ -214,3 +214,15 @@ class VolumeFromPressure(object):
         for i, p in enumerate(pressure):
             gas.SP = initial_entropy, p*one_bar_in_pa
             self.volume[i] = v_initial*initial_density/gas.density
+
+
+class TemperatureFromPressure(object):
+
+    def __init__(self, pressure, T_in):
+        gas = ct.Solution('species.cti')
+        gas.TP = T_in, pressure[0]*one_bar_in_pa
+        initial_entropy = gas.entropy_mass
+        self.temperature = np.zeros((len(pressure)))
+        for i, p in enumerate(pressure):
+            gas.SP = initial_entropy, p*one_bar_in_pa
+            self.temperature[i] = gas.T
