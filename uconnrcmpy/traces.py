@@ -16,22 +16,63 @@ from .constants import (cantera_version,
 
 
 class VoltageTrace(object):
-    """Class for the voltage trace of an experiment"""
-
     def __init__(self, file_path):
+        """Voltage signal from a single experiment.
+
+        Parameters
+        ----------
+        file_path : Path
+            Path object associated with the particular experiment
+
+        Attributes
+        ----------
+        signal : ndarray
+            2-D array containing the raw signal from the experimental
+            text file. First column is the time, second column is the
+            voltage.
+        time : ndarray
+            The time loaded from the signal trace
+        frequency : int
+            The sampling frequency of the pressure trace
+        filtered_voltage : ndarray
+            The voltage trace after filtering
+        smoothed_voltage : ndarray
+            The voltage trace after filtering and smoothing
+        """
         self.signal = np.genfromtxt(str(self.file_path))
 
         self.time = self.signal[:, 0]
-        """The time loaded from the signal trace."""
         self.frequency = np.rint(1/self.time[1])
-        """The sampling frequency of the pressure trace."""
 
         self.filtered_voltage = self.filtering(self.signal[:, 1])
         self.smoothed_voltage = self.smoothing(self.filtered_voltage)
 
     def smoothing(self, data, span=21):
-        """
-        Smooth the input ``data`` using a moving average of width ``span``.
+        """Smooth the input using a moving average.
+
+        Parameters
+        ----------
+        data : ndarray
+            The data that should be smoothed
+        span : int
+            The width of the moving average. Should be an odd integer.
+            The number of points included in the average on either side
+            of the current point is given by ``(span-1)/2``.
+
+        Returns
+        -------
+        ndarray
+            Returns an ndarray of the same length as the input data.
+
+        Notes
+        -----
+        This function effects the smoothing by convolving the input array
+        with a uniform window array whose values are equal to ``1.0/span``
+        and whose length is equal to ``span``. The ``fftconvolve`` method
+        from SciPy is used for speed. Since we desire an output array of
+        the same length as the input, the first ``(span-1)/2`` points will
+        have improper values, so these are set equal to the value of the
+        average at the point ``(span-1)/2``.
         """
         window = np.ones(span)/span
         output = sig.fftconvolve(data, window, mode='same')
@@ -40,8 +81,28 @@ class VoltageTrace(object):
         return output
 
     def filtering(self, data, cutoff_hz=10000):
-        """
-        Filter the input ```data``` using a low-pass filter with cutoff at 10 kHz
+        """Filter the input using a low-pass filter.
+
+        Parameters
+        ----------
+        data : ndarray
+            The data that should be filtered
+        cutoff_hz : int
+            The cutoff frequency for the filter, in Hz. The default
+            value was chosen empirically for a particular set of data
+            and may need to be adjusted.
+
+        Returns
+        -------
+        ndarray
+            Returns an ndarray of the same length as the input data
+
+        Notes
+        -----
+        Creates a low-pass filter using the window construction funtion
+        ``firwin`` from the ``scipy.signals`` module. Applies the filter
+        using the ``fftconvolve`` function from the same module for speed.
+        Defaults to the ``blackman`` window for the filter.
         """
         nyquist_freq = self.frequency/2.0
         n_taps = 2**14
