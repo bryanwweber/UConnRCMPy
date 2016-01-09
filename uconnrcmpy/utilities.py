@@ -3,9 +3,13 @@ Utilities for UConnRCMPy
 """
 # System imports
 from datetime import datetime
+import platform
 
 # Third Party imports
-import win32clipboard
+if platform.system() == 'Windows':
+    import win32clipboard
+elif platform.system() == 'Darwin':
+    import subprocess
 
 
 def parse_file_name(file_path):
@@ -62,8 +66,13 @@ def parse_file_name(file_path):
 
 
 def copy(text):
-    """Copy the input `text` to the Windows clipboard."""
-    win32clipboard.OpenClipboard()
-    win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardText(text)
-    win32clipboard.CloseClipboard()
+    """Copy the input ``text`` to the system clipboard."""
+    if platform.system() == 'Windows':
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.SetClipboardText(text)
+        win32clipboard.CloseClipboard()
+    elif platform.system() == 'Darwin':
+        process = subprocess.Popen(
+            'pbcopy', env={'LANG': 'en_US.UTF-8'}, stdin=subprocess.PIPE)
+        process.communicate(text.encode('utf-8'))
