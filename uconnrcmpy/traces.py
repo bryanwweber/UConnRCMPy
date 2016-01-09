@@ -31,7 +31,7 @@ class VoltageTrace(object):
 
     def smoothing(self, data, span=21):
         """
-        Smooth the input `data` using a moving average of width `span`.
+        Smooth the input ``data`` using a moving average of width ``span``.
         """
         window = np.ones(span)/span
         output = sig.fftconvolve(data, window, mode='same')
@@ -41,7 +41,7 @@ class VoltageTrace(object):
 
     def filtering(self, data, cutoff_hz=10000):
         """
-        Filter the input `data` using a low-pass filter with cutoff at 10 kHz
+        Filter the input ```data``` using a low-pass filter with cutoff at 10 kHz
         """
         nyquist_freq = self.frequency/2.0
         n_taps = 2**14
@@ -105,8 +105,8 @@ class ExperimentalPressureTrace(object):
 
     def calculate_derivative(self, dep_var, indep_var):
         """
-        Calculate the derivative of the `dep_var` with respect to the
-        `indep_var` using a second order forward difference. Set any
+        Calculate the derivative of the ```dep_var``` with respect to the
+        ```indep_var``` using a second order forward difference. Set any
         points where the derivative is infinite to zero.
         """
         m = len(dep_var)
@@ -125,11 +125,11 @@ class SimulatedPressureTrace(object):
     def __init__(self, filename='export.csv', data=None):
         """
         Load the pressure trace from the simulation file. The default
-        filename is `export.csv`, which can be overridden by passing
+        filename is ``export.csv``, which can be overridden by passing
         the new filename to the constructor. The data is expected to be
         in csv format with a header row of names. The header for the
-        pressure is expected to be `'Pressure_(bar)'` and the header
-        for the time is expected to be `'Time_(sec)'`.
+        pressure is expected to be ``'Pressure_(bar)'`` and the header
+        for the time is expected to be ``'Time_(sec)'``.
         """
         if data is None:
             self.data = np.genfromtxt(filename, delimiter=',', names=True)
@@ -147,8 +147,8 @@ class SimulatedPressureTrace(object):
 
     def derivative(self, dep_var, indep_var):
         """
-        Calculate the derivative of the `dep_var` with respect to the
-        `indep_var`. The derivative is calculated by computing the
+        Calculate the derivative of the ``dep_var`` with respect to the
+        ``indep_var``. The derivative is calculated by computing the
         first order Lagrange polynomial fit to the point under
         consideration and its nearest neighbors. The Lagrange
         polynomial is used because of the unequal spacing of the
@@ -176,8 +176,8 @@ class PressureFromVolume(object):
     def __init__(self, volume, p_initial, T_initial=None):
         """Create a pressure trace given a volume trace.
 
-        Compute a pressure trace given a `volume` trace. Also requires
-        inputs of initial pressure `p_initial`, and if Cantera is less
+        Compute a pressure trace given a ``volume`` trace. Also requires
+        inputs of initial pressure ``p_initial``, and if Cantera is less
         than version 2.2.1, `T_initial`. If Cantera is greater than or
         equal to version 2.2.1, it is possible to set the state by
         pressure and density, so compute the density as the inverse of
