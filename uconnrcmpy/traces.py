@@ -184,10 +184,10 @@ class PressureFromVolume(object):
         the initial volume.
         """
         gas = ct.Solution('species.cti')
-        if cantera_version[2] >= 1 and cantera_version[1] >= 2:
+        if cantera_version[1] > 2:
             gas.DP = 1.0/volume[0], p_initial*one_bar_in_pa
         elif T_initial is None:
-            raise OSError
+            raise RuntimeError("T_initial must be provided for this version of Cantera.")
         else:
             gas.TP = T_initial, p_initial
         initial_volume = gas.volume_mass
@@ -200,15 +200,17 @@ class PressureFromVolume(object):
 
 class VolumeFromPressure(object):
 
-    def __init__(self, pressure, v_in, T_in):
+    def __init__(self, pressure, v_initial, T_initial=None):
         gas = ct.Solution('species.cti')
         if cantera_version[1] > 2:
-            gas.DP = 1.0/v_in, pressure[0]*one_bar_in_pa
+            gas.DP = 1.0/v_initial, pressure[0]*one_bar_in_pa
+        elif T_initial is None:
+            raise RuntimeError("T_initial must be provided for this version of Cantera.")
         else:
-            gas.TP = T_in, pressure[0]*one_bar_in_pa
+            gas.TP = T_initial, pressure[0]*one_bar_in_pa
         initial_entropy = gas.entropy_mass
         initial_density = gas.density
         self.volume = np.zeros((len(pressure)))
         for i, p in enumerate(pressure):
             gas.SP = initial_entropy, p*one_bar_in_pa
-            self.volume[i] = v_in*initial_density/gas.density
+            self.volume[i] = v_initial*initial_density/gas.density
