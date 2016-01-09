@@ -25,19 +25,19 @@ def parse_file_name(file_path):
 
         where:
 
-        - `[NR_]`: Optional non-reactive indicator
-        - `XX`: inches of spacers
-        - `YY`: millimeters of shims
-        - `ZZZ`: Initial temperature in Kelvin
-        - `AAAA`: Initial pressure in Torr
-        - `BBB`: Multiplication factor set on the charge amplifier
-        - `DD-Mon-YY-Time`: Day, Month, Year, and Time of experiment
+        - ``[NR_]``: Optional non-reactive indicator
+        - ``XX``: inches of spacers
+        - ``YY``: millimeters of shims
+        - ``ZZZ``: Initial temperature in Kelvin
+        - ``AAAA``: Initial pressure in Torr
+        - ``BBB``: Multiplication factor set on the charge amplifier
+        - ``DD-Mon-YY-Time``: Day, Month, Year, and Time of experiment
 
     Returns
     -------
     dict
         Dictionary containing the parameters of the experiment with the
-        following names::
+        following names:
 
         - spacers: Inches of spacers
         - shims: Millimeters of shims
