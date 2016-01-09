@@ -8,7 +8,8 @@ import numpy as np
 
 # Local imports
 from .utilities import parse_file_name
-from .traces import (VoltageTrace,)
+from .traces import (VoltageTrace,
+                     ExperimentalPressureTrace,)
 
 
 class Experiment(object):
@@ -27,3 +28,7 @@ class Experiment(object):
 
         self.experiment_parameters = parse_file_name(self.file_path)
         self.voltage_trace = VoltageTrace(self.file_path)
+        self.pressure_trace = ExperimentalPressureTrace(self.voltage_trace,
+                                                        self.experiment_parameters['pin'],
+                                                        self.experiment_parameters['factor'],
+                                                        )
