@@ -16,29 +16,29 @@ from .constants import (cantera_version,
 
 
 class VoltageTrace(object):
+    """Voltage signal from a single experiment.
+
+    Parameters
+    ----------
+    file_path : pathlib.Path
+        :class:`pathlib.Path` object associated with the particular experiment
+
+    Attributes
+    ----------
+    signal : numpy.ndarray
+        2-D array containing the raw signal from the experimental
+        text file. First column is the time, second column is the
+        voltage.
+    time : numpy.ndarray
+        The time loaded from the signal trace
+    frequency : int
+        The sampling frequency of the pressure trace
+    filtered_voltage : numpy.ndarray
+        The voltage trace after filtering
+    smoothed_voltage : numpy.ndarray
+        The voltage trace after filtering and smoothing
+    """
     def __init__(self, file_path):
-        """Voltage signal from a single experiment.
-
-        Parameters
-        ----------
-        file_path : Path
-            Path object associated with the particular experiment
-
-        Attributes
-        ----------
-        signal : ndarray
-            2-D array containing the raw signal from the experimental
-            text file. First column is the time, second column is the
-            voltage.
-        time : ndarray
-            The time loaded from the signal trace
-        frequency : int
-            The sampling frequency of the pressure trace
-        filtered_voltage : ndarray
-            The voltage trace after filtering
-        smoothed_voltage : ndarray
-            The voltage trace after filtering and smoothing
-        """
         self.signal = np.genfromtxt(str(self.file_path))
 
         self.time = self.signal[:, 0]
@@ -52,17 +52,17 @@ class VoltageTrace(object):
 
         Parameters
         ----------
-        data : ndarray
+        data : numpy.ndarray
             The data that should be smoothed
-        span : int
+        span : int, optional
             The width of the moving average. Should be an odd integer.
             The number of points included in the average on either side
             of the current point is given by ``(span-1)/2``.
 
         Returns
         -------
-        ndarray
-            Returns an ndarray of the same length as the input data.
+        numpy.ndarray
+            Returns an :class:`numpy.ndarray` of the same length as the input data.
 
         Notes
         -----
@@ -85,24 +85,25 @@ class VoltageTrace(object):
 
         Parameters
         ----------
-        data : ndarray
+        data : numpy.ndarray
             The data that should be filtered
-        cutoff_hz : int
+        cutoff_hz : int, optional
             The cutoff frequency for the filter, in Hz. The default
             value was chosen empirically for a particular set of data
             and may need to be adjusted.
 
         Returns
         -------
-        ndarray
+        numpy.ndarray
             Returns an ndarray of the same length as the input data
 
         Notes
         -----
         Creates a low-pass filter using the window construction funtion
-        ``firwin`` from the ``scipy.signals`` module. Applies the filter
-        using the ``fftconvolve`` function from the same module for speed.
-        Defaults to the ``blackman`` window for the filter.
+        :func:`scipy.signal.firwin`. Applies the filter using the
+        :func:`scipy.signal.fftconvolve` function from the same module
+        for speed. Defaults to the :func:`scipy.signal.blackman` window
+        for the filter.
         """
         nyquist_freq = self.frequency/2.0
         n_taps = 2**14
@@ -115,8 +116,43 @@ class VoltageTrace(object):
 
 
 class ExperimentalPressureTrace(object):
-    """Generic class for experimental pressure traces"""
+    """Pressure trace from a single experiment.
 
+    Parameters
+    ----------
+    voltage_trace : VoltageTrace
+        Instance of class containing the voltage trace of the
+        experiment.
+    initial_pressure_in_torr : float
+        The initial pressure of the experiment, in units of Torr
+    factor : float
+        The factor set on the charge amplifier
+
+    Attributes
+    ----------
+    pressure : numpy.ndarray
+        The pressure trace computed from the smoothed and filtered
+        voltage trace
+    time : numpy.ndarray
+        A 1-D array containting the time. Copied from `VoltageTrace.time`
+    frequency : int
+        Integer sampling frequency of the experiment. Copied from
+        `VoltageTrace.frequency`
+    p_EOC : float
+        Pressure at the end of compression
+    EOC_idx : int
+        Integer index in the `pressure` and `time` arrays of the
+        end of compression.
+    derivative : numpy.ndarray
+        1-D array containing the raw derivative computed from the
+        `pressure` trace.
+    smoothed_derivative : numpy.ndarray
+        1-D array containing the smoothed derivative computed from
+        the `derivative`
+    zeroed_time : numpy.ndarray
+        1-D array containing the time, with the zero point set at
+        the end of compression.
+    """
     def __init__(self, voltage_trace, initial_pressure_in_torr, factor):
         initial_pressure_in_bar = initial_pressure_in_torr*one_atm_in_bar/one_atm_in_torr
         self.pressure = (voltage_trace.smoothed_voltage - voltage_trace.smoothed_voltage[0])
@@ -132,9 +168,21 @@ class ExperimentalPressureTrace(object):
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
     def pressure_fit(self, comptime=0.08):
-        """
+        """Fit a line to the pressure trace before EOC.
+
         Fit a line to the part of the pressure trace before compression
         starts.
+
+        Parameters
+        ----------
+        comptime : float, optional
+            Desired compression time, computed from the EOC, to when
+            the pressure fit should start
+
+        Returns
+        -------
+        numpy.polyfit
+            Numpy object containing the parameters of the fit
         """
         beg_compress = np.floor(self.EOC_idx - comptime*self.frequency)
         time = np.linspace(0, (beg_compress - 1)/self.frequency, beg_compress)
@@ -144,11 +192,26 @@ class ExperimentalPressureTrace(object):
         return linear_fit
 
     def find_EOC(self):
-        """
-        Find the end of compression point and pressure of the pressure
-        trace. If the pressure is close to the initial pressure, assume
-        the case is non-reactive and set the pressure at the end of
-        compression and the index to the max pressure point.
+        """Find the index and pressure at the end of compression.
+
+        Returns
+        -------
+        float
+            Pressure at the end of compression
+        int
+            Index of the end of compression, relative to the start
+            of the pressure trace.
+
+        Notes
+        -----
+        The EOC is found by moving backwards from the maximum pressure
+        point and testing the values of the pressure. When the test
+        value becomes less than the previous pressure, we have reached
+        the minimum pressure before ignition, in the case of a reactive
+        experiment. Then, the EOC is the maximum of the pressure before
+        this minimum point. If the pressure at the minimum is close to
+        the initial pressure, assume the case is non-reactive and set
+        the EOC pressure and the index to the max pressure point.
         """
         max_p = np.amax(self.pressure)
         max_p_idx = np.argmax(self.pressure)
@@ -165,10 +228,25 @@ class ExperimentalPressureTrace(object):
         return p_EOC, p_EOC_idx
 
     def calculate_derivative(self, dep_var, indep_var):
-        """
-        Calculate the derivative of the ```dep_var``` with respect to the
-        ```indep_var``` using a second order forward difference. Set any
-        points where the derivative is infinite to zero.
+        """Calculate the derivative.
+
+        Parameters
+        ----------
+        dep_var : numpy.ndarray
+            Dependent variable (e.g., the pressure)
+        indep_var : numpy.ndarray
+            Independent variable (e.g., the time)
+
+        Returns
+        -------
+        numpy.ndarray
+            1-D array containing the derivative
+
+        Notes
+        -----
+        The derivative is calculated by a second-order forward method
+        and any places where the derivative is infinite are set to
+        zero.
         """
         m = len(dep_var)
         ddt = np.zeros(m)
@@ -181,39 +259,70 @@ class ExperimentalPressureTrace(object):
 
 
 class SimulatedPressureTrace(object):
-    """Class for pressure traces derived from simulations."""
+    """The pressure trace from a simulation.
+
+    Parameters
+    ----------
+    filename : str, optional
+        The filename to load the data from.
+    data : numpy.recarray, optional
+        The array to load the data from.
+
+    Attributes
+    ----------
+    data : numpy.recarray
+        The data as loaded from the file or the input array
+    pres : numpy.ndarray
+        The pressure
+    time : numpy.ndarray
+        The time
+    dpdt : numpy.ndarray
+        The derivative
+
+    Notes
+    -----
+    By default, the pressure trace is loaded from the file with the
+    name ``export.csv``. If a :class:`numpy.recarray` is passed to the
+    ``data`` argument, it will be used instead of loading from a file.
+    The header in the csv file, or the names of the columns in the
+    record array are expected to be in the format
+
+    * ``Pressure_(bar)`` for the pressure
+    * ``Time_(sec)`` for the time
+    """
 
     def __init__(self, filename='export.csv', data=None):
-        """
-        Load the pressure trace from the simulation file. The default
-        filename is ``export.csv``, which can be overridden by passing
-        the new filename to the constructor. The data is expected to be
-        in csv format with a header row of names. The header for the
-        pressure is expected to be ``'Pressure_(bar)'`` and the header
-        for the time is expected to be ``'Time_(sec)'``.
-        """
         if data is None:
             self.data = np.genfromtxt(filename, delimiter=',', names=True)
         else:
             self.data = data
-        """The data from the simulation file."""
 
         self.pres = self.data['Pressure_(bar)']
-        """The simulated pressure trace."""
         self.time = self.data['Time_(sec)']
-        """The simulated time trace."""
 
         self.dpdt = self.derivative(self.pres, self.time)
-        """The derivative calculated from the simulated pressure trace."""
 
     def derivative(self, dep_var, indep_var):
-        """
-        Calculate the derivative of the ``dep_var`` with respect to the
-        ``indep_var``. The derivative is calculated by computing the
-        first order Lagrange polynomial fit to the point under
-        consideration and its nearest neighbors. The Lagrange
-        polynomial is used because of the unequal spacing of the
-        simulated data.
+        """Calculate the derivative.
+
+        Parameters
+        ----------
+        dep_var : numpy.ndarray
+            Dependent variable (e.g., the pressure)
+        indep_var : numpy.ndarray
+            Independent variable (e.g., the time)
+
+        Returns
+        -------
+        numpy.ndarray
+            1-D array containing the derivative
+
+        Notes
+        -----
+        The derivative is calculated by computing the first-order
+        Lagrange polynomial fit to the point under consideration and
+        its nearest neighbors. The Lagrange polynomial is used because
+        of the unequal spacing of the simulated data.
         """
         m = len(dep_var)
         ddt = np.zeros(m)
@@ -232,18 +341,35 @@ class SimulatedPressureTrace(object):
 
 
 class PressureFromVolume(object):
-    """ Class for pressure trace computed from a volume trace."""
+    """Create a pressure trace given a volume trace.
 
+    Using Cantera to evaluate the thermodynamic properties, compute a
+    pressure trace from a volume trace.
+
+    Parameters
+    ----------
+    volume : numpy.ndarray
+        1-D array containing the reactor volume
+    p_initial : float
+        Initial pressure of the experiment, in bar
+    T_initial : float, optional
+        Initial temperature of the experiment, in Kelvin.
+        Optional for Cantera versions greater than 2.2.0.
+    chem_file : str, optional
+        Filename of the chemistry file to be used
+
+    Attributes
+    ----------
+    pressure : numpy.ndarray
+        The pressure trace
+
+    Notes
+    -----
+    The pressure is computed in the Cantera Solution object by
+    setting the volume and the entropy according to an isentropic
+    process using the given volume trace.
+    """
     def __init__(self, volume, p_initial, T_initial=None, chem_file='species.cti'):
-        """Create a pressure trace given a volume trace.
-
-        Compute a pressure trace given a ``volume`` trace. Also requires
-        inputs of initial pressure ``p_initial``, and if Cantera is less
-        than version 2.2.1, `T_initial`. If Cantera is greater than or
-        equal to version 2.2.1, it is possible to set the state by
-        pressure and density, so compute the density as the inverse of
-        the initial volume.
-        """
         gas = ct.Solution(chem_file)
         if cantera_version[1] > 2:
             gas.DP = 1.0/volume[0], p_initial*one_bar_in_pa
@@ -260,6 +386,35 @@ class PressureFromVolume(object):
 
 
 class VolumeFromPressure(object):
+    r"""Create a volume trace given a pressure trace.
+
+    Using Cantera to evaluate the thermodynamic properties, compute a
+    volume trace from a pressure trace.
+
+    Parameters
+    ----------
+    pressure : numpy.ndarray
+        1-D array containing the reactor pressure
+    v_initial : float
+        Initial volume of the experiment, in m**3
+    T_initial : float, optional
+        Initial temperature of the experiment, in Kelvin.
+        Optional for Cantera versions greater than 2.2.0.
+    chem_file : str, optional
+        Filename of the chemistry file to be used
+
+    Attributes
+    ----------
+    volume : numpy.ndarray
+        The volume trace
+
+    Notes
+    -----
+    The volume is computed according to the formula
+
+    .. math:: v_i = v_{initial}*\rho_{initial}/\rho_i
+
+    """
     def __init__(self, pressure, v_initial, T_initial=None, chem_file='species.cti'):
         gas = ct.Solution(chem_file)
         if cantera_version[1] > 2:
@@ -277,6 +432,32 @@ class VolumeFromPressure(object):
 
 
 class TemperatureFromPressure(object):
+    """Create a temperature trace given a pressure trace.
+
+    Using Cantera to evaluate the thermodynamic properties, compute a
+    pressure trace from a volume trace.
+
+    Parameters
+    ----------
+    pressure : numpy.ndarray
+        1-D array containing the pressure
+    T_initial : float
+        Initial temperature of the experiment, in Kelvin.
+        Optional for Cantera versions greater than 2.2.0.
+    chem_file : str, optional
+        Filename of the chemistry file to be used
+
+    Attributes
+    ----------
+    temperature : numpy.ndarray
+        The temperature trace
+
+    Notes
+    -----
+    The temperature is computed in the Cantera Solution object by
+    setting the pressure and the entropy according to an isentropic
+    process using the given pressure trace.
+    """
     def __init__(self, pressure, T_initial, chem_file='species.cti'):
         gas = ct.Solution(chem_file)
         gas.TP = T_initial, pressure[0]*one_bar_in_pa

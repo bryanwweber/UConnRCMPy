@@ -35,13 +35,20 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
     'sphinx.ext.coverage',
+    'sphinx.ext.intersphinx',
 ]
 
 # add_function_parentheses = False
 autodoc_default_flags = ['members']
 # autodoc_member_order = 'bysource'
-# autoclass_content = 'both'
-# mathjax_path = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default'
+autoclass_content = 'class'
+napoleon_numpy_docstring = True
+napoleon_google_docstring = False
+# napoleon_use_ivar = True
+intersphinx_mapping = {'python': ('https://docs.python.org/3.5', None),
+                       'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+                       'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
+                       }
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
