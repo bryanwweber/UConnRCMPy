@@ -234,7 +234,7 @@ class SimulatedPressureTrace(object):
 class PressureFromVolume(object):
     """ Class for pressure trace computed from a volume trace."""
 
-    def __init__(self, volume, p_initial, T_initial=None):
+    def __init__(self, volume, p_initial, T_initial=None, chem_file='species.cti'):
         """Create a pressure trace given a volume trace.
 
         Compute a pressure trace given a ``volume`` trace. Also requires
@@ -244,7 +244,7 @@ class PressureFromVolume(object):
         pressure and density, so compute the density as the inverse of
         the initial volume.
         """
-        gas = ct.Solution('species.cti')
+        gas = ct.Solution(chem_file)
         if cantera_version[1] > 2:
             gas.DP = 1.0/volume[0], p_initial*one_bar_in_pa
         elif T_initial is None:
@@ -260,9 +260,8 @@ class PressureFromVolume(object):
 
 
 class VolumeFromPressure(object):
-
-    def __init__(self, pressure, v_initial, T_initial=None):
-        gas = ct.Solution('species.cti')
+    def __init__(self, pressure, v_initial, T_initial=None, chem_file='species.cti'):
+        gas = ct.Solution(chem_file)
         if cantera_version[1] > 2:
             gas.DP = 1.0/v_initial, pressure[0]*one_bar_in_pa
         elif T_initial is None:
@@ -278,10 +277,9 @@ class VolumeFromPressure(object):
 
 
 class TemperatureFromPressure(object):
-
-    def __init__(self, pressure, T_in):
-        gas = ct.Solution('species.cti')
-        gas.TP = T_in, pressure[0]*one_bar_in_pa
+    def __init__(self, pressure, T_initial, chem_file='species.cti'):
+        gas = ct.Solution(chem_file)
+        gas.TP = T_initial, pressure[0]*one_bar_in_pa
         initial_entropy = gas.entropy_mass
         self.temperature = np.zeros((len(pressure)))
         for i, p in enumerate(pressure):
