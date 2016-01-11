@@ -25,7 +25,37 @@ class Condition(object):
 
 
 class Experiment(object):
-    """Class containing a single RCM experiment"""
+    """Contains all the information of a single RCM experiment.
+
+    Parameters
+    ----------
+    file_path : :class:`pathlib.Path`, optional
+        If an argument is supplied, it should be an instance of
+        :class:`~pathlib.Path`. If no argument is supplied, the
+        filename is read from the standard input as a string and
+        resolved into a :class:`~pathlib.Path` object.
+
+    Attributes
+    ----------
+    file_path : :class:`pathlib.Path`
+        Object storing the file path
+    experiment_parameters : :class:`dict`
+        Stores the parameters of the experiment parsed from the
+        filename by :func:`parse_file_name`.
+    voltage_trace : :class:`VoltageTrace`
+        Stores the experimental voltage signal and related traces
+    pressure_trace : :class:`ExperimentalPressureTrace`
+        Stores the experimental pressure trace and its derivative
+    ignition_delay : :class:`float`
+        The overall ignition delay of the experiment. Will be zero for
+        a non-reactive experiment.
+    first_stage : :class:`float`
+        The first stage ignition delay of the experiment. Will be zero
+        for a non-reactive experiment of if there is no first-stage
+        ignition.
+    T_EOC : :class:`float`
+        The temperature estimated at the end of compression
+    """
 
     def __init__(self, file_path=None):
         if file_path is None:
