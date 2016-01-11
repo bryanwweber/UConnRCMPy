@@ -17,7 +17,7 @@ def parse_file_name(file_path):
 
     Parameters
     ----------
-    file_path : Path
+    file_path : :class:`pathlib.Path`
         The Path object that contains the path of the current experimental data file.
         The filename associated with the path should be in the following format::
 
@@ -35,17 +35,17 @@ def parse_file_name(file_path):
 
     Returns
     -------
-    dict
+    :class:`dict`
         Dictionary containing the parameters of the experiment with the
         following names:
 
-        - spacers: Inches of spacers
-        - shims: Millimeters of shims
-        - Tin: Initial temperature in Kelvin
-        - pin: Initial pressure in Torr
-        - factor: Multiplication factor set on the charge amplifier
-        - time_of_day: Time of day of the experiment
-        - date: Date of the experiment
+        - ``spacers``: Inches of spacers
+        - ``shims``: Millimeters of shims
+        - ``Tin``: Initial temperature in Kelvin
+        - ``pin``: Initial pressure in Torr
+        - ``factor``: Multiplication factor set on the charge amplifier
+        - ``time_of_day``: Time of day of the experiment
+        - ``date``: Date of the experiment
 
     """
     name_parts = {}

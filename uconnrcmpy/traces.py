@@ -20,22 +20,22 @@ class VoltageTrace(object):
 
     Parameters
     ----------
-    file_path : pathlib.Path
+    file_path : :class:`pathlib.Path`
         :class:`pathlib.Path` object associated with the particular experiment
 
     Attributes
     ----------
-    signal : numpy.ndarray
+    signal : :class:`numpy.ndarray`
         2-D array containing the raw signal from the experimental
         text file. First column is the time, second column is the
         voltage.
-    time : numpy.ndarray
+    time : :class:`numpy.ndarray`
         The time loaded from the signal trace
-    frequency : int
+    frequency : :class:`int`
         The sampling frequency of the pressure trace
-    filtered_voltage : numpy.ndarray
+    filtered_voltage : :class:`numpy.ndarray`
         The voltage trace after filtering
-    smoothed_voltage : numpy.ndarray
+    smoothed_voltage : :class:`numpy.ndarray`
         The voltage trace after filtering and smoothing
     """
     def __init__(self, file_path):
@@ -52,27 +52,28 @@ class VoltageTrace(object):
 
         Parameters
         ----------
-        data : numpy.ndarray
+        data : :class:`numpy.ndarray`
             The data that should be smoothed
-        span : int, optional
+        span : :class:`int`, optional
             The width of the moving average. Should be an odd integer.
             The number of points included in the average on either side
             of the current point is given by ``(span-1)/2``.
 
         Returns
         -------
-        numpy.ndarray
-            Returns an :class:`numpy.ndarray` of the same length as the input data.
+        :class:`numpy.ndarray`
+            A 1-D array of the same length as the input data.
 
         Notes
         -----
-        This function effects the smoothing by convolving the input array
-        with a uniform window array whose values are equal to ``1.0/span``
-        and whose length is equal to ``span``. The ``fftconvolve`` method
-        from SciPy is used for speed. Since we desire an output array of
-        the same length as the input, the first ``(span-1)/2`` points will
-        have improper values, so these are set equal to the value of the
-        average at the point ``(span-1)/2``.
+        This function effects the smoothing by convolving the input
+        array with a uniform window array whose values are equal to
+        ``1.0/span`` and whose length is equal to ``span``. The
+        :func:`~scipy.signal.fftconvolve` function from SciPy is used
+        to do the convolution for speed. Since we desire an output
+        array of the same length as the input, the first ``(span-1)/2``
+        points will have improper values, so these are set equal to the
+        value of the average at the point ``(span-1)/2``.
         """
         window = np.ones(span)/span
         output = sig.fftconvolve(data, window, mode='same')
@@ -85,24 +86,24 @@ class VoltageTrace(object):
 
         Parameters
         ----------
-        data : numpy.ndarray
+        data : :class:`numpy.ndarray`
             The data that should be filtered
-        cutoff_hz : int, optional
+        cutoff_hz : :class:`int`, optional
             The cutoff frequency for the filter, in Hz. The default
             value was chosen empirically for a particular set of data
             and may need to be adjusted.
 
         Returns
         -------
-        numpy.ndarray
-            Returns an ndarray of the same length as the input data
+        :class:`numpy.ndarray`
+            1-D array of the same length as the input data
 
         Notes
         -----
         Creates a low-pass filter using the window construction funtion
-        :func:`scipy.signal.firwin`. Applies the filter using the
-        :func:`scipy.signal.fftconvolve` function from the same module
-        for speed. Defaults to the :func:`scipy.signal.blackman` window
+        :func:`~scipy.signal.firwin`. Applies the filter using the
+        :func:`~scipy.signal.fftconvolve` function from the same module
+        for speed. Defaults to the :func:`~scipy.signal.blackman` window
         for the filter.
         """
         nyquist_freq = self.frequency/2.0
@@ -120,36 +121,37 @@ class ExperimentalPressureTrace(object):
 
     Parameters
     ----------
-    voltage_trace : VoltageTrace
+    voltage_trace : :class:`VoltageTrace`
         Instance of class containing the voltage trace of the
         experiment.
-    initial_pressure_in_torr : float
+    initial_pressure_in_torr : :class:`float`
         The initial pressure of the experiment, in units of Torr
-    factor : float
+    factor : :class:`float`
         The factor set on the charge amplifier
 
     Attributes
     ----------
-    pressure : numpy.ndarray
+    pressure : :class:`numpy.ndarray`
         The pressure trace computed from the smoothed and filtered
         voltage trace
-    time : numpy.ndarray
-        A 1-D array containting the time. Copied from `VoltageTrace.time`
-    frequency : int
+    time : :class:`numpy.ndarray`
+        A 1-D array containting the time. Copied from
+        :class:`VoltageTrace.time`
+    frequency : :class:`int`
         Integer sampling frequency of the experiment. Copied from
-        `VoltageTrace.frequency`
-    p_EOC : float
+        :class:`VoltageTrace.frequency`
+    p_EOC : :class:`float`
         Pressure at the end of compression
-    EOC_idx : int
-        Integer index in the `pressure` and `time` arrays of the
-        end of compression.
-    derivative : numpy.ndarray
+    EOC_idx : :class:`int`
+        Integer index in the :class:`pressure` and :class:`time` arrays
+        of the end of compression.
+    derivative : :class:`numpy.ndarray`
         1-D array containing the raw derivative computed from the
-        `pressure` trace.
-    smoothed_derivative : numpy.ndarray
+        :class:`pressure` trace.
+    smoothed_derivative : :class:`numpy.ndarray`
         1-D array containing the smoothed derivative computed from
-        the `derivative`
-    zeroed_time : numpy.ndarray
+        the :class:`derivative`
+    zeroed_time : :class:`numpy.ndarray`
         1-D array containing the time, with the zero point set at
         the end of compression.
     """
@@ -162,7 +164,7 @@ class ExperimentalPressureTrace(object):
         self.time = voltage_trace.time
         self.frequency = voltage_trace.frequency
 
-        self.p_EOC, self.EOC_idx = self.find_EOC()
+        self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
         self.derivative = self.calculate_derivative(self.pressure, self.time)
         self.smoothed_derivative = self.smoothing(self.derivative, span=151)
         self.zeroed_time = self.time - self.time[self.EOC_idx]
@@ -175,13 +177,13 @@ class ExperimentalPressureTrace(object):
 
         Parameters
         ----------
-        comptime : float, optional
+        comptime : :class:`float`, optional
             Desired compression time, computed from the EOC, to when
             the pressure fit should start
 
         Returns
         -------
-        numpy.polyfit
+        :class:`numpy.polyfit`
             Numpy object containing the parameters of the fit
         """
         beg_compress = np.floor(self.EOC_idx - comptime*self.frequency)
@@ -196,11 +198,13 @@ class ExperimentalPressureTrace(object):
 
         Returns
         -------
-        float
-            Pressure at the end of compression
-        int
-            Index of the end of compression, relative to the start
-            of the pressure trace.
+        :class:`tuple`
+            Returns a tuple with types (:class:`float`, :class:`int`,
+            :class:`bool`) representing the pressure at the end of
+            compression, the index of the end of compression relative
+            to the start of the pressure trace, and a boolean that is
+            True if the case is reactive and False otherwise,
+            respectively
 
         Notes
         -----
@@ -213,6 +217,7 @@ class ExperimentalPressureTrace(object):
         the initial pressure, assume the case is non-reactive and set
         the EOC pressure and the index to the max pressure point.
         """
+        is_reactive = True
         max_p = np.amax(self.pressure)
         max_p_idx = np.argmax(self.pressure)
         min_p_idx = max_p_idx - 100
@@ -224,22 +229,23 @@ class ExperimentalPressureTrace(object):
         diff = abs(self.pressure[p_EOC_idx] - self.pressure[15])
         if diff < 5:
             p_EOC, p_EOC_idx = max_p, max_p_idx
+            is_reactive = False
 
-        return p_EOC, p_EOC_idx
+        return p_EOC, p_EOC_idx, is_reactive
 
     def calculate_derivative(self, dep_var, indep_var):
         """Calculate the derivative.
 
         Parameters
         ----------
-        dep_var : numpy.ndarray
+        dep_var : :class:`numpy.ndarray`
             Dependent variable (e.g., the pressure)
-        indep_var : numpy.ndarray
+        indep_var : :class:`numpy.ndarray`
             Independent variable (e.g., the time)
 
         Returns
         -------
-        numpy.ndarray
+        :class:`numpy.ndarray`
             1-D array containing the derivative
 
         Notes
@@ -263,20 +269,20 @@ class SimulatedPressureTrace(object):
 
     Parameters
     ----------
-    filename : str, optional
+    filename : :class:`str`, optional
         The filename to load the data from.
-    data : numpy.recarray, optional
+    data : :class:`numpy.recarray`, optional
         The array to load the data from.
 
     Attributes
     ----------
-    data : numpy.recarray
+    data : :class:`numpy.recarray`
         The data as loaded from the file or the input array
-    pres : numpy.ndarray
+    pres : :class:`numpy.ndarray`
         The pressure
-    time : numpy.ndarray
+    time : :class:`numpy.ndarray`
         The time
-    dpdt : numpy.ndarray
+    dpdt : :class:`numpy.ndarray`
         The derivative
 
     Notes
@@ -307,14 +313,14 @@ class SimulatedPressureTrace(object):
 
         Parameters
         ----------
-        dep_var : numpy.ndarray
+        dep_var : :class:`numpy.ndarray`
             Dependent variable (e.g., the pressure)
-        indep_var : numpy.ndarray
+        indep_var : :class:`numpy.ndarray`
             Independent variable (e.g., the time)
 
         Returns
         -------
-        numpy.ndarray
+        :class:`numpy.ndarray`
             1-D array containing the derivative
 
         Notes
@@ -348,19 +354,19 @@ class PressureFromVolume(object):
 
     Parameters
     ----------
-    volume : numpy.ndarray
+    volume : :class:`numpy.ndarray`
         1-D array containing the reactor volume
-    p_initial : float
+    p_initial : :class:`float`
         Initial pressure of the experiment, in bar
-    T_initial : float, optional
+    T_initial : :class:`float`, optional
         Initial temperature of the experiment, in Kelvin.
         Optional for Cantera versions greater than 2.2.0.
-    chem_file : str, optional
+    chem_file : :class:`str`, optional
         Filename of the chemistry file to be used
 
     Attributes
     ----------
-    pressure : numpy.ndarray
+    pressure : :class:`numpy.ndarray`
         The pressure trace
 
     Notes
@@ -393,19 +399,19 @@ class VolumeFromPressure(object):
 
     Parameters
     ----------
-    pressure : numpy.ndarray
+    pressure : :class:`numpy.ndarray`
         1-D array containing the reactor pressure
-    v_initial : float
+    v_initial : :class:`float`
         Initial volume of the experiment, in m**3
-    T_initial : float, optional
-        Initial temperature of the experiment, in Kelvin.
-        Optional for Cantera versions greater than 2.2.0.
-    chem_file : str, optional
+    T_initial : :class:`float`, optional
+        Initial temperature of the experiment, in Kelvin. Optional for
+        Cantera versions greater than 2.2.0.
+    chem_file : :class:`str`, optional
         Filename of the chemistry file to be used
 
     Attributes
     ----------
-    volume : numpy.ndarray
+    volume : :class:`numpy.ndarray`
         The volume trace
 
     Notes
@@ -414,6 +420,10 @@ class VolumeFromPressure(object):
 
     .. math:: v_i = v_{initial}*\rho_{initial}/\rho_i
 
+    where the index :math:`i` indicates the current point. The state
+    is set at each point by setting the pressure from the input array
+    and the entropy to be constant. The volume is computed by the
+    isentropic relationship described above.
     """
     def __init__(self, pressure, v_initial, T_initial=None, chem_file='species.cti'):
         gas = ct.Solution(chem_file)
@@ -439,17 +449,17 @@ class TemperatureFromPressure(object):
 
     Parameters
     ----------
-    pressure : numpy.ndarray
+    pressure : :class:`numpy.ndarray`
         1-D array containing the pressure
-    T_initial : float
+    T_initial : :class:`float`
         Initial temperature of the experiment, in Kelvin.
         Optional for Cantera versions greater than 2.2.0.
-    chem_file : str, optional
+    chem_file : :class:`str`, optional
         Filename of the chemistry file to be used
 
     Attributes
     ----------
-    temperature : numpy.ndarray
+    temperature : :class:`numpy.ndarray`
         The temperature trace
 
     Notes
