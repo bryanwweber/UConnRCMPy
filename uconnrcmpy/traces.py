@@ -371,7 +371,7 @@ class PressureFromVolume(object):
 
     Notes
     -----
-    The pressure is computed in the Cantera Solution object by
+    The pressure is computed in a :class:`cantera.Solution` object by
     setting the volume and the entropy according to an isentropic
     process using the given volume trace.
     """
@@ -464,7 +464,7 @@ class TemperatureFromPressure(object):
 
     Notes
     -----
-    The temperature is computed in the Cantera Solution object by
+    The temperature is computed in a :class:`cantera.Solution` object by
     setting the pressure and the entropy according to an isentropic
     process using the given pressure trace.
     """

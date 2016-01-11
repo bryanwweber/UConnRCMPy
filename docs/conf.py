@@ -48,6 +48,8 @@ napoleon_google_docstring = False
 intersphinx_mapping = {'python': ('https://docs.python.org/3.5', None),
                        'numpy': ('http://docs.scipy.org/doc/numpy/', None),
                        'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
+                       'cantera': ('http://cantera.github.io/docs/sphinx/html/',
+                       'cantera-objects.inv'),
                        }
 
 # Add any paths that contain templates here, relative to this directory.
