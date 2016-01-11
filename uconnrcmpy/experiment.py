@@ -15,6 +15,15 @@ from .traces import (VoltageTrace,
                      )
 
 
+class Condition(object):
+    def __init__(self):
+        self.reactive_experiments = []
+        self.nonreactive_experiments = []
+
+    def add_experiment(self):
+        pass
+
+
 class Experiment(object):
     """Class containing a single RCM experiment"""
 
