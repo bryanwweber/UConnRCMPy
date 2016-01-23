@@ -145,6 +145,9 @@ class ExperimentalPressureTrace(object):
     EOC_idx : :class:`int`
         Integer index in the :class:`pressure` and :class:`time` arrays
         of the end of compression.
+    is_reactive : :class:`bool`
+        Boolean if the pressure trace represents a reactive or
+        or non-reactive experiment
     derivative : :class:`numpy.ndarray`
         1-D array containing the raw derivative computed from the
         :class:`pressure` trace.
