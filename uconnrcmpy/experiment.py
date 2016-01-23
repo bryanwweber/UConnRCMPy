@@ -21,7 +21,7 @@ class Condition(object):
         self.nonreactive_experiments = {}
         if plotting:
             self.plotting = plotting
-            self.all_runs_figure = plt.figure()
+            self.all_runs_figure = plt.figure('Reactive Pressure Trace Comparison')
             self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
             m = plt.get_current_fig_manager()
             m.window.showMaximized()
@@ -42,7 +42,7 @@ class Condition(object):
         self.all_runs_axis.plot(
             exp.pressure_trace.zeroed_time,
             exp.pressure_trace.pressure,
-            label=exp.experiment_parameters['date']
+            label=exp.experiment_parameters['date'],
         )
 
         exp.plot_pressure_trace()
@@ -156,7 +156,7 @@ class Experiment(object):
     def plot_pressure_trace(self):
         # Plot the smoothed pressure and the smoothed derivative
         # on a new figure every time
-        fig2 = plt.figure()
+        fig2 = plt.figure(self.experiment_parameters['date'])
         ax2 = fig2.add_subplot(1, 1, 1)
         ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.pressure)
         ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.smoothed_derivative/1000)
