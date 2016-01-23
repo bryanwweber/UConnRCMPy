@@ -24,6 +24,8 @@ class Condition(object):
         self.nonreactive_experiments = {}
         self.reactive_case = None
         self.nonreactive_case = None
+        self.presout = None
+        self.volout = None
         if plotting:
             self.plotting = plotting
             self.all_runs_figure = None
@@ -186,27 +188,30 @@ class Condition(object):
         # The post_volume array is indexed from the second element to
         # eliminate the duplicated element from the end of the stroke
         # volume array.
-        self.volume = np.concatenate((stroke_volume,
-                                      post_volume[1:]))
+        volume = np.concatenate((stroke_volume, post_volume[1:]))
 
         self.computed_pressure = PressureFromVolume(
-            self.volume[::5],
+            volume[::5],
             stroke_pressure[0]*1E5,
             self.reactive_case.experiment_parameters['Tin'],
         ).pressure
 
         copy('{:.4f}'.format(stroke_pressure[0]))
 
-        volout = np.vstack(
-            (time[::5] + yaml_data['comptime']/1000, self.volume[::5])
+        self.volout = np.vstack(
+            (time[::5] + yaml_data['comptime']/1000, volume[::5])
         ).transpose()
 
-        presout = np.vstack(
+        self.presout = np.vstack(
             (time[:n_print_pts:5] + yaml_data['comptime']/1000,
              print_pressure[::5])
         ).transpose()
 
-        self.write_output(volout, presout, self.reactive_case.experiment_parameters['Tin'])
+        self.write_output(
+            self.volout,
+            self.presout,
+            self.reactive_case.experiment_parameters['Tin'],
+        )
 
         if self.plotting:
             if self.pressure_comparison_figure is None:
