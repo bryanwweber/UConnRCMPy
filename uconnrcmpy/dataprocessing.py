@@ -323,6 +323,9 @@ class Condition(object):
 
         self.run_simulation(run_reactive, run_nonreactive)
         # Plot the pressure traces together
+
+        compression_time = self.load_yaml()['comptime']
+
         if self.plotting:
             if self.simulation_figure is None:
                 self.simulation_figure = plt.figure('Simulation Comparison')
@@ -330,15 +333,26 @@ class Condition(object):
                 m = plt.get_current_fig_manager()
                 m.window.showMaximized()
 
-            self.simulation_axis.plot(self.presout[:, 0], self.presout[:, 1])
+            self.simulation_axis.plot(
+                self.presout[:, 0]*1000 - compression_time,
+                self.presout[:, 1],
+            )
+
             if self.nonreactive_sim is not None:
-                self.simulation_axis.plot(self.nonreactive_sim.time, self.nonreactive_sim.pressure)
+                self.simulation_axis.plot(
+                    self.nonreactive_sim.time*1000 - compression_time,
+                    self.nonreactive_sim.pressure,
+                )
 
             if self.reactive_sim is not None:
-                self.simulation_axis.plot(self.reactive_sim.time, self.reactive_sim.pressure)
                 self.simulation_axis.plot(
-                    self.reactive_sim.time,
-                    self.reactive_sim.derivative/1E6,
+                    self.reactive_sim.time*1000 - compression_time,
+                    self.reactive_sim.pressure,
+                )
+                der = self.reactive_sim.derivative
+                self.simulation_axis.plot(
+                    self.reactive_sim.time*1000 - compression_time,
+                    der/np.amax(der)*np.amax(self.reactive_sim.pressure),
                 )
 
         print_str = ''
@@ -354,11 +368,7 @@ class Condition(object):
                 print_str += '\t'
                 copy_str += '\t\t\t\t'
             ignition_idx = np.argmax(self.reactive_sim.derivative)
-            yaml_data = self.load_yaml()
-            ignition_delay = (
-                self.reactive_sim.time[ignition_idx]*1000 -
-                yaml_data['comptime']
-            )
+            ignition_delay = self.reactive_sim.time[ignition_idx]*1000 - compression_time
             print_str += '{:.6f}'.format(ignition_delay)
             copy_str += '{}'.format(ignition_delay)
 
