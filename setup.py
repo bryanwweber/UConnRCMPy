@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='UConnRCMPy',
-    version='1.0.6',
+    version='2.0.0',
     description='A package to process RCM data',
     url='https://github.com/bryanwweber/UConnRCMPy',
     author='Bryan W. Weber',
@@ -13,6 +13,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
     packages=find_packages(),
     entry_points={
