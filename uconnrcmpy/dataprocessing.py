@@ -326,7 +326,7 @@ class Condition(object):
         if self.plotting:
             if self.simulation_figure is None:
                 self.simulation_figure = plt.figure('Simulation Comparison')
-                self.simulation_axis = self.fig.add_subplot(1, 1, 1)
+                self.simulation_axis = self.simulation_figure.add_subplot(1, 1, 1)
                 m = plt.get_current_fig_manager()
                 m.window.showMaximized()
 
