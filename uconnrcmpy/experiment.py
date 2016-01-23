@@ -2,6 +2,7 @@
 
 # System imports
 from pathlib import Path
+from glob import glob
 
 # Third-party imports
 import numpy as np
@@ -26,11 +27,14 @@ class Condition(object):
         self.nonreactive_case = None
         self.presout = None
         self.volout = None
+        self.nonreactive_sim = None
+        self.reactive_sim = None
         if plotting:
             self.plotting = plotting
             self.all_runs_figure = None
             self.nonreactive_figure = None
             self.pressure_comparison_figure = None
+            self.simulation_figure = None
 
     def add_experiment(self, file_name=None):
         exp = Experiment(file_name)
@@ -247,6 +251,103 @@ class Condition(object):
         """
         np.savetxt('volume.csv', volout, delimiter=',')
         np.savetxt('Tc__P0__T0_{}K_pressure.txt'.format(Tin), presout, delimiter='\t')
+
+    def run_simulation(self, run_reactive=False, run_nonreactive=True, end_temp=2500, end_time=0.2):
+        def process_choice(sim_type):
+            choice = input('Are you sure you want to overwrite the {sim_type} simulation?'
+                           'Input y or n:'.format(sim_type=sim_type))
+            if choice.startswith('n'):
+                return False
+            elif choice.startswith('y'):
+                return True
+            else:
+                raise IOError('Invalid input')
+
+        if run_nonreactive:
+            if self.nonreactive_sim is None:
+                self.nonreactive_sim = Simulation(
+                    is_reactive=False,
+                    end_temp=end_temp,
+                    end_time=end_time,
+                )
+            else:
+                if process_choice('nonreactive'):
+                    self.nonreactive_sim = Simulation(
+                        is_reactive=False,
+                        end_temp=end_temp,
+                        end_time=end_time,
+                    )
+                else:
+                    print('Nothing was done')
+
+        if run_reactive:
+            if self.reactive_sim is None:
+                self.reactive_sim = Simulation(
+                    is_reactive=True,
+                    end_temp=end_temp,
+                    end_time=end_time,
+                )
+            else:
+                if process_choice('reactive'):
+                    self.reactive_sim = Simulation(
+                        is_reactive=True,
+                        end_temp=end_temp,
+                        end_time=end_time,
+                    )
+                else:
+                    print('Nothing was done')
+
+    def compare_to_sim(self, run_reactive=False, run_nonreactive=True):
+        if self.presout is None:
+            # Load the experimental pressure trace. Try the glob function first
+            # and if it fails, ask the user for help.
+            flist = glob('*pressure.txt')
+            if not len(flist) == 1:
+                flist = [input('Input the experimental pressure trace file name: ')]
+            self.presout = np.genfromtxt(flist[0])
+
+        self.run_simulation(run_reactive, run_nonreactive)
+        # Plot the pressure traces together
+        if self.plotting:
+            if self.simulation_figure is None:
+                self.simulation_figure = plt.figure('Simulation Comparison')
+                self.simulation_axis = self.fig.add_subplot(1, 1, 1)
+                m = plt.get_current_fig_manager()
+                m.window.showMaximized()
+
+            self.simulation_axis.plot(self.presout[:, 0], self.presout[:, 1])
+            if self.nonreactive_sim is not None:
+                self.simulation_axis.plot(self.nonreactive_sim.time, self.nonreactive_sim.pres)
+
+            if self.reactive_sim is not None:
+                self.simulation_axis.plot(self.reactive_sim.time, self.reactive_sim.pres)
+                self.simulation_axis.plot(
+                    self.reactive_sim.time,
+                    self.reactive_sim.pressure_trace.dpdt/1E6,
+                )
+
+        print_str = ''
+        copy_str = ''
+
+        if self.nonreactive_sim is not None:
+            T_EOC = np.amax(self.nonreactive_sim.temp)
+            print_str += '{:.0f}'.format(T_EOC)
+            copy_str += '{}'.format(T_EOC)
+
+        if self.reactive_sim is not None:
+            if self.nonreactive_sim is not None:
+                print_str += '\t'
+                copy_str += '\t\t\t\t'
+            ignition_idx = np.argmax(self.reactive_sim.pressure_trace.dpdt)
+            ignition_delay = (
+                self.reactive_sim.time[ignition_idx]*1000 -
+                self.reactive_sim.comptime
+            )
+            print_str += '{:.6f}'.format(ignition_delay)
+            copy_str += '{}'.format(ignition_delay)
+
+        print(print_str)
+        copy(copy_str)
 
 
 class Experiment(object):
