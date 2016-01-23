@@ -16,11 +16,45 @@ from .traces import (VoltageTrace,
 
 
 class Condition(object):
-    def __init__(self):
-        self.reactive_experiments = []
-        self.nonreactive_experiments = []
+    def __init__(self, plotting=True):
+        self.reactive_experiments = {}
+        self.nonreactive_experiments = {}
+        if plotting:
+            self.plotting = plotting
+            self.all_runs_figure = plt.figure()
+            self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
+            m = plt.get_current_fig_manager()
+            m.window.showMaximized()
 
-    def add_experiment(self):
+    def add_experiment(self, file_name=None):
+        exp = Experiment(file_name)
+        if exp.pressure_trace.is_reactive:
+            self.reactive_experiments[exp.experiment_parameters['date']] = exp
+            if self.plotting:
+                self.plot_reactive_figures(exp)
+        else:
+            self.nonreactive_experiments[exp.experiment_parameters['date']] = exp
+            if self.plotting:
+                self.plot_nonreactive_figures(exp)
+
+    def plot_reactive_figures(self, exp):
+        # Plot the smoothed pressure and overlay future runs
+        self.all_runs_axis.plot(
+            exp.pressure_trace.zeroed_time,
+            exp.pressure_trace.pressure,
+            label=exp.experiment_parameters['date']
+        )
+
+        # Plot the smoothed pressure and the smoothed derivative
+        # on a new figure every time
+        fig2 = plt.figure()
+        ax2 = fig2.add_subplot(1, 1, 1)
+        ax2.plot(exp.pressure_trace.zeroed_time, exp.pressure_trace.pressure)
+        ax2.plot(exp.pressure_trace.zeroed_time, exp.pressure_trace.smoothed_derivative/1000)
+        m = plt.get_current_fig_manager()
+        m.window.showMaximized()
+
+    def plot_nonreactive_figures(self, exp):
         pass
 
 
@@ -82,7 +116,6 @@ class Experiment(object):
         except RuntimeError:
             self.T_EOC = 0
             print('Exception in computing the temperature at EOC')
-        self.plot_figures()
 
         # Copy the relevant information to the clipboard for pasting
         # into a spreadsheet
@@ -93,7 +126,6 @@ class Experiment(object):
             self.experiment_parameters['shims']])))
 
     def calculate_ignition_delay(self):
-
         # offset_points is an offset from the EOC to ensure that if
         # ignition is weak, the peak in dP/dt from the compression
         # stroke is not treated as the ignition event. Define points
@@ -127,20 +159,3 @@ class Experiment(object):
         tempp = self.pressure_trace.pressure[(pres_to_temp_start_idx):(self.pressure_trace.EOC_idx)]
         temperature_trace = TemperatureFromPressure(tempp, self.experiment_parameters['Tin'])
         return np.amax(temperature_trace.temperature)
-
-    def plot_figures(self):
-        # Plot the smoothed pressure and overlay future runs
-        fig1 = plt.figure(1)
-        ax1 = fig1.add_subplot(1, 1, 1)
-        ax1.plot(self.ztim, self.pressure, label=self.date)
-        m = plt.get_current_fig_manager()
-        m.window.showMaximized()
-
-        # Plot the raw and smoothed pressure and the smoothed derivative
-        # on a new figure every time
-        fig2 = plt.figure()
-        ax2 = fig2.add_subplot(1, 1, 1)
-        ax2.plot(self.ztim, self.pressure)
-        ax2.plot(self.ztim, self.smdp/1000)
-        m = plt.get_current_fig_manager()
-        m.window.showMaximized()
