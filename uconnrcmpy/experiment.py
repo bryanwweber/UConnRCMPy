@@ -13,6 +13,8 @@ from .utilities import parse_file_name, copy
 from .traces import (VoltageTrace,
                      ExperimentalPressureTrace,
                      TemperatureFromPressure,
+                     VolumeFromPressure,
+                     PressureFromVolume,
                      )
 
 
@@ -20,10 +22,13 @@ class Condition(object):
     def __init__(self, plotting=True):
         self.reactive_experiments = {}
         self.nonreactive_experiments = {}
+        self.reactive_case = None
+        self.nonreactive_case = None
         if plotting:
             self.plotting = plotting
             self.all_runs_figure = None
             self.nonreactive_figure = None
+            self.pressure_comparison_figure = None
 
     def add_experiment(self, file_name=None):
         exp = Experiment(file_name)
@@ -81,14 +86,6 @@ class Condition(object):
         with open('volume-trace.yaml') as yaml_file:
             return yaml.load(yaml_file)
 
-        # self.nonrfile = Path(self.yaml_data['nonrfile'])
-        # self.reacfile = Path(self.yaml_data['reacfile'])
-        # self.comptime = self.yaml_data['comptime']
-        # self.nonrend = self.yaml_data['nonrend']
-        # self.reacend = self.yaml_data['reacend']
-        # self.reacoffs = self.yaml_data.get('reacoffs', 0)
-        # self.nonroffs = self.yaml_data.get('nonroffs', 0)
-
     def plot_nonreactive_figure(self, exp):
         if self.nonreactive_figure is None:
             self.nonreactive_figure = plt.figure('Non-Reactive Pressure Trace Comparison')
@@ -98,10 +95,10 @@ class Condition(object):
 
             yaml_data = self.load_yaml()
             reactive_parameters = parse_file_name(Path(yaml_data['reacfile']))
-            reactive_case = self.reactive_experiments[reactive_parameters['date']]
+            self.reactive_case = self.reactive_experiments[reactive_parameters['date']]
             self.nonreactive_axis.plot(
-                reactive_case.pressure_trace.zeroed_time,
-                reactive_case.pressure_trace.pressure,
+                self.reactive_case.pressure_trace.zeroed_time,
+                self.reactive_case.pressure_trace.pressure,
                 label=reactive_parameters['date'],
             )
 
@@ -110,6 +107,141 @@ class Condition(object):
             exp.pressure_trace.pressure,
             label=exp.experiment_parameters['date'],
         )
+
+    def create_volume_trace(self):
+        """
+        Create the volume trace based on the information in the loaded
+        yaml file.
+        """
+        yaml_data = self.load_yaml()
+        if self.reactive_case is None:
+            reactive_parameters = parse_file_name(Path(yaml_data['reacfile']))
+            try:
+                self.reactive_case = self.reactive_experiments[reactive_parameters['date']]
+            except KeyError:
+                self.reactive_case = Experiment(Path(yaml_data['reacfile']))
+                reactive_case_date = self.reactive_case.experiment_parameters['date']
+                self.reactive_experiments[reactive_case_date] = self.reactive_case
+
+        if self.nonreactive_case is None:
+            nonreactive_parameters = parse_file_name(Path(yaml_data['nonrfile']))
+            try:
+                self.nonreactive_case = self.nonreactive_experiments[nonreactive_parameters['date']]
+            except KeyError:
+                self.nonreactive_case = Experiment(Path(yaml_data['nonrfile']))
+                nonreactive_case_date = self.nonreactive_case.experiment_parameters['date']
+                self.nonreactive_experiments[nonreactive_case_date] = self.nonreactive_case
+
+        linear_fit = self.reactive_case.pressure_trace.pressure_fit(
+            comptime=yaml_data['comptime']/1000,
+        )
+        reactive_line = np.polyval(linear_fit, self.reactive_case.pressure_trace.time)
+
+        nonreactive_end_idx = (
+            self.nonreactive_case.pressure_trace.EOC_idx +
+            yaml_data['nonrend']/1000.0*self.nonreactive_case.pressure_trace.frequency
+        )
+
+        reactive_end_idx = (
+            self.reactive_case.pressure_trace.EOC_idx +
+            yaml_data['reacend']/1000.0*self.reactive_case.pressure_trace.frequency
+        )
+
+        reactive_start_point = (
+            self.reactive_case.pressure_trace.EOC_idx -
+            yaml_data['comptime']/1000.0*self.reactive_case.pressure_trace.frequency
+        )
+
+        stroke_pressure = self.reactive_case.pressure_trace.pressure[
+            (reactive_start_point):(self.reactive_case.pressure_trace.EOC_idx +
+                                    1 + yaml_data.get('reacoffs', 0))
+        ]
+
+        post_pressure = self.nonreactive_case.pressure_trace.pressure[
+            (self.nonreactive_case.pressure_trace.EOC_idx + yaml_data.get('nonroffs', 0)):(
+                nonreactive_end_idx + yaml_data.get('nonroffs', 0) - yaml_data.get('reacoffs', 0)
+            )
+        ]
+
+        print_pressure = self.reactive_case.pressure_trace.pressure[
+            (reactive_start_point):(reactive_end_idx)
+        ]
+
+        n_print_pts = len(print_pressure)
+        time = np.arange(-yaml_data['comptime']/1000.0, yaml_data['nonrend']/1000.0,
+                         1/self.reactive_case.pressure_trace.frequency)
+        stroke_volume = VolumeFromPressure(stroke_pressure, 1.0,
+                                           self.reactive_case.experiment_parameters['Tin']).volume
+        stroke_temperature = TemperatureFromPressure(
+            stroke_pressure,
+            self.reactive_case.experiment_parameters['Tin'],
+        ).temperature
+
+        post_volume = VolumeFromPressure(
+            post_pressure,
+            stroke_volume[-1],
+            stroke_temperature[-1],
+        ).volume
+
+        # The post_volume array is indexed from the second element to
+        # eliminate the duplicated element from the end of the stroke
+        # volume array.
+        self.volume = np.concatenate((stroke_volume,
+                                      post_volume[1:]))
+
+        self.computed_pressure = PressureFromVolume(
+            self.volume[::5],
+            stroke_pressure[0]*1E5,
+            self.reactive_case.experiment_parameters['Tin'],
+        ).pressure
+
+        copy('{:.4f}'.format(stroke_pressure[0]))
+
+        volout = np.vstack(
+            (time[::5] + yaml_data['comptime']/1000, self.volume[::5])
+        ).transpose()
+
+        presout = np.vstack(
+            (time[:n_print_pts:5] + yaml_data['comptime']/1000,
+             print_pressure[::5])
+        ).transpose()
+
+        self.write_output(volout, presout, self.reactive_case.experiment_parameters['Tin'])
+
+        if self.plotting:
+            if self.pressure_comparison_figure is None:
+                self.pressure_comparison_figure = plt.figure('Pressure Trace Comparison')
+                self.pressure_comparison_axis = self.pressure_comparison_figure.add_subplot(1, 1, 1)
+                m = plt.get_current_fig_manager()
+                m.window.showMaximized()
+
+            self.pressure_comparison_axis.cla()
+            self.pressure_comparison_axis.plot(
+                self.reactive_case.pressure_trace.zeroed_time,
+                self.reactive_case.pressure_trace.pressure,
+            )
+            self.pressure_comparison_axis.plot(time[:n_print_pts:5], print_pressure[::5])
+            self.pressure_comparison_axis.plot(time[::5], self.computed_pressure)
+            self.pressure_comparison_axis.plot(
+                self.reactive_case.pressure_trace.zeroed_time,
+                reactive_line,
+            )
+
+    def write_output(self, volout, presout, Tin):
+        """
+        Write the output files from the volume and pressure traces.
+        The traces are sampled every 5 points to reduce the amount
+        of required computational time. This has negligible effect on
+        the computed pressure trace. The volume trace is written in
+        `csv` format to the file `volume.csv` and the experimental
+        pressure trace is written to the file
+        `Tc__P0__T0_XXXK_pressure.txt`, where `XXX` represent the
+        initial temperature of the experiment. The user should fill in
+        the missing values into the file name after simulations are
+        completed and the values are known.
+        """
+        np.savetxt('volume.csv', volout, delimiter=',')
+        np.savetxt('Tc__P0__T0_{}K_pressure.txt'.format(Tin), presout, delimiter='\t')
 
 
 class Experiment(object):
