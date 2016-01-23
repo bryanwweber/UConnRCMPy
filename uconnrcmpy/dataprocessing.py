@@ -422,7 +422,7 @@ class Simulation(object):
         self.pressure = np.array(self.pressure)
         self.temperature = np.array(self.temperature)
         self.simulated_volume = np.array(self.simulated_volume)
-        self.derivative = self.calculate_derivative(self.time, self.pressure)
+        self.derivative = self.calculate_derivative(self.pressure, self.time)
 
     def calculate_derivative(self, dep_var, indep_var):
         """Calculate the derivative.
