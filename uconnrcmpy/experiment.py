@@ -45,14 +45,7 @@ class Condition(object):
             label=exp.experiment_parameters['date']
         )
 
-        # Plot the smoothed pressure and the smoothed derivative
-        # on a new figure every time
-        fig2 = plt.figure()
-        ax2 = fig2.add_subplot(1, 1, 1)
-        ax2.plot(exp.pressure_trace.zeroed_time, exp.pressure_trace.pressure)
-        ax2.plot(exp.pressure_trace.zeroed_time, exp.pressure_trace.smoothed_derivative/1000)
-        m = plt.get_current_fig_manager()
-        m.window.showMaximized()
+        exp.plot_pressure_trace()
 
     def plot_nonreactive_figures(self, exp):
         pass
@@ -159,3 +152,13 @@ class Experiment(object):
         tempp = self.pressure_trace.pressure[(pres_to_temp_start_idx):(self.pressure_trace.EOC_idx)]
         temperature_trace = TemperatureFromPressure(tempp, self.experiment_parameters['Tin'])
         return np.amax(temperature_trace.temperature)
+
+    def plot_pressure_trace(self):
+        # Plot the smoothed pressure and the smoothed derivative
+        # on a new figure every time
+        fig2 = plt.figure()
+        ax2 = fig2.add_subplot(1, 1, 1)
+        ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.pressure)
+        ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.smoothed_derivative/1000)
+        m = plt.get_current_fig_manager()
+        m.window.showMaximized()
