@@ -102,8 +102,8 @@ class Condition(object):
             m = plt.get_current_fig_manager()
             m.window.showMaximized()
 
-            yaml_data = self.load_yaml()
-            reactive_parameters = parse_file_name(Path(yaml_data['reacfile']))
+            reactive_file = self.load_yaml()['reacfile']
+            reactive_parameters = parse_file_name(Path(reactive_file))
             self.reactive_case = self.reactive_experiments[reactive_parameters['date']]
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time,
