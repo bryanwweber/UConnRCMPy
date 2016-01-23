@@ -6,6 +6,7 @@ from pathlib import Path
 # Third-party imports
 import numpy as np
 import matplotlib.pyplot as plt
+import yaml
 
 # Local imports
 from .utilities import parse_file_name, copy
@@ -25,6 +26,7 @@ class Condition(object):
             self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
             m = plt.get_current_fig_manager()
             m.window.showMaximized()
+            self.nonreactive_figure = None
 
     def add_experiment(self, file_name=None):
         exp = Experiment(file_name)
@@ -35,7 +37,7 @@ class Condition(object):
         else:
             self.nonreactive_experiments[exp.experiment_parameters['date']] = exp
             if self.plotting:
-                self.plot_nonreactive_figures(exp)
+                self.plot_nonreactive_figure(exp)
 
     def plot_reactive_figures(self, exp):
         # Plot the smoothed pressure and overlay future runs
@@ -47,8 +49,29 @@ class Condition(object):
 
         exp.plot_pressure_trace()
 
-    def plot_nonreactive_figures(self, exp):
-        pass
+    def plot_nonreactive_figure(self, exp):
+        if self.nonreactive_figure is None:
+            self.nonreactive_figure = plt.figure('Non-Reactive Pressure Trace Comparison')
+            self.nonreactive_axis = self.nonreactive_figure.add_subplot(1, 1, 1)
+            m = plt.get_current_fig_manager()
+            m.window.showMaximized()
+
+            with open('volume-trace.yaml') as yaml_file:
+                self.yaml_data = yaml.load(yaml_file)
+
+            reactive_parameters = parse_file_name(Path(self.yaml_data['reacfile']))
+            reactive_case = self.reactive_experiments[reactive_parameters['date']]
+            self.nonreactive_axis.plot(
+                reactive_case.pressure_trace.zeroed_time,
+                reactive_case.pressure_trace.pressure,
+                label=reactive_parameters['date'],
+            )
+
+        self.nonreactive_axis.plot(
+            exp.pressure_trace.zeroed_time,
+            exp.pressure_trace.pressure,
+            label=exp.experiment_parameters['date'],
+        )
 
 
 class Experiment(object):
