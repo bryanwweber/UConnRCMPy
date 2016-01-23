@@ -22,10 +22,7 @@ class Condition(object):
         self.nonreactive_experiments = {}
         if plotting:
             self.plotting = plotting
-            self.all_runs_figure = plt.figure('Reactive Pressure Trace Comparison')
-            self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
-            m = plt.get_current_fig_manager()
-            m.window.showMaximized()
+            self.all_runs_figure = None
             self.nonreactive_figure = None
 
     def add_experiment(self, file_name=None):
@@ -41,6 +38,12 @@ class Condition(object):
 
     def plot_reactive_figures(self, exp):
         # Plot the smoothed pressure and overlay future runs
+        if self.all_runs_figure is None:
+            self.all_runs_figure = plt.figure('Reactive Pressure Trace Comparison')
+            self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
+            m = plt.get_current_fig_manager()
+            m.window.showMaximized()
+
         self.all_runs_axis.plot(
             exp.pressure_trace.zeroed_time,
             exp.pressure_trace.pressure,
