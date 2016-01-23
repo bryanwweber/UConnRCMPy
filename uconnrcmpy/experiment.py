@@ -49,6 +49,43 @@ class Condition(object):
 
         exp.plot_pressure_trace()
 
+    def load_yaml(self):
+        """
+        Load the yaml file called `volume-trace.yml` containing the
+        information needed to construct the volume trace. All the
+        following data are required unless otherwise noted. The format
+        of the yaml file is
+
+            variable: value
+
+        * `nonrfile`: File name of the non-reactive pressure trace.
+                      Type: String
+        * `reacfile`: File name of the reactive pressure trace.
+                      Type: String
+        * `comptime`: Length of time of the compression stroke.
+                      Type: Integer
+        * `nonrend`: End time used for the produced volume trace.
+                      Type: Integer
+        * `reacend`: End time of the output reactive pressure trace.
+                      Type: Integer
+        * `reacoffs`: Offset in number of points from EOC for the
+                      reactive case. Optional, defaults to zero.
+                      Type: Integer
+        * `nonroffs`: Offset in number of points from EOC for the
+                      non-reactive case. Optional, defaults to zero.
+                      Type: Integer
+        """
+        with open('volume-trace.yaml') as yaml_file:
+            return yaml.load(yaml_file)
+
+        # self.nonrfile = Path(self.yaml_data['nonrfile'])
+        # self.reacfile = Path(self.yaml_data['reacfile'])
+        # self.comptime = self.yaml_data['comptime']
+        # self.nonrend = self.yaml_data['nonrend']
+        # self.reacend = self.yaml_data['reacend']
+        # self.reacoffs = self.yaml_data.get('reacoffs', 0)
+        # self.nonroffs = self.yaml_data.get('nonroffs', 0)
+
     def plot_nonreactive_figure(self, exp):
         if self.nonreactive_figure is None:
             self.nonreactive_figure = plt.figure('Non-Reactive Pressure Trace Comparison')
@@ -56,10 +93,8 @@ class Condition(object):
             m = plt.get_current_fig_manager()
             m.window.showMaximized()
 
-            with open('volume-trace.yaml') as yaml_file:
-                self.yaml_data = yaml.load(yaml_file)
-
-            reactive_parameters = parse_file_name(Path(self.yaml_data['reacfile']))
+            yaml_data = self.load_yaml()
+            reactive_parameters = parse_file_name(Path(yaml_data['reacfile']))
             reactive_case = self.reactive_experiments[reactive_parameters['date']]
             self.nonreactive_axis.plot(
                 reactive_case.pressure_trace.zeroed_time,
