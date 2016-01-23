@@ -101,14 +101,16 @@ class Experiment(object):
                                                         self.experiment_parameters['pin'],
                                                         self.experiment_parameters['factor'],
                                                         )
+        if self.pressure_trace.is_reactive:
+            self.ignition_delay, self.first_stage = self.calculate_ignition_delay()
 
-        self.ignition_delay, self.first_stage = self.calculate_ignition_delay()
-
-        try:
-            self.T_EOC = self.calculate_EOC_temperature()
-        except RuntimeError:
-            self.T_EOC = 0
-            print('Exception in computing the temperature at EOC')
+            try:
+                self.T_EOC = self.calculate_EOC_temperature()
+            except RuntimeError:
+                self.T_EOC = 0
+                print('Exception in computing the temperature at EOC')
+        else:
+            self.ignition_delay, self.first_stage, self.T_EOC = 0, 0, 0
 
         # Copy the relevant information to the clipboard for pasting
         # into a spreadsheet
