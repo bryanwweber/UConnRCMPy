@@ -39,7 +39,7 @@ class VoltageTrace(object):
         The voltage trace after filtering and smoothing
     """
     def __init__(self, file_path):
-        self.signal = np.genfromtxt(str(self.file_path))
+        self.signal = np.genfromtxt(str(file_path))
 
         self.time = self.signal[:, 0]
         self.frequency = np.rint(1/self.time[1])
@@ -169,7 +169,7 @@ class ExperimentalPressureTrace(object):
 
         self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
         self.derivative = self.calculate_derivative(self.pressure, self.time)
-        self.smoothed_derivative = self.smoothing(self.derivative, span=151)
+        self.smoothed_derivative = voltage_trace.smoothing(self.derivative, span=151)
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
     def pressure_fit(self, comptime=0.08):

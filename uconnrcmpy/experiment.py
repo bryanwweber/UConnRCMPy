@@ -123,10 +123,9 @@ class Experiment(object):
         return ignition_delay, first_stage
 
     def calculate_EOC_temperature(self):
-
         pres_to_temp_start_idx = self.pressure_trace.EOC_idx - 0.03*self.pressure_trace.frequency
-        tempp = self.pressure_trace.pressure[(pres_to_temp_start_idx):(self.p_EOC_idx)]
-        temperature_trace = TemperatureFromPressure(tempp, self.Tin)
+        tempp = self.pressure_trace.pressure[(pres_to_temp_start_idx):(self.pressure_trace.EOC_idx)]
+        temperature_trace = TemperatureFromPressure(tempp, self.experiment_parameters['Tin'])
         return np.amax(temperature_trace.temperature)
 
     def plot_figures(self):
