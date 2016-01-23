@@ -194,7 +194,7 @@ class Condition(object):
         # volume array.
         volume = np.concatenate((stroke_volume, post_volume[1:]))
 
-        self.computed_pressure = PressureFromVolume(
+        computed_pressure = PressureFromVolume(
             volume[::5],
             stroke_pressure[0]*1E5,
             self.reactive_case.experiment_parameters['Tin'],
@@ -230,7 +230,7 @@ class Condition(object):
                 self.reactive_case.pressure_trace.pressure,
             )
             self.pressure_comparison_axis.plot(time[:n_print_pts:5], print_pressure[::5])
-            self.pressure_comparison_axis.plot(time[::5], self.computed_pressure)
+            self.pressure_comparison_axis.plot(time[::5], computed_pressure)
             self.pressure_comparison_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time,
                 reactive_line,
