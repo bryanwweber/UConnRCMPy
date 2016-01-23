@@ -8,6 +8,8 @@ from glob import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import yaml
+import cantera as ct
+from cansen.profiles import VolumeProfile
 
 # Local imports
 from .utilities import parse_file_name, copy
@@ -17,6 +19,7 @@ from .traces import (VoltageTrace,
                      VolumeFromPressure,
                      PressureFromVolume,
                      )
+from .constants import cantera_version
 
 
 class Condition(object):
@@ -266,6 +269,9 @@ class Condition(object):
         if run_nonreactive:
             if self.nonreactive_sim is None:
                 self.nonreactive_sim = Simulation(
+                    initial_temperature=self.reactive_case.experiment_parameters['Tin'],
+                    initial_pressure=self.presout[0, 1]*1E5,
+                    volume=self.volout,
                     is_reactive=False,
                     end_temp=end_temp,
                     end_time=end_time,
@@ -273,6 +279,9 @@ class Condition(object):
             else:
                 if process_choice('nonreactive'):
                     self.nonreactive_sim = Simulation(
+                        initial_temperature=self.reactive_case.experiment_parameters['Tin'],
+                        initial_pressure=self.presout[0, 1]*1E5,
+                        volume=self.volout,
                         is_reactive=False,
                         end_temp=end_temp,
                         end_time=end_time,
@@ -283,6 +292,9 @@ class Condition(object):
         if run_reactive:
             if self.reactive_sim is None:
                 self.reactive_sim = Simulation(
+                    initial_temperature=self.reactive_case.experiment_parameters['Tin'],
+                    initial_pressure=self.presout[0, 1]*1E5,
+                    volume=self.volout,
                     is_reactive=True,
                     end_temp=end_temp,
                     end_time=end_time,
@@ -290,6 +302,9 @@ class Condition(object):
             else:
                 if process_choice('reactive'):
                     self.reactive_sim = Simulation(
+                        initial_temperature=self.reactive_case.experiment_parameters['Tin'],
+                        initial_pressure=self.presout[0, 1]*1E5,
+                        volume=self.volout,
                         is_reactive=True,
                         end_temp=end_temp,
                         end_time=end_time,
@@ -317,20 +332,20 @@ class Condition(object):
 
             self.simulation_axis.plot(self.presout[:, 0], self.presout[:, 1])
             if self.nonreactive_sim is not None:
-                self.simulation_axis.plot(self.nonreactive_sim.time, self.nonreactive_sim.pres)
+                self.simulation_axis.plot(self.nonreactive_sim.time, self.nonreactive_sim.pressure)
 
             if self.reactive_sim is not None:
-                self.simulation_axis.plot(self.reactive_sim.time, self.reactive_sim.pres)
+                self.simulation_axis.plot(self.reactive_sim.time, self.reactive_sim.pressure)
                 self.simulation_axis.plot(
                     self.reactive_sim.time,
-                    self.reactive_sim.pressure_trace.dpdt/1E6,
+                    self.reactive_sim.derivative/1E6,
                 )
 
         print_str = ''
         copy_str = ''
 
         if self.nonreactive_sim is not None:
-            T_EOC = np.amax(self.nonreactive_sim.temp)
+            T_EOC = np.amax(self.nonreactive_sim.temperature)
             print_str += '{:.0f}'.format(T_EOC)
             copy_str += '{}'.format(T_EOC)
 
@@ -338,16 +353,103 @@ class Condition(object):
             if self.nonreactive_sim is not None:
                 print_str += '\t'
                 copy_str += '\t\t\t\t'
-            ignition_idx = np.argmax(self.reactive_sim.pressure_trace.dpdt)
+            ignition_idx = np.argmax(self.reactive_sim.derivative)
+            yaml_data = self.load_yaml()
             ignition_delay = (
                 self.reactive_sim.time[ignition_idx]*1000 -
-                self.reactive_sim.comptime
+                yaml_data['comptime']
             )
             print_str += '{:.6f}'.format(ignition_delay)
             copy_str += '{}'.format(ignition_delay)
 
         print(print_str)
         copy(copy_str)
+
+
+class Simulation(object):
+    """Class for simulations of experiments."""
+
+    def __init__(self, initial_temperature, initial_pressure, volume, is_reactive,
+                 end_temp=2500., end_time=0.2):
+
+        if volume is None:
+            data = np.genfromtxt('volume.csv', delimiter=',')
+            keywords = {'vproTime': data[:, 0], 'vproVol': data[:, 1]}
+        else:
+            keywords = {'vproTime': volume[:, 0], 'vproVol': volume[:, 1]}
+
+        self.time = []
+        self.temperature = []
+        self.pressure = []
+        self.input_volume = volume
+        self.simulated_volume = []
+
+        gas = ct.Solution('species.cti')
+        gas.TP = initial_temperature, initial_pressure
+        if not is_reactive:
+            gas.set_multiplier(0)
+        reac = ct.IdealGasReactor(gas)
+        env = ct.Reservoir(ct.Solution('air.xml'))
+        ct.Wall(reac, env, A=1.0, velocity=VolumeProfile(keywords))
+        netw = ct.ReactorNet([reac])
+        netw.set_max_time_step(keywords['vproTime'][1])
+        self.time.append(netw.time)
+        self.temperature.append(reac.T)
+        self.pressure.append(gas.P/1E5)
+        self.simulated_volume.append(reac.volume)
+
+        while reac.T < end_temp and netw.time < end_time:
+            if cantera_version[1] > 2:
+                netw.step()
+            else:
+                netw.step(1)
+            self.time.append(netw.time)
+            self.temperature.append(reac.T)
+            self.pressure.append(gas.P/1E5)
+            self.simulated_volume.append(reac.volume)
+
+        self.time = np.array(self.time)
+        self.pressure = np.array(self.pressure)
+        self.temperature = np.array(self.temperature)
+        self.simulated_volume = np.array(self.simulated_volume)
+        self.derivative = self.calculate_derivative(self.time, self.pressure)
+
+    def calculate_derivative(self, dep_var, indep_var):
+        """Calculate the derivative.
+
+        Parameters
+        ----------
+        dep_var : :class:`numpy.ndarray`
+            Dependent variable (e.g., the pressure)
+        indep_var : :class:`numpy.ndarray`
+            Independent variable (e.g., the time)
+
+        Returns
+        -------
+        :class:`numpy.ndarray`
+            1-D array containing the derivative
+
+        Notes
+        -----
+        The derivative is calculated by computing the first-order
+        Lagrange polynomial fit to the point under consideration and
+        its nearest neighbors. The Lagrange polynomial is used because
+        of the unequal spacing of the simulated data.
+        """
+        m = len(dep_var)
+        ddt = np.zeros(m)
+        for i in range(1, m-2):
+            x = indep_var[i]
+            x_min = indep_var[i-1]
+            x_plu = indep_var[i+1]
+            y = dep_var[i]
+            y_min = dep_var[i-1]
+            y_plu = dep_var[i+1]
+            ddt[i] = (y_min*(x - x_plu)/((x_min - x)*(x_min - x_plu)) +
+                      y*(2*x - x_min - x_plu)/((x - x_min)*(x - x_plu)) +
+                      y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
+
+        return ddt
 
 
 class Experiment(object):
