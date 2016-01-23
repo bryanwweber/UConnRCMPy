@@ -567,7 +567,7 @@ class Experiment(object):
         m.window.showMaximized()
 
 
-def process_in_loop(path='.', plot=False):
+def process_folder(path='.', plot=False):
     p = Path(path)
     result = []
 
@@ -590,4 +590,4 @@ def process_in_loop(path='.', plot=False):
     print('Finished')
 
 if __name__ == '__main__':
-    process_in_loop()
+    process_folder()

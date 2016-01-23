@@ -17,7 +17,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'ignloop=uconnrcmpy.dataprocessing:process_in_loop',
+            'processrcmfolder=uconnrcmpy.dataprocessing:process_folder',
         ],
     },
 )
