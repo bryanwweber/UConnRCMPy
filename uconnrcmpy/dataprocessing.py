@@ -1,4 +1,4 @@
-"""Experiment Module"""
+"""Data Processing Module"""
 
 # System imports
 from pathlib import Path
@@ -23,6 +23,8 @@ from .constants import cantera_version
 
 
 class Condition(object):
+    """Class for an experimental condition"""
+
     def __init__(self, plotting=True):
         self.reactive_experiments = {}
         self.nonreactive_experiments = {}
@@ -68,29 +70,29 @@ class Condition(object):
 
     def load_yaml(self):
         """
-        Load the yaml file called `volume-trace.yml` containing the
+        Load the yaml file called ``volume-trace.yml`` containing the
         information needed to construct the volume trace. All the
         following data are required unless otherwise noted. The format
-        of the yaml file is
+        of the yaml file is::
 
             variable: value
 
-        * `nonrfile`: File name of the non-reactive pressure trace.
-                      Type: String
-        * `reacfile`: File name of the reactive pressure trace.
-                      Type: String
-        * `comptime`: Length of time of the compression stroke.
-                      Type: Integer
-        * `nonrend`: End time used for the produced volume trace.
-                      Type: Integer
-        * `reacend`: End time of the output reactive pressure trace.
-                      Type: Integer
-        * `reacoffs`: Offset in number of points from EOC for the
-                      reactive case. Optional, defaults to zero.
-                      Type: Integer
-        * `nonroffs`: Offset in number of points from EOC for the
-                      non-reactive case. Optional, defaults to zero.
-                      Type: Integer
+        * ``nonrfile``: File name of the non-reactive pressure trace.
+                        Type: String
+        * ``reacfile``: File name of the reactive pressure trace.
+                        Type: String
+        * ``comptime``: Length of time of the compression stroke.
+                        Type: Integer
+        * ``nonrend``: End time used for the produced volume trace.
+                        Type: Integer
+        * ``reacend``: End time of the output reactive pressure trace.
+                        Type: Integer
+        * ``reacoffs``: Offset in number of points from EOC for the
+                        reactive case. Optional, defaults to zero.
+                        Type: Integer
+        * ``nonroffs``: Offset in number of points from EOC for the
+                        non-reactive case. Optional, defaults to zero.
+                        Type: Integer
         """
         with open('volume-trace.yaml') as yaml_file:
             return yaml.load(yaml_file)
@@ -245,11 +247,11 @@ class Condition(object):
         The traces are sampled every 5 points to reduce the amount
         of required computational time. This has negligible effect on
         the computed pressure trace. The volume trace is written in
-        `csv` format to the file `volume.csv` and the experimental
+        ``csv`` format to the file ``volume.csv`` and the experimental
         pressure trace is written to the file
-        `Tc__P0__T0_XXXK_pressure.txt`, where `XXX` represent the
-        initial temperature of the experiment. The user should fill in
-        the missing values into the file name after simulations are
+        ``Tc__P0__T0_XXXK_pressure.txt``, where ``XXX`` represents the
+        initial temperature of the experiment. The user should fill the
+        missing values into the file name after simulations are
         completed and the values are known.
         """
         np.savetxt('volume.csv', volout, delimiter=',')
@@ -377,14 +379,50 @@ class Condition(object):
 
 
 class Simulation(object):
-    """Class for simulations of experiments."""
+    """Contains a single simulation of the experiment.
+
+    Parameters
+    ----------
+    initial_temperature : `float`
+        The initial temperature of the simulation
+    initial_pressure : `float`
+        The initial pressure of the simulation
+    volume : `numpy.ndarray` or `None`
+        The volume trace to be used for the simulation. Must be
+        supplied, but if the input value is `None`, the volume trace
+        will be read from the file ``volume.csv``. The first column
+        should be the time, the second column should be the volume.
+    is_reactive : `bool`
+        If the simulation should be reactive or non-reactive. If `False`
+        sets the Cantera reaction rate multiplier to 0.0 via the
+        `~cantera.Kinetics.set_multiplier` function.
+    end_temp : `float`, optional
+        Reactor temperature at which the simulation will be ended
+    end_time : `float`, optional
+        Time at which the simulation will be ended
+    chem_file : `str`, optional
+        String filename of the chemistry file to use
+
+    Attributes
+    ----------
+    time : `numpy.ndarray`
+        Array of simulated time values
+    temperature : `numpy.ndarray`
+        Array of simulated temperature values
+    pressure : `numpy.ndarray`
+        Array of simulated pressure values
+    input_volume : `numpy.ndarray`
+        Array of input volume values
+    simulated_volume : `numpy.ndarray`
+        Array of simulated volume values
+    """
 
     def __init__(self, initial_temperature, initial_pressure, volume, is_reactive,
-                 end_temp=2500., end_time=0.2):
+                 end_temp=2500., end_time=0.2, chem_file='species.cti'):
 
         if volume is None:
-            data = np.genfromtxt('volume.csv', delimiter=',')
-            keywords = {'vproTime': data[:, 0], 'vproVol': data[:, 1]}
+            volume = np.genfromtxt('volume.csv', delimiter=',')
+            keywords = {'vproTime': volume[:, 0], 'vproVol': volume[:, 1]}
         else:
             keywords = {'vproTime': volume[:, 0], 'vproVol': volume[:, 1]}
 
@@ -394,7 +432,7 @@ class Simulation(object):
         self.input_volume = volume
         self.simulated_volume = []
 
-        gas = ct.Solution('species.cti')
+        gas = ct.Solution(chem_file)
         gas.TP = initial_temperature, initial_pressure
         if not is_reactive:
             gas.set_multiplier(0)
@@ -429,14 +467,14 @@ class Simulation(object):
 
         Parameters
         ----------
-        dep_var : :class:`numpy.ndarray`
+        dep_var : `numpy.ndarray`
             Dependent variable (e.g., the pressure)
-        indep_var : :class:`numpy.ndarray`
+        indep_var : `numpy.ndarray`
             Independent variable (e.g., the time)
 
         Returns
         -------
-        :class:`numpy.ndarray`
+        `numpy.ndarray`
             1-D array containing the derivative
 
         Notes
@@ -467,31 +505,31 @@ class Experiment(object):
 
     Parameters
     ----------
-    file_path : :class:`pathlib.Path`, optional
+    file_path : `pathlib.Path`, optional
         If an argument is supplied, it should be an instance of
-        :class:`~pathlib.Path`. If no argument is supplied, the
+        `~pathlib.Path`. If no argument is supplied, the
         filename is read from the standard input as a string and
-        resolved into a :class:`~pathlib.Path` object.
+        resolved into a `~pathlib.Path` object.
 
     Attributes
     ----------
-    file_path : :class:`pathlib.Path`
+    file_path : `pathlib.Path`
         Object storing the file path
-    experiment_parameters : :class:`dict`
+    experiment_parameters : `dict`
         Stores the parameters of the experiment parsed from the
-        filename by :func:`parse_file_name`.
-    voltage_trace : :class:`VoltageTrace`
+        filename by `~uconnrcmpy.utilities.parse_file_name`.
+    voltage_trace : `~uconnrcmpy.traces.VoltageTrace`
         Stores the experimental voltage signal and related traces
-    pressure_trace : :class:`ExperimentalPressureTrace`
+    pressure_trace : `~uconnrcmpy.traces.ExperimentalPressureTrace`
         Stores the experimental pressure trace and its derivative
-    ignition_delay : :class:`float`
+    ignition_delay : `float`
         The overall ignition delay of the experiment. Will be zero for
         a non-reactive experiment.
-    first_stage : :class:`float`
+    first_stage : `float`
         The first stage ignition delay of the experiment. Will be zero
         for a non-reactive experiment of if there is no first-stage
         ignition.
-    T_EOC : :class:`float`
+    T_EOC : `float`
         The temperature estimated at the end of compression
     """
 
