@@ -11,9 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   dataprocessing
    traces
    utilities
-   experiment
    constants
 
 Indices and tables
