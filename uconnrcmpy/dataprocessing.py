@@ -23,7 +23,50 @@ from .constants import cantera_version
 
 
 class Condition(object):
-    """Class for an experimental condition"""
+    """Class containing all the experiments at a condition.
+
+    Parameters
+    ----------
+    plotting : `bool`, optional
+        Set to True to enable plotting when experiments are added
+
+    Attributes
+    ----------
+    reactive_experiments : `dict`
+        Dictionary of instances of class `Experiment` containing
+        reactive experiments. Indexed by the DD-Mon-YYYY-Time of the
+        experiment.
+    nonreactive_experiments : `dict`
+        Dictionary of instances of class `Experiment` containing
+        nonreactive experiments. Indexed by the DD-Mon-YYYY-Time of the
+        experiment.
+    reactive_case : `Experiment`
+        Single instance of class `Experiment` that is the closest to
+        the mean of all of the experiments.
+    nonreactive_case : `Experiment`
+        Single instance of class `Experiment` that best matches the
+        ``reactive_case``.
+    presout : `numpy.ndarray`
+        Pressure array that will be saved to the output file
+    volout : `numpy.ndarray`
+        Volume array that will be saved to the output file
+    nonreactive_sim : `Simulation`
+        Instance containing the nonreactive simulation
+    reactive_sim : `Simulation`
+        Instance containing the reactive simulation
+    plotting : `bool`
+        Set to True when plotting of experiments is enabled
+    all_runs_figure : `matplotlib.figure.Figure`
+        Figure showing all the runs at a condition
+    nonreactive_figure : `matplotlib.figure.Figure`
+        Figure showing a comparison of the nonreactive pressure trace
+        with the reactive_case
+    pressure_comparison_figure : `matplotlib.figure.Figure`
+        Comparison figure of the reactive_case pressure and the
+        pressure calculated by the volume trace routine
+    simulation_figure : `matplotlib.figure.Figure`
+        Comparison of the simulation with the reactive_case pressure
+    """
 
     def __init__(self, plotting=True):
         self.reactive_experiments = {}
@@ -34,14 +77,22 @@ class Condition(object):
         self.volout = None
         self.nonreactive_sim = None
         self.reactive_sim = None
-        if plotting:
-            self.plotting = plotting
+        self.plotting = plotting
+        if self.plotting:
             self.all_runs_figure = None
             self.nonreactive_figure = None
             self.pressure_comparison_figure = None
             self.simulation_figure = None
 
     def add_experiment(self, file_name=None):
+        """Add an experiment to the Condition.
+
+        Parameters
+        ----------
+        file_name : `str` or `None`
+            Filename of the file with the voltage trace of the
+            experiment to be added.
+        """
         exp = Experiment(file_name)
         if exp.pressure_trace.is_reactive:
             self.reactive_experiments[exp.experiment_parameters['date']] = exp
@@ -53,6 +104,18 @@ class Condition(object):
                 self.plot_nonreactive_figure(exp)
 
     def plot_reactive_figures(self, exp):
+        """Plot the reactive pressure trace on figures.
+
+        Plots the reactive pressure trace on two figures. The first is
+        a comparison of all of the processed reactive pressure traces.
+        The second plot is a comparison of the pressure trace and the
+        derivative for a single experiment.
+
+        Parameters
+        ----------
+        exp : `Experiment`
+            Experiment to plot
+        """
         # Plot the smoothed pressure and overlay future runs
         if self.all_runs_figure is None:
             self.all_runs_figure = plt.figure('Reactive Pressure Trace Comparison')
@@ -98,6 +161,16 @@ class Condition(object):
             return yaml.load(yaml_file)
 
     def plot_nonreactive_figure(self, exp):
+        """Plot the nonreactive pressure traces on a figure.
+
+        Plots the nonreactive pressure traces in comparison with the
+        reactive pressure trace. Adds additional traces each time.
+
+        Parameters
+        ----------
+        exp : `Experiment`
+            Experiment to plot
+        """
         if self.nonreactive_figure is None:
             self.nonreactive_figure = plt.figure('Non-Reactive Pressure Trace Comparison')
             self.nonreactive_axis = self.nonreactive_figure.add_subplot(1, 1, 1)
@@ -257,7 +330,21 @@ class Condition(object):
         np.savetxt('volume.csv', volout, delimiter=',')
         np.savetxt('Tc__P0__T0_{}K_pressure.txt'.format(Tin), presout, delimiter='\t')
 
-    def run_simulation(self, run_reactive=False, run_nonreactive=True, end_temp=2500, end_time=0.2):
+    def run_simulation(self, run_reactive=False, run_nonreactive=True,
+                       end_temp=2500.0, end_time=0.2):
+        """Run the simulations for this condition.
+
+        Parameters
+        ----------
+        run_reactive : `bool`, optional
+            True to run the reactive case. False by default.
+        run_nonreactive : `bool`, optional
+            True to run the nonreactive case. True by default.
+        end_temp : `float`, optional
+            Temperature at which the simulation is ended
+        end_time : `float`, optional
+            Time at which the simulation is ended.
+        """
         def process_choice(sim_type):
             choice = input('Are you sure you want to overwrite the {sim_type} simulation?'
                            'Input y or n:'.format(sim_type=sim_type))
@@ -315,6 +402,18 @@ class Condition(object):
                     print('Nothing was done')
 
     def compare_to_sim(self, run_reactive=False, run_nonreactive=True):
+        """Compare the experiments to the simulations.
+
+        Run the simulations for this condition, and if plotting is on,
+        generate the comparison plot.
+
+        Parameters
+        ----------
+        run_reactive : `bool`, optional
+            True to run the reactive comparison. False by default.
+        run_nonreactive : `bool`, optional
+            True to run the nonreactive comparison. True by default.
+        """
         if self.presout is None:
             # Load the experimental pressure trace. Try the glob function first
             # and if it fails, ask the user for help.
@@ -324,8 +423,8 @@ class Condition(object):
             self.presout = np.genfromtxt(flist[0])
 
         self.run_simulation(run_reactive, run_nonreactive)
-        # Plot the pressure traces together
 
+        # Plot the pressure traces together
         compression_time = self.load_yaml()['comptime']
 
         if self.plotting:
@@ -570,6 +669,8 @@ class Experiment(object):
             self.experiment_parameters['shims']])))
 
     def calculate_ignition_delay(self):
+        """Calculate the ignition delay from the pressure trace.
+        """
         # offset_points is an offset from the EOC to ensure that if
         # ignition is weak, the peak in dP/dt from the compression
         # stroke is not treated as the ignition event. Define points
@@ -616,6 +717,19 @@ class Experiment(object):
 
 
 def process_folder(path='.', plot=False):
+    """Process a folder of experimental files.
+
+    Process a folder containing files with reactive experiments to
+    calculate the ignition delays and copy a table with the results
+    to the clipboard.
+
+    Parameters
+    ----------
+    path : `str`, optional
+        Path to folder to be analyzed. Defaults to the current folder.
+    plot : `bool`, optional
+        True to enable plotting. False by default.
+    """
     p = Path(path)
     result = []
 
