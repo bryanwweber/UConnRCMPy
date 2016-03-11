@@ -12,6 +12,63 @@ elif platform.system() == 'Darwin':
     import subprocess
 
 
+def parse_alt_file_name(file_path):
+    """Parse the file name of an experimental trace, where the name is in an alternate format.
+
+    Parameters
+    ----------
+    file_path : :class:`pathlib.Path`
+        The Path object that contains the path of the current experimental data file.
+        The filename associated with the path should be in the following format::
+
+            'Fuel_FF_EqRatio_P.PP_PercentAr_AR_PercentN2_N2_XX_in_YY_mm_ZZZK_AAAAtorr-DD-Mon-YY-Time_Endplug_CC.txt'
+
+        where:
+
+        - ``[NR_]``: Optional non-reactive indicator
+        - ``FF``: Fuel symbol
+        - ``P.PP``: Equivalence ratio to two decimal places
+        - ``AR``: Percent of argon in the oxidizer
+        - ``N2``: Percent of nitrogen in the oxidizer
+        - ``XX``: inches of spacers
+        - ``YY``: millimeters of shims
+        - ``ZZZ``: Initial temperature in Kelvin
+        - ``AAAA``: Initial pressure in Torr
+        - ``BBB``: Multiplication factor set on the charge amplifier
+        - ``DD-Mon-YY-Time``: Day, Month, Year, and Time of experiment
+        - ``CC``: ``HC`` or ``LC`` to indicate the high clearance or
+                  low clearance endplug, respectively
+
+    Returns
+    -------
+    :class:`dict`
+        Dictionary containing the parameters of the experiment with the
+        following names:
+
+        - ``spacers``: Inches of spacers
+        - ``shims``: Millimeters of shims
+        - ``Tin``: Initial temperature in Kelvin
+        - ``pin``: Initial pressure in Torr
+        - ``time_of_day``: Time of day of the experiment
+        - ``date``: Date of the experiment
+
+    """
+    name_parts = {}
+    fname = file_path.name.lstrip('NR_')
+    fname = fname.rstrip('.txt')
+    name_split = fname.split('_')
+    name_split_end = name_split[13].split('-', maxsplit=1)
+    data_date = datetime.strptime(name_split_end[1], '%d-%b-%y-%H%M')
+
+    name_parts['spacers'] = int(name_split[8])/10
+    name_parts['shims'] = int(name_split[10])
+    name_parts['Tin'] = int(name_split[12][:-1])
+    name_parts['pin'] = int(name_split_end[0].rstrip('torr'))
+    name_parts['time_of_day'] = data_date.strftime('%H%M')
+    name_parts['date'] = data_date.strftime('%d-%b-%H%M')
+    return name_parts
+
+
 def parse_file_name(file_path):
     """Parse the file name of an experimental trace.
 
