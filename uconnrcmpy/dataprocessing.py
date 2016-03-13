@@ -660,6 +660,17 @@ class Experiment(object):
     """
 
     def __init__(self, file_path=None):
+        self.resolve_file_path(file_path)
+        self.experiment_parameters = parse_file_name(self.file_path)
+        self.voltage_trace = VoltageTrace(self.file_path)
+        self.pressure_trace = ExperimentalPressureTrace(self.voltage_trace,
+                                                        self.experiment_parameters['pin'],
+                                                        self.experiment_parameters['factor'],
+                                                        )
+        self.process_pressure_trace()
+        self.copy_to_clipboard()
+
+    def resolve_file_path(self, file_path=None):
         if file_path is None:
             filename = input('Filename: ')
             try:
@@ -670,12 +681,7 @@ class Experiment(object):
         else:
             self.file_path = file_path.resolve()
 
-        self.experiment_parameters = parse_file_name(self.file_path)
-        self.voltage_trace = VoltageTrace(self.file_path)
-        self.pressure_trace = ExperimentalPressureTrace(self.voltage_trace,
-                                                        self.experiment_parameters['pin'],
-                                                        self.experiment_parameters['factor'],
-                                                        )
+    def process_pressure_trace(self):
         if self.pressure_trace.is_reactive:
             self.ignition_delay, self.first_stage = self.calculate_ignition_delay()
 
@@ -687,6 +693,7 @@ class Experiment(object):
         else:
             self.ignition_delay, self.first_stage, self.T_EOC = 0, 0, 0
 
+    def copy_to_clipboard(self):
         # Copy the relevant information to the clipboard for pasting
         # into a spreadsheet
         copy('\t'.join(map(str, [
