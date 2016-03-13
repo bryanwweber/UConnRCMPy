@@ -750,6 +750,17 @@ class Experiment(object):
         m.window.showMaximized()
 
 
+class AltExperiment(Experiment):
+    """Contains all the information of a single alternate RCM experiment
+    """
+    def __init__(self, file_path=None):
+        self.resolve_file_path(file_path)
+        self.experiment_parameters = parse_alt_file_name(self.file_path)
+        self.pressure_trace = AltExperimentalPressureTrace(self.file_path)
+        self.process_pressure_trace()
+        self.copy_to_clipboard()
+
+
 def process_folder(path='.', plot=False):
     """Process a folder of experimental files.
 
