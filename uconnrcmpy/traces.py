@@ -267,6 +267,26 @@ class ExperimentalPressureTrace(object):
         return ddt
 
 
+class AltExperimentalPressureTrace(ExperimentalPressureTrace):
+    """Process an alternate experimental pressure trace.
+
+    These pressure traces do not have an associated voltage trace.
+    """
+    def __init__(self, file_path):
+        self.signal = np.genfromtxt(str(file_path))
+
+        self.time = self.signal[:, 0]
+        self.frequency = np.rint(1/self.time[1])
+
+        self.filtered_pressure = VoltageTrace.filtering(self, self.signal[:, 1])
+        self.pressure = VoltageTrace.smoothing(self, self.filtered_pressure)
+
+        self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
+        self.derivative = self.calculate_derivative(self.pressure, self.time)
+        self.smoothed_derivative = VoltageTrace.smoothing(self, self.derivative, span=151)
+        self.zeroed_time = self.time - self.time[self.EOC_idx]
+
+
 class PressureFromVolume(object):
     """Create a pressure trace given a volume trace.
 
