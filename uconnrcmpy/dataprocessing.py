@@ -12,9 +12,10 @@ import cantera as ct
 from cansen.profiles import VolumeProfile
 
 # Local imports
-from .utilities import parse_file_name, copy
+from .utilities import parse_file_name, parse_alt_file_name, copy
 from .traces import (VoltageTrace,
                      ExperimentalPressureTrace,
+                     AltExperimentalPressureTrace,
                      TemperatureFromPressure,
                      VolumeFromPressure,
                      PressureFromVolume,
@@ -475,6 +476,32 @@ class Condition(object):
 
         print(print_str)
         copy(copy_str)
+
+
+class AltCondition(Condition):
+    """Class containing all of the alternate experiments at a condition
+    """
+    def __init__(self, plotting=True):
+        super().__init__(plotting)
+
+    def add_experiment(self, file_name=None):
+        """Add an experiment to the Condition.
+
+        Parameters
+        ----------
+        file_name : `str` or `None`
+            Filename of the file with the voltage trace of the
+            experiment to be added.
+        """
+        exp = AltExperiment(file_name)
+        if exp.pressure_trace.is_reactive:
+            self.reactive_experiments[exp.experiment_parameters['date']] = exp
+            if self.plotting:
+                self.plot_reactive_figures(exp)
+        else:
+            self.nonreactive_experiments[exp.experiment_parameters['date']] = exp
+            if self.plotting:
+                self.plot_nonreactive_figure(exp)
 
 
 class Simulation(object):
