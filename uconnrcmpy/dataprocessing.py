@@ -3,6 +3,7 @@
 # System imports
 from pathlib import Path
 from glob import glob
+import platform
 
 # Third-party imports
 import numpy as np
@@ -121,8 +122,9 @@ class Condition(object):
         if self.all_runs_figure is None:
             self.all_runs_figure = plt.figure('Reactive Pressure Trace Comparison')
             self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
-            m = plt.get_current_fig_manager()
-            m.window.showMaximized()
+            if platform.system() == 'Windows':
+                m = plt.get_current_fig_manager()
+                m.window.showMaximized()
 
         self.all_runs_axis.plot(
             exp.pressure_trace.zeroed_time,
@@ -175,8 +177,9 @@ class Condition(object):
         if self.nonreactive_figure is None:
             self.nonreactive_figure = plt.figure('Non-Reactive Pressure Trace Comparison')
             self.nonreactive_axis = self.nonreactive_figure.add_subplot(1, 1, 1)
-            m = plt.get_current_fig_manager()
-            m.window.showMaximized()
+            if platform.system() == 'Windows':
+                m = plt.get_current_fig_manager()
+                m.window.showMaximized()
 
             reactive_file = self.load_yaml()['reacfile']
             reactive_parameters = parse_file_name(Path(reactive_file))
@@ -300,8 +303,9 @@ class Condition(object):
             if self.pressure_comparison_figure is None:
                 self.pressure_comparison_figure = plt.figure('Pressure Trace Comparison')
                 self.pressure_comparison_axis = self.pressure_comparison_figure.add_subplot(1, 1, 1)
-                m = plt.get_current_fig_manager()
-                m.window.showMaximized()
+                if platform.system() == 'Windows':
+                    m = plt.get_current_fig_manager()
+                    m.window.showMaximized()
 
             self.pressure_comparison_axis.cla()
             self.pressure_comparison_axis.plot(
@@ -432,8 +436,9 @@ class Condition(object):
             if self.simulation_figure is None:
                 self.simulation_figure = plt.figure('Simulation Comparison')
                 self.simulation_axis = self.simulation_figure.add_subplot(1, 1, 1)
-                m = plt.get_current_fig_manager()
-                m.window.showMaximized()
+                if platform.system() == 'Windows':
+                    m = plt.get_current_fig_manager()
+                    m.window.showMaximized()
 
             self.simulation_axis.plot(
                 self.presout[:, 0]*1000 - compression_time,
@@ -746,8 +751,9 @@ class Experiment(object):
         ax2 = fig2.add_subplot(1, 1, 1)
         ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.pressure)
         ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.smoothed_derivative/1000)
-        m = plt.get_current_fig_manager()
-        m.window.showMaximized()
+        if platform.system() == 'Windows':
+            m = plt.get_current_fig_manager()
+            m.window.showMaximized()
 
 
 class AltExperiment(Experiment):
