@@ -687,9 +687,9 @@ class Experiment(object):
 
             try:
                 self.T_EOC = self.calculate_EOC_temperature()
-            except RuntimeError:
+            except RuntimeError as e:
                 self.T_EOC = 0
-                print('Exception in computing the temperature at EOC')
+                print('Exception in computing the temperature at EOC', e)
         else:
             self.ignition_delay, self.first_stage, self.T_EOC = 0, 0, 0
 
