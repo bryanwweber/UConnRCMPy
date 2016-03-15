@@ -802,5 +802,43 @@ def process_folder(path='.', plot=False):
     copy('\n'.join(sorted(result)))
     print('Finished')
 
+
+def process_alt_folder(path='.', plot=False):
+    """Process a folder of alternative experimental files.
+
+    Process a folder containing files with reactive experiments to
+    calculate the ignition delays and copy a table with the results
+    to the clipboard.
+
+    Parameters
+    ----------
+    path : `str`, optional
+        Path to folder to be analyzed. Defaults to the current folder.
+    plot : `bool`, optional
+        True to enable plotting. False by default.
+    """
+    p = Path(path)
+    result = []
+
+    if plot:
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+    for f in p.glob('Fuel_MF*.txt'):
+        if 'NR' in f.name:
+            continue
+        print(f)
+        case = AltExperiment(f.resolve())
+        result.append('\t'.join(map(str, [
+            case.experiment_parameters['time_of_day'], case.experiment_parameters['pin'],
+            case.experiment_parameters['Tin'], case.pressure_trace.p_EOC, case.ignition_delay,
+            case.first_stage, case.T_EOC, case.experiment_parameters['spacers'],
+            case.experiment_parameters['shims'], f.name])))
+        if plot:
+            ax.plot(case.pressure_trace.zeroed_time, case.pressure_trace.pressure, label=case.experiment_parameters['date'])
+
+    copy('\n'.join(sorted(result)))
+    print('Finished')
+
 if __name__ == '__main__':
     process_folder()
