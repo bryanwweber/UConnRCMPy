@@ -4,6 +4,7 @@
 from pathlib import Path
 from glob import glob
 import platform
+from datetime import datetime
 
 # Third-party imports
 import numpy as np
@@ -13,7 +14,7 @@ import cantera as ct
 from cansen.profiles import VolumeProfile
 
 # Local imports
-from .utilities import parse_file_name, parse_alt_file_name, copy
+from .utilities import copy
 from .traces import (VoltageTrace,
                      ExperimentalPressureTrace,
                      AltExperimentalPressureTrace,
@@ -97,11 +98,11 @@ class Condition(object):
         """
         exp = Experiment(file_name)
         if exp.pressure_trace.is_reactive:
-            self.reactive_experiments[exp.experiment_parameters['date']] = exp
+            self.reactive_experiments[exp.file_path.name] = exp
             if self.plotting:
                 self.plot_reactive_figures(exp)
         else:
-            self.nonreactive_experiments[exp.experiment_parameters['date']] = exp
+            self.nonreactive_experiments[exp.file_path.name] = exp
             if self.plotting:
                 self.plot_nonreactive_figure(exp)
 
@@ -182,12 +183,11 @@ class Condition(object):
                 m.window.showMaximized()
 
             reactive_file = self.load_yaml()['reacfile']
-            reactive_parameters = parse_file_name(Path(reactive_file))
-            self.reactive_case = self.reactive_experiments[reactive_parameters['date']]
+            self.reactive_case = self.reactive_experiments[reactive_file]
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time,
                 self.reactive_case.pressure_trace.pressure,
-                label=reactive_parameters['date'],
+                label=self.reactive_case.experiment_parameters['date'],
             )
 
         self.nonreactive_axis.plot(
@@ -203,22 +203,24 @@ class Condition(object):
         """
         yaml_data = self.load_yaml()
         if self.reactive_case is None:
-            reactive_parameters = parse_file_name(Path(yaml_data['reacfile']))
             try:
-                self.reactive_case = self.reactive_experiments[reactive_parameters['date']]
+                self.reactive_case = self.reactive_experiments[yaml_data['reacfile']]
             except KeyError:
-                self.reactive_case = Experiment(Path(yaml_data['reacfile']))
-                reactive_case_date = self.reactive_case.experiment_parameters['date']
-                self.reactive_experiments[reactive_case_date] = self.reactive_case
+                plotting_old = self.plotting
+                self.plotting = False
+                self.add_experiment(Path(yaml_data['reacfile']))
+                self.reactive_case = self.reactive_experiments[yaml_data['reacfile']]
+                self.plotting = plotting_old
 
         if self.nonreactive_case is None:
-            nonreactive_parameters = parse_file_name(Path(yaml_data['nonrfile']))
             try:
-                self.nonreactive_case = self.nonreactive_experiments[nonreactive_parameters['date']]
+                self.nonreactive_case = self.nonreactive_experiments[yaml_data['nonrfile']]
             except KeyError:
-                self.nonreactive_case = Experiment(Path(yaml_data['nonrfile']))
-                nonreactive_case_date = self.nonreactive_case.experiment_parameters['date']
-                self.nonreactive_experiments[nonreactive_case_date] = self.nonreactive_case
+                plotting_old = self.plotting
+                self.plotting = False
+                self.add_experiment(Path(yaml_data['nonrfile']))
+                self.nonreactive_case = self.reactive_experiments[yaml_data['nonrfile']]
+                self.plotting = plotting_old
 
         linear_fit = self.reactive_case.pressure_trace.pressure_fit(
             comptime=yaml_data['comptime']/1000,
@@ -486,8 +488,6 @@ class Condition(object):
 class AltCondition(Condition):
     """Class containing all of the alternate experiments at a condition
     """
-    def __init__(self, plotting=True):
-        super().__init__(plotting)
 
     def add_experiment(self, file_name=None):
         """Add an experiment to the Condition.
@@ -500,11 +500,11 @@ class AltCondition(Condition):
         """
         exp = AltExperiment(file_name)
         if exp.pressure_trace.is_reactive:
-            self.reactive_experiments[exp.experiment_parameters['date']] = exp
+            self.reactive_experiments[exp.file_path.name] = exp
             if self.plotting:
                 self.plot_reactive_figures(exp)
         else:
-            self.nonreactive_experiments[exp.experiment_parameters['date']] = exp
+            self.nonreactive_experiments[exp.file_path.name] = exp
             if self.plotting:
                 self.plot_nonreactive_figure(exp)
 
@@ -666,7 +666,7 @@ class Experiment(object):
 
     def __init__(self, file_path=None):
         self.resolve_file_path(file_path)
-        self.experiment_parameters = parse_file_name(self.file_path)
+        self.experiment_parameters = self.parse_file_name(self.file_path)
         self.voltage_trace = VoltageTrace(self.file_path)
         self.pressure_trace = ExperimentalPressureTrace(self.voltage_trace,
                                                         self.experiment_parameters['pin'],
@@ -674,6 +674,58 @@ class Experiment(object):
                                                         )
         self.process_pressure_trace()
         self.copy_to_clipboard()
+
+    def parse_file_name(self, file_path):
+        """Parse the file name of an experimental trace.
+
+        Parameters
+        ----------
+        file_path : :class:`pathlib.Path`
+            The Path object that contains the path of the current experimental data file.
+            The filename associated with the path should be in the following format::
+
+                [NR_]XX_in_YY_mm_ZZZK-AAAAt-BBBx-DD-Mon-YY-Time.txt
+
+            where:
+
+            - ``[NR_]``: Optional non-reactive indicator
+            - ``XX``: inches of spacers
+            - ``YY``: millimeters of shims
+            - ``ZZZ``: Initial temperature in Kelvin
+            - ``AAAA``: Initial pressure in Torr
+            - ``BBB``: Multiplication factor set on the charge amplifier
+            - ``DD-Mon-YY-Time``: Day, Month, Year, and Time of experiment
+
+        Returns
+        -------
+        :class:`dict`
+            Dictionary containing the parameters of the experiment with the
+            following names:
+
+            - ``spacers``: Inches of spacers
+            - ``shims``: Millimeters of shims
+            - ``Tin``: Initial temperature in Kelvin
+            - ``pin``: Initial pressure in Torr
+            - ``factor``: Multiplication factor set on the charge amplifier
+            - ``time_of_day``: Time of day of the experiment
+            - ``date``: Date of the experiment
+
+        """
+        name_parts = {}
+        fname = file_path.name.lstrip('NR_')
+        fname = fname.rstrip('.txt')
+        name_split = fname.split('_')
+        name_split_end = name_split[4].split('-', maxsplit=3)
+        data_date = datetime.strptime(name_split_end[3], '%d-%b-%y-%H%M')
+
+        name_parts['spacers'] = int(name_split[0])/10
+        name_parts['shims'] = int(name_split[2])
+        name_parts['Tin'] = int(name_split_end[0][:-1])
+        name_parts['pin'] = int(name_split_end[1][:-1])
+        name_parts['factor'] = int(name_split_end[2][:-1])
+        name_parts['time_of_day'] = data_date.strftime('%H%M')
+        name_parts['date'] = data_date.strftime('%d-%b-%H%M')
+        return name_parts
 
     def resolve_file_path(self, file_path=None):
         if file_path is None:
@@ -761,10 +813,69 @@ class AltExperiment(Experiment):
     """
     def __init__(self, file_path=None):
         self.resolve_file_path(file_path)
-        self.experiment_parameters = parse_alt_file_name(self.file_path)
+        self.experiment_parameters = self.parse_file_name(self.file_path)
         self.pressure_trace = AltExperimentalPressureTrace(self.file_path)
         self.process_pressure_trace()
         self.copy_to_clipboard()
+
+    def parse_file_name(self, file_path):
+        """Parse the file name of an experimental trace, where the name is in an alternate format.
+
+        Parameters
+        ----------
+        file_path : :class:`pathlib.Path`
+            The Path object that contains the path of the current experimental data file.
+            The filename associated with the path should be in the following format::
+
+                'Fuel_FF_EqRatio_P.PP_PercentAr_AR_PercentN2_N2_[NR_]XX_in_YY_mm_ZZZK_AAAAtorr-DD-Mon-YY-Time_Endplug_CC.txt'
+
+            where:
+
+            - ``[NR_]``: Optional non-reactive indicator
+            - ``FF``: Fuel symbol
+            - ``P.PP``: Equivalence ratio to two decimal places
+            - ``AR``: Percent of argon in the oxidizer
+            - ``N2``: Percent of nitrogen in the oxidizer
+            - ``XX``: inches of spacers
+            - ``YY``: millimeters of shims
+            - ``ZZZ``: Initial temperature in Kelvin
+            - ``AAAA``: Initial pressure in Torr
+            - ``BBB``: Multiplication factor set on the charge amplifier
+            - ``DD-Mon-YY-Time``: Day, Month, Year, and Time of experiment
+            - ``CC``: ``HC`` or ``LC`` to indicate the high clearance or
+                      low clearance endplug, respectively
+
+        Returns
+        -------
+        :class:`dict`
+            Dictionary containing the parameters of the experiment with the
+            following names:
+
+            - ``spacers``: Inches of spacers
+            - ``shims``: Millimeters of shims
+            - ``Tin``: Initial temperature in Kelvin
+            - ``pin``: Initial pressure in Torr
+            - ``time_of_day``: Time of day of the experiment
+            - ``date``: Date of the experiment
+
+        """
+        name_parts = {}
+        fname = file_path.name.rstrip('.txt')
+        name_split = fname.split('_')
+        try:
+            name_split.remove('NR')
+        except ValueError:
+            pass
+        name_split_end = name_split[13].split('-', maxsplit=1)
+        data_date = datetime.strptime(name_split_end[1], '%d-%b-%y-%H%M')
+
+        name_parts['spacers'] = int(name_split[8])/10
+        name_parts['shims'] = int(name_split[10])
+        name_parts['Tin'] = int(name_split[12][:-1])
+        name_parts['pin'] = int(name_split_end[0].rstrip('torr'))
+        name_parts['time_of_day'] = data_date.strftime('%H%M')
+        name_parts['date'] = data_date.strftime('%d-%b-%H%M')
+        return name_parts
 
 
 def process_folder(path='.', plot=False):
