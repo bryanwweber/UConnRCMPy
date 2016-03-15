@@ -319,7 +319,7 @@ class PressureFromVolume(object):
     def __init__(self, volume, p_initial, T_initial=None, chem_file='species.cti'):
         gas = ct.Solution(chem_file)
         if cantera_version[1] > 2:
-            gas.DP = 1.0/volume[0], p_initial*one_bar_in_pa
+            gas.DP = 1.0/volume[0], p_initial
         elif T_initial is None:
             raise RuntimeError("T_initial must be provided for this version of Cantera.")
         else:
