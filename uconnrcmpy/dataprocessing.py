@@ -708,8 +708,8 @@ class Experiment(object):
             - ``pin``: Initial pressure in Torr
             - ``factor``: Multiplication factor set on the charge amplifier
             - ``time_of_day``: Time of day of the experiment
-            - ``date``: Date of the experiment
-
+            - ``date``: Date of the experiment with the time
+            - ``date_year``: Date of the experiment with the year
         """
         name_parts = {}
         fname = file_path.name.lstrip('NR_')
@@ -725,6 +725,7 @@ class Experiment(object):
         name_parts['factor'] = int(name_split_end[2][:-1])
         name_parts['time_of_day'] = data_date.strftime('%H%M')
         name_parts['date'] = data_date.strftime('%d-%b-%H%M')
+        name_parts['date_year'] = data_date.strftime('%d-%b-%y')
         return name_parts
 
     def resolve_file_path(self, file_path=None):
@@ -856,8 +857,8 @@ class AltExperiment(Experiment):
             - ``Tin``: Initial temperature in Kelvin
             - ``pin``: Initial pressure in Torr
             - ``time_of_day``: Time of day of the experiment
-            - ``date``: Date of the experiment
-
+            - ``date``: Date of the experiment with the time
+            - ``date_year``: Date of the experiment with the year
         """
         name_parts = {}
         fname = file_path.name.rstrip('.txt')
@@ -875,6 +876,7 @@ class AltExperiment(Experiment):
         name_parts['pin'] = int(name_split_end[0].rstrip('torr'))
         name_parts['time_of_day'] = data_date.strftime('%H%M')
         name_parts['date'] = data_date.strftime('%d-%b-%H%M')
+        name_parts['date_year'] = data_date.strftime('%d-%b-%y')
         return name_parts
 
 
@@ -941,10 +943,10 @@ def process_alt_folder(path='.', plot=False):
         print(f)
         case = AltExperiment(f.resolve())
         result.append('\t'.join(map(str, [
-            case.experiment_parameters['time_of_day'], case.experiment_parameters['pin'],
-            case.experiment_parameters['Tin'], case.pressure_trace.p_EOC, case.ignition_delay,
-            case.first_stage, case.T_EOC, case.experiment_parameters['spacers'],
-            case.experiment_parameters['shims'], f.name])))
+            case.experiment_parameters['date_year'], case.experiment_parameters['time_of_day'],
+            case.experiment_parameters['pin'], case.experiment_parameters['Tin'],
+            case.pressure_trace.p_EOC, case.ignition_delay, case.first_stage, case.T_EOC,
+            case.experiment_parameters['spacers'], case.experiment_parameters['shims'], f.name])))
         if plot:
             ax.plot(case.pressure_trace.zeroed_time, case.pressure_trace.pressure, label=case.experiment_parameters['date'])
 
