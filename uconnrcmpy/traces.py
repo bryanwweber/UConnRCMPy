@@ -316,14 +316,9 @@ class PressureFromVolume(object):
     setting the volume and the entropy according to an isentropic
     process using the given volume trace.
     """
-    def __init__(self, volume, p_initial, T_initial=None, chem_file='species.cti'):
+    def __init__(self, volume, p_initial, T_initial, chem_file='species.cti'):
         gas = ct.Solution(chem_file)
-        if cantera_version[1] > 2:
-            gas.DP = 1.0/volume[0], p_initial
-        elif T_initial is None:
-            raise RuntimeError("T_initial must be provided for this version of Cantera.")
-        else:
-            gas.TP = T_initial, p_initial
+        gas.TP = T_initial, p_initial
         initial_volume = gas.volume_mass
         initial_entropy = gas.entropy_mass
         self.pressure = np.zeros((len(volume)))
@@ -366,14 +361,9 @@ class VolumeFromPressure(object):
     and the entropy to be constant. The volume is computed by the
     isentropic relationship described above.
     """
-    def __init__(self, pressure, v_initial, T_initial=None, chem_file='species.cti'):
+    def __init__(self, pressure, v_initial, T_initial, chem_file='species.cti'):
         gas = ct.Solution(chem_file)
-        if cantera_version[1] > 2:
-            gas.DP = 1.0/v_initial, pressure[0]*one_bar_in_pa
-        elif T_initial is None:
-            raise RuntimeError("T_initial must be provided for this version of Cantera.")
-        else:
-            gas.TP = T_initial, pressure[0]*one_bar_in_pa
+        gas.TP = T_initial, pressure[0]*one_bar_in_pa
         initial_entropy = gas.entropy_mass
         initial_density = gas.density
         self.volume = np.zeros((len(pressure)))
