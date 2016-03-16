@@ -8,8 +8,7 @@ import cantera as ct
 from scipy import signal as sig
 
 # Local imports
-from .constants import (cantera_version,
-                        one_atm_in_bar,
+from .constants import (one_atm_in_bar,
                         one_atm_in_torr,
                         one_bar_in_pa,
                         )
