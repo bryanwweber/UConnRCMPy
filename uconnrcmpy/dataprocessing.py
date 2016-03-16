@@ -219,7 +219,7 @@ class Condition(object):
                 plotting_old = self.plotting
                 self.plotting = False
                 self.add_experiment(Path(yaml_data['nonrfile']))
-                self.nonreactive_case = self.reactive_experiments[yaml_data['nonrfile']]
+                self.nonreactive_case = self.nonreactive_experiments[yaml_data['nonrfile']]
                 self.plotting = plotting_old
 
         linear_fit = self.reactive_case.pressure_trace.pressure_fit(
