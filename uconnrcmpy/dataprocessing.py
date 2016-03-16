@@ -910,7 +910,8 @@ def process_folder(path='.', plot=False):
             case.first_stage, case.T_EOC, case.experiment_parameters['spacers'],
             case.experiment_parameters['shims']])))
         if plot:
-            ax.plot(case.zeroed_time, case.pressure, label=case.experiment_parameters['date'])
+            ax.plot(case.pressure_trace.zeroed_time, case.pressure_trace.pressure,
+                    label=case.experiment_parameters['date'])
 
     copy('\n'.join(sorted(result)))
     print('Finished')
@@ -948,7 +949,8 @@ def process_alt_folder(path='.', plot=False):
             case.pressure_trace.p_EOC, case.ignition_delay, case.first_stage, case.T_EOC,
             case.experiment_parameters['spacers'], case.experiment_parameters['shims'], f.name])))
         if plot:
-            ax.plot(case.pressure_trace.zeroed_time, case.pressure_trace.pressure, label=case.experiment_parameters['date'])
+            ax.plot(case.pressure_trace.zeroed_time, case.pressure_trace.pressure,
+                    label=case.experiment_parameters['date'])
 
     copy('\n'.join(sorted(result)))
     print('Finished')
