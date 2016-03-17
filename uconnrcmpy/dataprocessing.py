@@ -815,7 +815,8 @@ class AltExperiment(Experiment):
     def __init__(self, file_path=None):
         self.resolve_file_path(file_path)
         self.experiment_parameters = self.parse_file_name(self.file_path)
-        self.pressure_trace = AltExperimentalPressureTrace(self.file_path)
+        self.pressure_trace = AltExperimentalPressureTrace(self.file_path,
+                                                           self.experiment_parameters['pin'])
         self.process_pressure_trace()
         self.copy_to_clipboard()
 
