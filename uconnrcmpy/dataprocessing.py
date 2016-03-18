@@ -190,6 +190,15 @@ class Condition(object):
                 label=self.reactive_case.experiment_parameters['date'],
             )
 
+            linear_fit = self.reactive_case.pressure_trace.pressure_fit(
+                comptime=self.load_yaml()['comptime']/1000,
+            )
+            reactive_line = np.polyval(linear_fit, self.reactive_case.pressure_trace.time)
+            self.nonreactive_axis.plot(
+                self.reactive_case.pressure_trace.zeroed_time,
+                reactive_line,
+            )
+
         self.nonreactive_axis.plot(
             exp.pressure_trace.zeroed_time,
             exp.pressure_trace.pressure,
@@ -221,11 +230,6 @@ class Condition(object):
                 self.add_experiment(Path(yaml_data['nonrfile']))
                 self.nonreactive_case = self.nonreactive_experiments[yaml_data['nonrfile']]
                 self.plotting = plotting_old
-
-        linear_fit = self.reactive_case.pressure_trace.pressure_fit(
-            comptime=yaml_data['comptime']/1000,
-        )
-        reactive_line = np.polyval(linear_fit, self.reactive_case.pressure_trace.time)
 
         nonreactive_end_idx = (
             self.nonreactive_case.pressure_trace.EOC_idx +
@@ -316,6 +320,10 @@ class Condition(object):
             )
             self.pressure_comparison_axis.plot(time[:n_print_pts:5], print_pressure[::5])
             self.pressure_comparison_axis.plot(time[::5], computed_pressure)
+            linear_fit = self.reactive_case.pressure_trace.pressure_fit(
+                comptime=yaml_data['comptime']/1000,
+            )
+            reactive_line = np.polyval(linear_fit, self.reactive_case.pressure_trace.time)
             self.pressure_comparison_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time,
                 reactive_line,
