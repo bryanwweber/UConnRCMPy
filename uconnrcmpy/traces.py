@@ -285,7 +285,7 @@ class AltExperimentalPressureTrace(ExperimentalPressureTrace):
 
         self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
         self.derivative = self.calculate_derivative(self.pressure, self.time)
-        self.smoothed_derivative = VoltageTrace.smoothing(self, self.derivative, span=151)
+        self.smoothed_derivative = VoltageTrace.smoothing(self, self.derivative, span=21)
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
 
