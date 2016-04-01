@@ -232,17 +232,17 @@ class Condition(object):
                 self.plotting = plotting_old
 
         nonreactive_end_idx = (
-            self.nonreactive_case.pressure_trace.EOC_idx +
+            self.nonreactive_case.pressure_trace.EOC_idx + yaml_data.get('nonroffs', 0) +
             yaml_data['nonrend']/1000.0*self.nonreactive_case.pressure_trace.frequency
         )
 
         reactive_end_idx = (
-            self.reactive_case.pressure_trace.EOC_idx +
+            self.reactive_case.pressure_trace.EOC_idx + yaml_data.get('reacoffs', 0) +
             yaml_data['reacend']/1000.0*self.reactive_case.pressure_trace.frequency
         )
 
         reactive_start_point = (
-            self.reactive_case.pressure_trace.EOC_idx -
+            self.reactive_case.pressure_trace.EOC_idx + yaml_data.get('reacoffs', 0) -
             yaml_data['comptime']/1000.0*self.reactive_case.pressure_trace.frequency
         )
 
@@ -253,7 +253,7 @@ class Condition(object):
 
         post_pressure = self.nonreactive_case.pressure_trace.pressure[
             (self.nonreactive_case.pressure_trace.EOC_idx + yaml_data.get('nonroffs', 0)):(
-                nonreactive_end_idx + yaml_data.get('nonroffs', 0) - yaml_data.get('reacoffs', 0)
+                nonreactive_end_idx
             )
         ]
 
@@ -315,7 +315,7 @@ class Condition(object):
 
             self.pressure_comparison_axis.cla()
             self.pressure_comparison_axis.plot(
-                self.reactive_case.pressure_trace.zeroed_time,
+                self.reactive_case.pressure_trace.zeroed_time - yaml_data.get('reacoffs', 0)/self.reactive_case.pressure_trace.frequency,
                 self.reactive_case.pressure_trace.pressure,
             )
             self.pressure_comparison_axis.plot(time[:n_print_pts:5], print_pressure[::5])
