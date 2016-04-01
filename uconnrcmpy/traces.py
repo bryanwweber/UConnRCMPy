@@ -212,7 +212,7 @@ class ExperimentalPressureTrace(object):
         -----
         The EOC is found by moving backwards from the maximum pressure
         point and testing the values of the pressure. When the test
-        value becomes less than the previous pressure, we have reached
+        value becomes greater than the previous pressure, we have reached
         the minimum pressure before ignition, in the case of a reactive
         experiment. Then, the EOC is the maximum of the pressure before
         this minimum point. If the pressure at the minimum is close to
