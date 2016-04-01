@@ -223,7 +223,7 @@ class ExperimentalPressureTrace(object):
         max_p = np.amax(self.pressure)
         max_p_idx = np.argmax(self.pressure)
         min_p_idx = max_p_idx - 100
-        while self.pressure[min_p_idx] >= self.pressure[min_p_idx - 100]:
+        while self.pressure[min_p_idx] >= self.pressure[min_p_idx - 50]:
             min_p_idx -= 1
 
         p_EOC = np.amax(self.pressure[0:min_p_idx])
