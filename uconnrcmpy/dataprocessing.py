@@ -314,8 +314,10 @@ class Condition(object):
                     m.window.showMaximized()
 
             self.pressure_comparison_axis.cla()
+            plot_time = (self.reactive_case.pressure_trace.zeroed_time -
+                         yaml_data.get('reacoffs', 0)/self.reactive_case.pressure_trace.frequency)
             self.pressure_comparison_axis.plot(
-                self.reactive_case.pressure_trace.zeroed_time - yaml_data.get('reacoffs', 0)/self.reactive_case.pressure_trace.frequency,
+                plot_time,
                 self.reactive_case.pressure_trace.pressure,
             )
             self.pressure_comparison_axis.plot(time[:n_print_pts:5], print_pressure[::5])
