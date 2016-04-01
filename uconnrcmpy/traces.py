@@ -229,7 +229,7 @@ class ExperimentalPressureTrace(object):
         p_EOC = np.amax(self.pressure[0:min_p_idx])
         p_EOC_idx = np.argmax(self.pressure[0:min_p_idx])
         diff = abs(self.pressure[p_EOC_idx] - self.pressure[15])
-        if diff < 5:
+        if diff < 5.0:
             p_EOC, p_EOC_idx = max_p, max_p_idx
             is_reactive = False
 
