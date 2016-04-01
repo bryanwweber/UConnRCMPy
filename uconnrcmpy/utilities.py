@@ -4,7 +4,6 @@ Utilities for UConnRCMPy
 # System imports
 import platform
 
-# Third Party imports
 if platform.system() == 'Windows':
     import win32clipboard
 elif platform.system() == 'Darwin':
