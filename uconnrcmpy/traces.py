@@ -99,7 +99,7 @@ class VoltageTrace(object):
 
         Notes
         -----
-        Creates a low-pass filter using the window construction funtion
+        Creates a low-pass filter using the window construction function
         `~scipy.signal.firwin`. Applies the filter using the
         `~scipy.signal.fftconvolve` function from the same module
         for speed. Defaults to the `~scipy.signal.blackman` window
