@@ -123,6 +123,8 @@ class Condition(object):
         if self.all_runs_figure is None:
             self.all_runs_figure = plt.figure('Reactive Pressure Trace Comparison')
             self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
+            self.all_runs_axis.set_ylabel('Pressure [bar]')
+            self.all_runs_axis.set_xlabel('Time [s]')
             if platform.system() == 'Windows':
                 m = plt.get_current_fig_manager()
                 m.window.showMaximized()
@@ -132,6 +134,7 @@ class Condition(object):
             exp.pressure_trace.pressure,
             label=exp.experiment_parameters['date'],
         )
+        self.all_runs_axis.legend(loc='best')
 
         exp.plot_pressure_trace()
 
@@ -178,6 +181,8 @@ class Condition(object):
         if self.nonreactive_figure is None:
             self.nonreactive_figure = plt.figure('Non-Reactive Pressure Trace Comparison')
             self.nonreactive_axis = self.nonreactive_figure.add_subplot(1, 1, 1)
+            self.nonreactive_axis.set_ylabel('Pressure [bar]')
+            self.nonreactive_axis.set_xlabel('Time [s]')
             if platform.system() == 'Windows':
                 m = plt.get_current_fig_manager()
                 m.window.showMaximized()
@@ -197,6 +202,7 @@ class Condition(object):
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time,
                 reactive_line,
+                label='Linear Fit to Initial Pressure',
             )
 
         self.nonreactive_axis.plot(
@@ -204,6 +210,7 @@ class Condition(object):
             exp.pressure_trace.pressure,
             label=exp.experiment_parameters['date'],
         )
+        self.nonreactive_axis.legend(loc='best')
 
     def create_volume_trace(self):
         """
@@ -314,14 +321,19 @@ class Condition(object):
                     m.window.showMaximized()
 
             self.pressure_comparison_axis.cla()
+            self.pressure_comparison_axis.set_ylabel("Pressure [bar]")
+            self.pressure_comparison_axis.set_xlabel("Time [s]")
             plot_time = (self.reactive_case.pressure_trace.zeroed_time -
                          yaml_data.get('reacoffs', 0)/self.reactive_case.pressure_trace.frequency)
             self.pressure_comparison_axis.plot(
                 plot_time,
                 self.reactive_case.pressure_trace.pressure,
+                label="Reactive Pressure",
             )
-            self.pressure_comparison_axis.plot(time[:n_print_pts:5], print_pressure[::5])
-            self.pressure_comparison_axis.plot(time[::5], computed_pressure)
+            self.pressure_comparison_axis.plot(time[:n_print_pts:5], print_pressure[::5],
+                                               label="Output Pressure")
+            self.pressure_comparison_axis.plot(time[::5], computed_pressure,
+                                               label="Computed Pressure")
             linear_fit = self.reactive_case.pressure_trace.pressure_fit(
                 comptime=yaml_data['comptime']/1000,
             )
@@ -329,7 +341,9 @@ class Condition(object):
             self.pressure_comparison_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time,
                 reactive_line,
+                label="Linear Fit to Initial Pressure",
             )
+            self.pressure_comparison_axis.legend(loc='best')
 
     def write_output(self, volout, presout, Tin):
         """
@@ -452,27 +466,37 @@ class Condition(object):
                     m = plt.get_current_fig_manager()
                     m.window.showMaximized()
 
+            self.simulation_axis.cla()
+            self.simulation_axis.set_xlabel('Time [ms]')
+            self.simulation_axis.set_ylabel('Pressure [bar]')
+
             self.simulation_axis.plot(
                 self.presout[:, 0]*1000 - compression_time,
                 self.presout[:, 1],
+                label="Experimental Pressure"
             )
 
             if self.nonreactive_sim is not None:
                 self.simulation_axis.plot(
                     self.nonreactive_sim.time*1000 - compression_time,
                     self.nonreactive_sim.pressure,
+                    label="Simulated Non-Reactive Pressure"
                 )
 
             if self.reactive_sim is not None:
                 self.simulation_axis.plot(
                     self.reactive_sim.time*1000 - compression_time,
                     self.reactive_sim.pressure,
+                    label="Simulated Reactive Pressure"
                 )
                 der = self.reactive_sim.derivative
                 self.simulation_axis.plot(
                     self.reactive_sim.time*1000 - compression_time,
                     der/np.amax(der)*np.amax(self.reactive_sim.pressure),
+                    label="Scaled Derivative of Pressure"
                 )
+
+            self.simulation_axis.legend(loc='best')
 
         print_str = ''
         copy_str = ''
@@ -812,10 +836,19 @@ class Experiment(object):
     def plot_pressure_trace(self):
         # Plot the smoothed pressure and the smoothed derivative
         # on a new figure every time
-        fig2 = plt.figure(self.experiment_parameters['date'])
-        ax2 = fig2.add_subplot(1, 1, 1)
-        ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.pressure)
-        ax2.plot(self.pressure_trace.zeroed_time, self.pressure_trace.smoothed_derivative/1000)
+        self.exp_fig = plt.figure(self.experiment_parameters['date'])
+        self.p_axis = self.exp_fig.add_subplot(1, 1, 1)
+        p_line, = self.p_axis.plot(self.pressure_trace.zeroed_time, self.pressure_trace.pressure,
+                                   label="Pressure")
+        self.dpdt_axis = self.p_axis.twinx()
+        dpdt_line, = self.dpdt_axis.plot(self.pressure_trace.zeroed_time,
+                                         self.pressure_trace.smoothed_derivative/1000,
+                                         'g', label="Derivative")
+        self.p_axis.legend([p_line, dpdt_line], [l.get_label() for l in [p_line, dpdt_line]],
+                           loc='best')
+        self.p_axis.set_xlabel('Time [s]')
+        self.p_axis.set_ylabel('Pressure [bar]')
+        self.dpdt_axis.set_ylabel('Time Derivative of Pressure [bar/ms]')
         if platform.system() == 'Windows':
             m = plt.get_current_fig_manager()
             m.window.showMaximized()
