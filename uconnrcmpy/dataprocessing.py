@@ -92,7 +92,7 @@ class Condition(object):
 
         Parameters
         ----------
-        file_name : `str` or `None`
+        file_name : `pathlib.Path` or `None`
             Filename of the file with the voltage trace of the
             experiment to be added.
         """
@@ -137,7 +137,7 @@ class Condition(object):
 
     def load_yaml(self):
         """
-        Load the yaml file called ``volume-trace.yml`` containing the
+        Load the yaml file called ``volume-trace.yaml`` containing the
         information needed to construct the volume trace. All the
         following data are required unless otherwise noted. The format
         of the yaml file is::
@@ -148,12 +148,12 @@ class Condition(object):
                         Type: String
         * ``reacfile``: File name of the reactive pressure trace.
                         Type: String
-        * ``comptime``: Length of time of the compression stroke.
-                        Type: Integer
-        * ``nonrend``: End time used for the produced volume trace.
-                        Type: Integer
-        * ``reacend``: End time of the output reactive pressure trace.
-                        Type: Integer
+        * ``comptime``: Length of time of the compression stroke, in ms.
+                        Type: Float
+        * ``nonrend``: End time used for the produced volume trace, in ms.
+                        Type: Float
+        * ``reacend``: End time of the output reactive pressure trace, in ms.
+                        Type: Float
         * ``reacoffs``: Offset in number of points from EOC for the
                         reactive case. Optional, defaults to zero.
                         Type: Integer
