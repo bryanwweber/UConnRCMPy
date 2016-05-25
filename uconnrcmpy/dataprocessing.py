@@ -377,8 +377,8 @@ class Condition(object):
             Time at which the simulation is ended.
         """
         def process_choice(sim_type):
-            choice = input('Are you sure you want to overwrite the {sim_type} simulation?'
-                           'Input y or n:'.format(sim_type=sim_type))
+            choice = input('Are you sure you want to overwrite the {sim_type} simulation? '
+                           'Input y or n: '.format(sim_type=sim_type))
             if choice.startswith('n'):
                 return False
             elif choice.startswith('y'):
