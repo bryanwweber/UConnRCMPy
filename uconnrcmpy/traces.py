@@ -76,7 +76,7 @@ class VoltageTrace(object):
         """
         window = np.ones(span)/span
         output = sig.fftconvolve(data, window, mode='same')
-        midpoint = (span - 1)/2
+        midpoint = int((span - 1)/2)
         output[:midpoint] = output[midpoint]
         return output
 
@@ -188,7 +188,7 @@ class ExperimentalPressureTrace(object):
         `numpy.polyfit`
             Numpy object containing the parameters of the fit
         """
-        beg_compress = np.floor(self.EOC_idx - comptime*self.frequency)
+        beg_compress = int(np.floor(self.EOC_idx - comptime*self.frequency))
         time = np.linspace(0, (beg_compress - 1)/self.frequency, beg_compress)
         fit_pres = self.pressure[:beg_compress]
         fit_pres[0:9] = fit_pres[10]

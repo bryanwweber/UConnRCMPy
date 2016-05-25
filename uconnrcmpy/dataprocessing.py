@@ -231,17 +231,17 @@ class Condition(object):
                 self.nonreactive_case = self.nonreactive_experiments[yaml_data['nonrfile']]
                 self.plotting = plotting_old
 
-        nonreactive_end_idx = (
+        nonreactive_end_idx = int(
             self.nonreactive_case.pressure_trace.EOC_idx + yaml_data.get('nonroffs', 0) +
             yaml_data['nonrend']/1000.0*self.nonreactive_case.pressure_trace.frequency
         )
 
-        reactive_end_idx = (
+        reactive_end_idx = int(
             self.reactive_case.pressure_trace.EOC_idx + yaml_data.get('reacoffs', 0) +
             yaml_data['reacend']/1000.0*self.reactive_case.pressure_trace.frequency
         )
 
-        reactive_start_point = (
+        reactive_start_point = int(
             self.reactive_case.pressure_trace.EOC_idx + yaml_data.get('reacoffs', 0) -
             yaml_data['comptime']/1000.0*self.reactive_case.pressure_trace.frequency
         )
@@ -258,7 +258,7 @@ class Condition(object):
         ]
 
         print_pressure = self.reactive_case.pressure_trace.pressure[
-            (reactive_start_point):(reactive_end_idx)
+            reactive_start_point:reactive_end_idx
         ]
 
         n_print_pts = len(print_pressure)
@@ -777,7 +777,7 @@ class Experiment(object):
         # ignition is weak, the peak in dP/dt from the compression
         # stroke is not treated as the ignition event. Define points
         # to start looking for and stop looking for ignition.
-        offset_points = 0.002*self.pressure_trace.frequency
+        offset_points = int(0.002*self.pressure_trace.frequency)
         start_point = self.pressure_trace.EOC_idx + offset_points
         end_point = self.pressure_trace.EOC_idx + offset_points + 100000
 
@@ -802,8 +802,10 @@ class Experiment(object):
         return ignition_delay, first_stage
 
     def calculate_EOC_temperature(self):
-        pres_to_temp_start_idx = self.pressure_trace.EOC_idx - 0.03*self.pressure_trace.frequency
-        tempp = self.pressure_trace.pressure[(pres_to_temp_start_idx):(self.pressure_trace.EOC_idx)]
+        est_comp_time = 0.03
+        comp_time_length = int(est_comp_time*self.pressure_trace.frequency)
+        pres_to_temp_start_idx = self.pressure_trace.EOC_idx - comp_time_length
+        tempp = self.pressure_trace.pressure[pres_to_temp_start_idx:self.pressure_trace.EOC_idx]
         temperature_trace = TemperatureFromPressure(tempp, self.experiment_parameters['Tin'])
         return np.amax(temperature_trace.temperature)
 
