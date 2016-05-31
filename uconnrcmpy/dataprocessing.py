@@ -493,7 +493,7 @@ class Condition(object):
                 self.simulation_axis.plot(
                     self.reactive_sim.time*1000 - compression_time,
                     der/np.amax(der)*np.amax(self.reactive_sim.pressure),
-                    label="Scaled Derivative of Pressure"
+                    label="Scaled Derivative of Simulated Pressure"
                 )
 
             self.simulation_axis.legend(loc='best')
