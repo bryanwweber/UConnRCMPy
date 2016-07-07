@@ -758,7 +758,7 @@ class Experiment(object):
         name_parts['pin'] = int(name_split_end[1][:-1])
         name_parts['factor'] = int(name_split_end[2][:-1])
         name_parts['time_of_day'] = data_date.strftime('%H%M')
-        name_parts['date'] = data_date.strftime('%d-%b-%H%M')
+        name_parts['date'] = data_date.strftime('%d-%b-%H:%M')
         name_parts['date_year'] = data_date.strftime('%d-%b-%y')
         return name_parts
 
