@@ -29,6 +29,10 @@ requirements:
     - cansen
     - pywin32  # [win]
 
+test:
+  imports:
+    - uconnrcmpy
+
 about:
   home: https://github.com/bryanwweber/UConnRCMPy
   license: MIT
