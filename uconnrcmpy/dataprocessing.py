@@ -87,6 +87,47 @@ class Condition(object):
             self.pressure_comparison_figure = None
             self.simulation_figure = None
 
+    def summary(self):
+        summary_str = [('Date-Time     P0 (Torr)  T0 (Kelvin)  Pc (bar)  τ (ms)  τ1 (ms)\n'
+                        '---------     ---------  -----------  --------  ------  -------')]
+        spacer = len(summary_str[0].split('\n')[0])*'-'
+        summary_str.append('Reactive Experiments')
+        summary_str.append(spacer)
+        fmt = '{date}  {P0:^9d}  {T0:^11d}  {Pc:^8.2f}  {tau_ig:^6.2f}  {tau_first:^7.2f}'
+        if not self.reactive_experiments:
+            summary_str.append('No reactive experiments in this Condition.\n'
+                               'Add some with add_experiment().')
+        else:
+            for key, expt in self.reactive_experiments.items():
+                summary_str.append(fmt.format(
+                    date=expt.experiment_parameters['date'],
+                    P0=expt.experiment_parameters['pin'],
+                    T0=expt.experiment_parameters['Tin'],
+                    Pc=expt.pressure_trace.p_EOC,
+                    tau_ig=expt.ignition_delay,
+                    tau_first=expt.first_stage,
+                ))
+        summary_str.append(spacer)
+        summary_str.append('Non-Reactive Experiments')
+        summary_str.append(spacer)
+        if not self.nonreactive_experiments:
+            summary_str.append('No non-reactive experiments in this Condition.\n'
+                               'Add some with add_experiment().')
+        else:
+            for key, expt in self.nonreactive_experiments.items():
+                summary_str.append(fmt.format(
+                    date=expt.experiment_parameters['date'],
+                    P0=expt.experiment_parameters['pin'],
+                    T0=expt.experiment_parameters['Tin'],
+                    Pc=expt.pressure_trace.p_EOC,
+                    tau_ig=expt.ignition_delay,
+                    tau_first=expt.first_stage,
+                ))
+        return '\n'.join(summary_str)
+
+    def __call__(self):
+        print(self.summary())
+
     def add_experiment(self, file_name=None):
         """Add an experiment to the Condition.
 
