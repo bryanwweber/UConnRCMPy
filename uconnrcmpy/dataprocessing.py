@@ -682,7 +682,7 @@ class Experiment(object):
         Object storing the file path
     experiment_parameters : `dict`
         Stores the parameters of the experiment parsed from the
-        filename by `~uconnrcmpy.utilities.parse_file_name`.
+        filename by `~uconnrcmpy.Experiment.parse_file_name`.
     voltage_trace : `~uconnrcmpy.traces.VoltageTrace`
         Stores the experimental voltage signal and related traces
     pressure_trace : `~uconnrcmpy.traces.ExperimentalPressureTrace`
