@@ -806,13 +806,13 @@ class Experiment(object):
     def resolve_file_path(self, file_path=None):
         if file_path is None:
             filename = input('Filename: ')
-            try:
-                self.file_path = Path(filename).resolve()
-            except FileNotFoundError:
-                filename += '.txt'
-                self.file_path = Path(filename).resolve()
         else:
-            self.file_path = file_path.resolve()
+            filename = file_path
+        try:
+            self.file_path = Path(filename).resolve()
+        except FileNotFoundError:
+            filename += '.txt'
+            self.file_path = Path(filename).resolve()
 
     def process_pressure_trace(self):
         if self.pressure_trace.is_reactive:
