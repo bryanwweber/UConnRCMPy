@@ -69,9 +69,6 @@ class Condition(object):
         pressure calculated by the volume trace routine
     simulation_figure : `matplotlib.figure.Figure`
         Comparison of the simulation with the reactive_case pressure
-    reactive_file : `str`
-        File name of the case that is the closest to the mean of all
-        the experiments
     """
 
     def __init__(self, plotting=True):
@@ -137,6 +134,11 @@ class Condition(object):
 
     @property
     def reactive_file(self):
+        """str: File name of the case that is the closest to the mean of all
+        the experiments.
+
+        If the file hasn't been added to the condition, it is added.
+        """
         return self._reactive_file
 
     @reactive_file.setter
