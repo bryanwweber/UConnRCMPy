@@ -37,12 +37,12 @@ class Condition(object):
     ----------
     reactive_experiments : `dict`
         Dictionary of instances of class `Experiment` containing
-        reactive experiments. Indexed by the DD-Mon-YYYY-Time of the
-        experiment.
+        reactive experiments. Indexed by the file name of the
+        underlying voltage trace from the experiment.
     nonreactive_experiments : `dict`
         Dictionary of instances of class `Experiment` containing
-        nonreactive experiments. Indexed by the DD-Mon-YYYY-Time of the
-        experiment.
+        nonreactive experiments. Indexed by the file name of the
+        underlying voltage trace from the experiment.
     reactive_case : `Experiment`
         Single instance of class `Experiment` that is the closest to
         the mean of all of the experiments.
