@@ -208,10 +208,7 @@ class ExperimentalPressureTrace(object):
         np.savetxt(fname=filename, X=np.vstack(self.time, self.pressure).T, **kwargs)
 
     def pressure_fit(self, comptime=0.08):
-        """Fit a line to the pressure trace before EOC.
-
-        Fit a line to the part of the pressure trace before compression
-        starts.
+        """Fit a line to the pressure trace before compression starts.
 
         Parameters
         ----------
