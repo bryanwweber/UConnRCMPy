@@ -87,6 +87,9 @@ class Condition(object):
             self.pressure_comparison_figure = None
             self.simulation_figure = None
 
+    def __repr__(self):
+        return 'Condition(plotting={self.plotting!r})'.format(self=self)
+
     def summary(self):
         summary_str = [('Date-Time     P0 (Torr)  T0 (Kelvin)  Pc (bar)  τ (ms)  τ1 (ms)\n'
                         '---------     ---------  -----------  --------  ------  -------')]
@@ -583,6 +586,9 @@ class AltCondition(Condition):
             if self.plotting:
                 self.plot_nonreactive_figure(exp)
 
+    def __repr__(self):
+        return 'AltCondition(plotting={!r})'.format(self.plotting)
+
 
 class Simulation(object):
     """Contains a single simulation of the experiment.
@@ -621,6 +627,16 @@ class Simulation(object):
         Array of input volume values
     simulated_volume : `numpy.ndarray`
         Array of simulated volume values
+    end_temp : `float`
+        Reactor temperature at which the simulation will be ended
+    end_time : `float`
+        Time at which the simulation will be ended
+    chem_file : `str`
+        String filename of the chemistry file to use
+    initial_temperature : `float`
+        The initial temperature of the simulation
+    initial_pressure : `float`
+        The initial pressure of the simulation
     """
 
     def __init__(self, initial_temperature, initial_pressure, volume, is_reactive,
@@ -637,10 +653,16 @@ class Simulation(object):
         self.pressure = []
         self.input_volume = volume
         self.simulated_volume = []
+        self.end_temp = end_temp
+        self.end_time = end_time
+        self.is_reactive = is_reactive
+        self.chem_file = chem_file
+        self.initial_temperature = initial_temperature
+        self.initial_pressure = initial_pressure
 
         gas = ct.Solution(chem_file)
-        gas.TP = initial_temperature, initial_pressure
-        if not is_reactive:
+        gas.TP = self.initial_temperature, self.initial_pressure
+        if not self.is_reactive:
             gas.set_multiplier(0)
         reac = ct.IdealGasReactor(gas)
         env = ct.Reservoir(ct.Solution('air.xml'))
@@ -652,7 +674,7 @@ class Simulation(object):
         self.pressure.append(gas.P/1E5)
         self.simulated_volume.append(reac.volume)
 
-        while reac.T < end_temp and netw.time < end_time:
+        while reac.T < self.end_temp and netw.time < self.end_time:
             if cantera_version[1] > 2:
                 netw.step()
             else:
@@ -667,6 +689,14 @@ class Simulation(object):
         self.temperature = np.array(self.temperature)
         self.simulated_volume = np.array(self.simulated_volume)
         self.derivative = self.calculate_derivative(self.pressure, self.time)
+
+    def __repr__(self):
+        return ('Simulation(initial_temperature={self.initial_temperature!r}, '
+                'initial_pressure={self.initial_pressure!r}, volume={self.input_volume!r}, '
+                'is_reactive={self.is_reactive!r}, end_temp={self.end_temp!r}, '
+                'end_time={self.end_time!r}, chem_file={self.chem_file!r})').format(
+                    self=self,
+                )
 
     def calculate_derivative(self, dep_var, indep_var):
         """Calculate the derivative.
@@ -749,6 +779,9 @@ class Experiment(object):
                                                         )
         self.process_pressure_trace()
         self.copy_to_clipboard()
+
+    def __repr__(self):
+        return 'Experiment(file_path={self.file_path!r})'.format(self=self)
 
     def parse_file_name(self, file_path):
         """Parse the file name of an experimental trace.
@@ -906,6 +939,9 @@ class AltExperiment(Experiment):
                                                            self.experiment_parameters['pin'])
         self.process_pressure_trace()
         self.copy_to_clipboard()
+
+    def __repr__(self):
+        return 'AltExperiment(file_path={self.file_path!r})'.format(self=self)
 
     def parse_file_name(self, file_path):
         """Parse the file name of an experimental trace, where the name is in an alternate format.

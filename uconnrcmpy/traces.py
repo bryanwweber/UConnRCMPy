@@ -38,13 +38,17 @@ class VoltageTrace(object):
         The voltage trace after filtering and smoothing
     """
     def __init__(self, file_path):
-        self.signal = np.genfromtxt(str(file_path))
+        self.file_path = file_path
+        self.signal = np.genfromtxt(str(self.file_path))
 
         self.time = self.signal[:, 0]
         self.frequency = np.rint(1/self.time[1])
 
         self.filtered_voltage = self.filtering(self.signal[:, 1])
         self.smoothed_voltage = self.smoothing(self.filtered_voltage)
+
+    def __repr__(self):
+        return 'VoltageTrace(file_path={self.file_path!r})'.format(self=self)
 
     def smoothing(self, data, span=21):
         """Smooth the input using a moving average.
@@ -171,6 +175,10 @@ class ExperimentalPressureTrace(object):
         self.smoothed_derivative = voltage_trace.smoothing(self.derivative, span=151)
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
+    def __repr__(self):
+        return ('ExperimentalPressureTrace(p_EOC={self.p_EOC!r}, '
+                'is_reactive={self.is_reactive!r})').format(self=self)
+
     def pressure_fit(self, comptime=0.08):
         """Fit a line to the pressure trace before EOC.
 
@@ -288,6 +296,10 @@ class AltExperimentalPressureTrace(ExperimentalPressureTrace):
         self.smoothed_derivative = VoltageTrace.smoothing(self, self.derivative, span=21)
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
+    def __repr__(self):
+        return ('AltExperimentalPressureTrace(p_EOC={self.p_EOC!r}, '
+                'is_reactive={self.is_reactive!r})').format(self=self)
+
 
 class PressureFromVolume(object):
     """Create a pressure trace given a volume trace.
@@ -327,6 +339,9 @@ class PressureFromVolume(object):
         for i, v in enumerate(volume):
             gas.SV = initial_entropy, v*initial_volume
             self.pressure[i] = gas.P/one_bar_in_pa
+
+    def __repr__(self):
+        return 'PressureFromVolume(pressure={self.pressure!r})'.format(self=self)
 
 
 class VolumeFromPressure(object):
@@ -373,6 +388,9 @@ class VolumeFromPressure(object):
             gas.SP = initial_entropy, p*one_bar_in_pa
             self.volume[i] = v_initial*initial_density/gas.density
 
+    def __repr__(self):
+        return 'VolumeFromPressure(volume={self.volume!r})'.format(self=self)
+
 
 class TemperatureFromPressure(object):
     """Create a temperature trace given a pressure trace.
@@ -409,3 +427,6 @@ class TemperatureFromPressure(object):
         for i, p in enumerate(pressure):
             gas.SP = initial_entropy, p*one_bar_in_pa
             self.temperature[i] = gas.T
+
+    def __repr__(self):
+        return 'TemperatureFromPressure(temperature={self.temperature!r})'.format(self=self)
