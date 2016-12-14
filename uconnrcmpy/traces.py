@@ -50,6 +50,20 @@ class VoltageTrace(object):
     def __repr__(self):
         return 'VoltageTrace(file_path={self.file_path!r})'.format(self=self)
 
+    def savetxt(self, filename, **kwargs):
+        """Save a text file output of the voltage trace.
+
+        Save a text file with the time in the first column and the smoothed
+        voltage in the second column. The keyword arguments are the same as
+        `numpy.savetxt`.
+
+        Parameters
+        ----------
+        filename : `str`
+            Filename of the output file
+        """
+        np.savetxt(fname=filename, X=np.vstack(self.time, self.smoothed_voltage).T, **kwargs)
+
     def smoothing(self, data, span=21):
         """Smooth the input using a moving average.
 
@@ -178,6 +192,20 @@ class ExperimentalPressureTrace(object):
     def __repr__(self):
         return ('ExperimentalPressureTrace(p_EOC={self.p_EOC!r}, '
                 'is_reactive={self.is_reactive!r})').format(self=self)
+
+    def savetxt(self, filename, **kwargs):
+        """Save a text file output of the pressure trace.
+
+        Save a text file with the time in the first column and the smoothed
+        pressure in the second column. The keyword arguments are the same as
+        `numpy.savetxt`.
+
+        Parameters
+        ----------
+        filename : `str`
+            Filename of the output file
+        """
+        np.savetxt(fname=filename, X=np.vstack(self.time, self.pressure).T, **kwargs)
 
     def pressure_fit(self, comptime=0.08):
         """Fit a line to the pressure trace before EOC.
