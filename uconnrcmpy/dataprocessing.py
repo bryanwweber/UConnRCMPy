@@ -69,6 +69,9 @@ class Condition(object):
         pressure calculated by the volume trace routine
     simulation_figure : `matplotlib.figure.Figure`
         Comparison of the simulation with the reactive_case pressure
+    reactive_file : `str`
+        File name of the case that is the closest to the mean of all
+        the experiments
     """
 
     def __init__(self, plotting=True):
@@ -81,6 +84,7 @@ class Condition(object):
         self.nonreactive_sim = None
         self.reactive_sim = None
         self.plotting = plotting
+        self.reactive_file = None
         if self.plotting:
             self.all_runs_figure = None
             self.nonreactive_figure = None
@@ -130,6 +134,20 @@ class Condition(object):
 
     def __call__(self):
         print(self.summary())
+
+    @property
+    def reactive_file(self):
+        return self._reactive_file
+
+    @reactive_file.setter
+    def reactive_file(self, value):
+        if value not in self.reactive_experiments:
+            old_plotting = self.plotting
+            self.plotting = False
+            self.add_experiment(value)
+            self.plotting = old_plotting
+
+        self._reactive_file = value
 
     def add_experiment(self, file_name=None):
         """Add an experiment to the Condition.
@@ -231,8 +249,9 @@ class Condition(object):
                 m = plt.get_current_fig_manager()
                 m.window.showMaximized()
 
-            reactive_file = self.load_yaml()['reacfile']
-            self.reactive_case = self.reactive_experiments[reactive_file]
+            if self.reactive_file is None:
+                self.reactive_file = self.load_yaml()['reacfile']
+            self.reactive_case = self.reactive_experiments[self.reactive_file]
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time*1000.0,
                 self.reactive_case.pressure_trace.pressure,
