@@ -716,10 +716,7 @@ class Simulation(object):
         self.simulated_volume.append(reac.volume)
 
         while reac.T < self.end_temp and netw.time < self.end_time:
-            if cantera_version[1] > 2:
-                netw.step()
-            else:
-                netw.step(1)
+            netw.step()
             self.time.append(netw.time)
             self.temperature.append(reac.T)
             self.pressure.append(gas.P/1E5)
