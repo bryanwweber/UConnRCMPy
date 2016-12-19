@@ -75,13 +75,14 @@ class Condition(object):
         self.reactive_experiments = {}
         self.nonreactive_experiments = {}
         self.reactive_case = None
+        self.reactive_file = None
         self.nonreactive_case = None
+        self.nonreactive_file = None
         self.presout = None
         self.volout = None
         self.nonreactive_sim = None
         self.reactive_sim = None
         self.plotting = plotting
-        self.reactive_file = None
         if self.plotting:
             self.all_runs_figure = None
             self.nonreactive_figure = None
@@ -134,10 +135,10 @@ class Condition(object):
 
     @property
     def reactive_file(self):
-        """str: File name of the case that is the closest to the mean of all
+        """`str`: File name of the case that is the closest to the mean of all
         the experiments.
 
-        If the file hasn't been added to the condition, it is added.
+        If the file hasn't been added to the Condition, it is added.
         """
         return self._reactive_file
 
@@ -150,6 +151,25 @@ class Condition(object):
             self.plotting = old_plotting
 
         self._reactive_file = value
+
+    @property
+    def nonreactive_file(self):
+        """`str`: File name of the non-reactive case that best matches
+        the pressure trace of the reactive case.
+
+        If the file hasn't been added to the Condition, it is added.
+        """
+        return self._nonreactive_file
+
+    @nonreactive_file.setter
+    def nonreactive_file(self, value):
+        if value not in self.reactive_experiments:
+            old_plotting = self.plotting
+            self.plotting = False
+            self.add_experiment(value)
+            self.plotting = old_plotting
+
+        self._nonreactive_file = value
 
     def add_experiment(self, file_name=None):
         """Add an experiment to the Condition.
