@@ -23,7 +23,7 @@ requirements:
     - python {{PY_VER}}*
     - numpy {{NPY_VER}}*
     - scipy
-    - cantera
+    - cantera >=2.3*
     - pyyaml
     - matplotlib
     - cansen
