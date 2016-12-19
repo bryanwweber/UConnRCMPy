@@ -894,7 +894,7 @@ class Experiment(object):
 
             try:
                 self.T_EOC = self.calculate_EOC_temperature()
-            except RuntimeError as e:
+            except ct.CanteraError as e:
                 self.T_EOC = 0
                 print('Exception in computing the temperature at EOC', e)
         else:
