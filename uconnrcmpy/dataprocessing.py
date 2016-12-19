@@ -22,7 +22,6 @@ from .traces import (VoltageTrace,
                      VolumeFromPressure,
                      PressureFromVolume,
                      )
-from .constants import cantera_version
 
 
 class Condition(object):
