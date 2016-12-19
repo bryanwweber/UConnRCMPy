@@ -1,0 +1,8 @@
+name: ucrcmpy-docs
+channels: !!python/tuple
+- cantera/channel/dev
+- conda-forge
+dependencies:
+- cantera/channel/dev::cantera=2.3.0b1=np111py35_1_g730107c
+- conda-forge::numpy=1.11.2=py35_0
+- conda-forge::scipy=0.18.1=np111py35_0
