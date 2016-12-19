@@ -176,7 +176,7 @@ class Condition(object):
 
         Parameters
         ----------
-        file_name : `pathlib.Path` or `None`
+        file_name : `pathlib.Path` or `str` or `None`
             Filename of the file with the voltage trace of the
             experiment to be added.
         """
@@ -304,24 +304,24 @@ class Condition(object):
         """
         yaml_data = self.load_yaml()
         if self.reactive_case is None:
+            if self.reactive_file is None:
+                self.reactive_file = yaml_data['reacfile']
+
             try:
-                self.reactive_case = self.reactive_experiments[yaml_data['reacfile']]
+                self.reactive_case = self.reactive_experiments[self.reactive_file]
             except KeyError:
-                plotting_old = self.plotting
-                self.plotting = False
-                self.add_experiment(Path(yaml_data['reacfile']))
-                self.reactive_case = self.reactive_experiments[yaml_data['reacfile']]
-                self.plotting = plotting_old
+                self.reactive_case = Experiment(self.reactive_file)
+                self.reactive_experiments[self.reactive_file] = self.reactive_case
 
         if self.nonreactive_case is None:
+            if self.nonreactive_file is None:
+                self.nonreactive_file = yaml_data['nonrfile']
+
             try:
-                self.nonreactive_case = self.nonreactive_experiments[yaml_data['nonrfile']]
+                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
             except KeyError:
-                plotting_old = self.plotting
-                self.plotting = False
-                self.add_experiment(Path(yaml_data['nonrfile']))
-                self.nonreactive_case = self.nonreactive_experiments[yaml_data['nonrfile']]
-                self.plotting = plotting_old
+                self.nonreactive_case = Experiment(self.nonreactive_file)
+                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
 
         nonreactive_end_idx = int(
             self.nonreactive_case.pressure_trace.EOC_idx + yaml_data.get('nonroffs', 0) +
