@@ -163,7 +163,7 @@ class Condition(object):
 
     @nonreactive_file.setter
     def nonreactive_file(self, value):
-        if value not in self.reactive_experiments:
+        if value not in self.nonreactive_experiments:
             old_plotting = self.plotting
             self.plotting = False
             self.add_experiment(value)
