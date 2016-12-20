@@ -302,6 +302,40 @@ class Condition(object):
     def load_yaml(self):
         """
         Load the yaml file called ``volume-trace.yaml`` containing the
+        information needed to construct the volume trace. This method
+        reads the YAML file and sets the appropriate attributes of the
+        `Condition` instance. All the following data are required unless
+        otherwise noted. The format of the yaml file is::
+
+            variable: value
+
+        * ``nonreactive_file``: File name of the non-reactive pressure trace.
+            Type: String
+        * ``reactive_file``: File name of the reactive pressure trace.
+            Type: String
+        * ``reactive_compression_time``: Length of time of the compression stroke, in ms.
+            Type: Float
+        * ``nonreactive_end_time``: End time used for the produced volume trace, in ms.
+            Type: Float
+        * ``reactive_end_time``: End time of the output reactive pressure trace, in ms.
+            Type: Float
+        * ``reactive_offset_points``: Offset in number of points from EOC for the
+            reactive case. Optional, defaults to zero.
+            Type: Integer
+        * ``nonreactive_offset_points``: Offset in number of points from EOC for the
+            non-reactive case. Optional, defaults to zero.
+            Type: Integer
+        """
+        with open('volume-trace.yaml') as yaml_file:
+            yaml_data = yaml.safe_load(yaml_file)
+
+        for attribute in self.output_attributes:
+            if attribute in yaml_data:
+                setattr(self, attribute, yaml_data[attribute])
+
+    def load_old_yaml(self):
+        """
+        Load the yaml file called ``volume-trace.yaml`` containing the
         information needed to construct the volume trace. All the
         following data are required unless otherwise noted. The format
         of the yaml file is::
@@ -326,7 +360,19 @@ class Condition(object):
                         Type: Integer
         """
         with open('volume-trace.yaml') as yaml_file:
-            return yaml.load(yaml_file)
+            yaml_data = yaml.safe_load(yaml_file)
+
+        attributes = [('reacfile', 'reactive_file'),
+                      ('nonrfile', 'nonreactive_file'),
+                      ('nonrend', 'nonreactive_end_time'),
+                      ('reacend', 'reactive_end_time'),
+                      ('comptime', 'reactive_compression_time'),
+                      ('nonroffs', 'nonreactive_offset_points'),
+                      ('reacoffs', 'reactive_offset_points')]
+
+        for yaml_key, attribute in attributes:
+            if yaml_key in yaml_data:
+                setattr(self, attribute, yaml_data[yaml_key])
 
     def plot_nonreactive_figure(self, exp):
         """Plot the nonreactive pressure traces on a figure.
