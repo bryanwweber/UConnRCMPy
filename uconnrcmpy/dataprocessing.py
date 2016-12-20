@@ -502,6 +502,8 @@ class Condition(object):
             self.reactive_case.experiment_parameters['Tin'],
         )
 
+        self.write_yaml()
+
         if self.plotting:
             if self.pressure_comparison_figure is None:
                 self.pressure_comparison_figure = plt.figure('Pressure Trace Comparison')
@@ -534,6 +536,18 @@ class Condition(object):
                 label="Linear Fit to Initial Pressure",
             )
             self.pressure_comparison_axis.legend(loc='best')
+
+    def write_yaml(self):
+        """Write the volume-trace.yaml output file for storage of parameters.
+        The YAML file format is detailed in `Condition.load_yaml`
+        """
+
+        yaml_data = {}
+        for attribute in self.output_attributes:
+            yaml_data[attribute] = getattr(self, attribute)
+
+        with open('volume-trace.yaml', 'w') as yaml_file:
+            yaml.dump(yaml_data, yaml_file)
 
     def write_output(self, volout, presout, Tin):
         """
