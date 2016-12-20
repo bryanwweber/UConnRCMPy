@@ -93,6 +93,11 @@ class Condition(object):
             self.pressure_comparison_figure = None
             self.simulation_figure = None
 
+        self.output_attributes = [
+            'reactive_file', 'nonreactive_file', 'nonreactive_end_time', 'reactive_end_time',
+            'reactive_compression_time', 'nonreactive_offset_points', 'reactive_offset_points'
+        ]
+
     def __repr__(self):
         return 'Condition(plotting={self.plotting!r})'.format(self=self)
 
@@ -372,49 +377,33 @@ class Condition(object):
         Create the volume trace based on the information in the loaded
         yaml file.
         """
-        yaml_data = self.load_yaml()
-        if self.reactive_case is None:
-            if self.reactive_file is None:
-                self.reactive_file = yaml_data['reacfile']
-
-            try:
-                self.reactive_case = self.reactive_experiments[self.reactive_file]
-            except KeyError:
-                self.reactive_case = Experiment(self.reactive_file)
-                self.reactive_experiments[self.reactive_file] = self.reactive_case
-
-        if self.nonreactive_case is None:
-            if self.nonreactive_file is None:
-                self.nonreactive_file = yaml_data['nonrfile']
-
-            try:
-                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
-            except KeyError:
-                self.nonreactive_case = Experiment(self.nonreactive_file)
-                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
+        for attribute in self.output_attributes:
+            if attribute is None:
+                temp_val = input('Specify a value for {}: '.format(attribute))
+                setattr(self, attribute, temp_val)
 
         nonreactive_end_idx = int(
-            self.nonreactive_case.pressure_trace.EOC_idx + yaml_data.get('nonroffs', 0) +
-            yaml_data['nonrend']/1000.0*self.nonreactive_case.pressure_trace.frequency
+            self.nonreactive_case.pressure_trace.EOC_idx + self.nonreactive_offset_points +
+            self.nonreactive_end_time/1000.0*self.nonreactive_case.pressure_trace.frequency
         )
 
         reactive_end_idx = int(
-            self.reactive_case.pressure_trace.EOC_idx + yaml_data.get('reacoffs', 0) +
-            yaml_data['reacend']/1000.0*self.reactive_case.pressure_trace.frequency
+            self.reactive_case.pressure_trace.EOC_idx + self.reactive_offset_points +
+            self.reactive_end_time/1000.0*self.reactive_case.pressure_trace.frequency
         )
 
         reactive_start_point = int(
-            self.reactive_case.pressure_trace.EOC_idx + yaml_data.get('reacoffs', 0) -
-            yaml_data['comptime']/1000.0*self.reactive_case.pressure_trace.frequency
+            self.reactive_case.pressure_trace.EOC_idx + self.reactive_offset_points -
+            self.reactive_compression_time/1000.0*self.reactive_case.pressure_trace.frequency
         )
 
         stroke_pressure = self.reactive_case.pressure_trace.pressure[
             (reactive_start_point):(self.reactive_case.pressure_trace.EOC_idx +
-                                    1 + yaml_data.get('reacoffs', 0))
+                                    1 + self.reactive_offset_points)
         ]
 
         post_pressure = self.nonreactive_case.pressure_trace.pressure[
-            (self.nonreactive_case.pressure_trace.EOC_idx + yaml_data.get('nonroffs', 0)):(
+            (self.nonreactive_case.pressure_trace.EOC_idx + self.nonreactive_offset_points):(
                 nonreactive_end_idx
             )
         ]
@@ -424,7 +413,7 @@ class Condition(object):
         ]
 
         n_print_pts = len(print_pressure)
-        time = np.arange(-yaml_data['comptime']/1000.0, yaml_data['nonrend']/1000.0,
+        time = np.arange(-self.reactive_compression_time/1000.0, self.nonreactive_end_time/1000.0,
                          1/self.reactive_case.pressure_trace.frequency)
         stroke_volume = VolumeFromPressure(stroke_pressure, 1.0,
                                            self.reactive_case.experiment_parameters['Tin']).volume
@@ -453,11 +442,11 @@ class Condition(object):
         copy('{:.4f}'.format(stroke_pressure[0]))
 
         self.volout = np.vstack(
-            (time[::5] + yaml_data['comptime']/1000, volume[::5])
+            (time[::5] + self.reactive_compression_time/1000, volume[::5])
         ).transpose()
 
         self.presout = np.vstack(
-            (time[:n_print_pts:5] + yaml_data['comptime']/1000,
+            (time[:n_print_pts:5] + self.reactive_compression_time/1000,
              print_pressure[::5])
         ).transpose()
 
@@ -479,7 +468,7 @@ class Condition(object):
             self.pressure_comparison_axis.set_ylabel("Pressure [bar]")
             self.pressure_comparison_axis.set_xlabel("Time [ms]")
             plot_time = (self.reactive_case.pressure_trace.zeroed_time -
-                         yaml_data.get('reacoffs', 0)/self.reactive_case.pressure_trace.frequency)
+                         self.reactive_offset_points/self.reactive_case.pressure_trace.frequency)
             self.pressure_comparison_axis.plot(
                 plot_time*1000.0,
                 self.reactive_case.pressure_trace.pressure,
@@ -490,7 +479,7 @@ class Condition(object):
             self.pressure_comparison_axis.plot(time[::5]*1000.0, computed_pressure,
                                                label="Computed Pressure")
             linear_fit = self.reactive_case.pressure_trace.pressure_fit(
-                comptime=yaml_data['comptime']/1000,
+                comptime=self.reactive_compression_time/1000,
             )
             reactive_line = np.polyval(linear_fit, self.reactive_case.pressure_trace.time)
             self.pressure_comparison_axis.plot(
@@ -611,7 +600,7 @@ class Condition(object):
         self.run_simulation(run_reactive, run_nonreactive)
 
         # Plot the pressure traces together
-        compression_time = self.load_yaml()['comptime']
+        compression_time = self.reactive_compression_time
 
         if self.plotting:
             if self.simulation_figure is None:
