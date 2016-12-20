@@ -352,9 +352,7 @@ class Condition(object):
                 label=self.reactive_case.experiment_parameters['date'],
             )
 
-            linear_fit = self.reactive_case.pressure_trace.pressure_fit(
-                comptime=self.load_yaml()['comptime']/1000,
-            )
+            linear_fit = self.reactive_case.pressure_trace.pressure_fit()
             reactive_line = np.polyval(linear_fit, self.reactive_case.pressure_trace.time)
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time*1000.0,
