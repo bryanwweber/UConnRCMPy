@@ -344,8 +344,8 @@ class Condition(object):
                 m.window.showMaximized()
 
             if self.reactive_file is None:
-                self.reactive_file = self.load_yaml()['reacfile']
-            self.reactive_case = self.reactive_experiments[self.reactive_file]
+                self.reactive_file = input('Reactive filename: ')
+
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time*1000.0,
                 self.reactive_case.pressure_trace.pressure,
