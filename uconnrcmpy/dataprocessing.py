@@ -142,17 +142,19 @@ class Condition(object):
         """`str`: File name of the case that is the closest to the mean of all
         the experiments.
 
-        If the file hasn't been added to the Condition, it is added.
+        If the file hasn't been added to the `Condition`, it is added and the
+        `Condition.reactive_case` attribute is set to the `Experiment` loaded
+        from the file.
         """
         return self._reactive_file
 
     @reactive_file.setter
     def reactive_file(self, value):
         if value not in self.reactive_experiments:
-            old_plotting = self.plotting
-            self.plotting = False
-            self.add_experiment(value)
-            self.plotting = old_plotting
+            self.reactive_case = Experiment(value)
+            self.reactive_experiments[value] = self.reactive_case
+        else:
+            self.reactive_case = self.reactive_experiments[value]
 
         self._reactive_file = value
 
@@ -161,17 +163,19 @@ class Condition(object):
         """`str`: File name of the non-reactive case that best matches
         the pressure trace of the reactive case.
 
-        If the file hasn't been added to the Condition, it is added.
+        If the file hasn't been added to the `Condition`, it is added and the
+        `Condition.nonreactive_case` attribute is set to the `Experiment` loaded
+        from the file.
         """
         return self._nonreactive_file
 
     @nonreactive_file.setter
     def nonreactive_file(self, value):
         if value not in self.nonreactive_experiments:
-            old_plotting = self.plotting
-            self.plotting = False
-            self.add_experiment(value)
-            self.plotting = old_plotting
+            self.nonreactive_case = Experiment(value)
+            self.nonreactive_experiments[value] = self.nonreactive_case
+        else:
+            self.nonreactive_case = self.nonreactive_experiments[value]
 
         self._nonreactive_file = value
 
