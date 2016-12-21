@@ -42,11 +42,11 @@ install:
 
 script:
   - conda build conda.recipe --python=${BUILD_PYTHON}
-  - conda install --use-local uconnrcmpy
-  - set -e
-  - cd docs
-  - make html SPHINXOPTS="-W"
-  - cd ..
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.5" ]]; then
-      doctr deploy;
+      conda install --use-local uconnrcmpy;
+      set -e;
+      cd docs;
+      make html SPHINXOPTS="-W";
+      cd ..;
+      doctr deploy --gh-pages-docs .;
     fi
