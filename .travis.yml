@@ -47,6 +47,6 @@ script:
   - cd docs
   - make html SPHINXOPTS="-W"
   - cd ..
-  # - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.5" ]]; then
-  #     doctr deploy;
-  #   fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.5" ]]; then
+      doctr deploy;
+    fi
