@@ -17,23 +17,13 @@ import sys
 import os
 import pkg_resources
 import datetime
-from unittest.mock import MagicMock
-
-
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-        return MagicMock()
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-on_rtd = os.environ.get('READTHEDOCS') == 'True'
-if not on_rtd:
+on_travis = os.environ.get('TRAVIS') == 'True'
+if not on_travis:
     sys.path.insert(0, os.path.abspath('..'))
-else:
-    MOCK_MODULES = ['cantera', 'cansen']
-    sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # -- General configuration ------------------------------------------------
 
@@ -90,10 +80,10 @@ copyright = '{}, {}'.format(this_year, author)
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-try:
-    release = pkg_resources.get_distribution(project).version
-except:
-    release = 'unknown'
+# try:
+release = pkg_resources.get_distribution(project).version
+# except:
+#     release = 'unknown'
 # The short X.Y version.
 version = '.'.join(release.split('.')[:1])
 
