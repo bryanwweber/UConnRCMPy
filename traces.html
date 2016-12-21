@@ -232,7 +232,7 @@ pressure in the second column. The keyword arguments are the same as
 
 <dl class="class">
 <dt id="uconnrcmpy.traces.PressureFromVolume">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">PressureFromVolume</code><span class="sig-paren">(</span><em>volume</em>, <em>p_initial</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.PressureFromVolume" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">PressureFromVolume</code><span class="sig-paren">(</span><em>volume</em>, <em>p_initial</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.PressureFromVolume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a pressure trace given a volume trace.</p>
 <p>Using Cantera to evaluate the thermodynamic properties, compute a
 pressure trace from a volume trace.</p>
@@ -265,7 +265,7 @@ process using the given volume trace.</p>
 
 <dl class="class">
 <dt id="uconnrcmpy.traces.TemperatureFromPressure">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">TemperatureFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.TemperatureFromPressure" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">TemperatureFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.TemperatureFromPressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a temperature trace given a pressure trace.</p>
 <p>Using Cantera to evaluate the thermodynamic properties, compute a
 pressure trace from a volume trace.</p>
@@ -427,7 +427,7 @@ value of the average at the point <code class="docutils literal"><span class="pr
 
 <dl class="class">
 <dt id="uconnrcmpy.traces.VolumeFromPressure">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">VolumeFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>v_initial</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VolumeFromPressure" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">VolumeFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>v_initial</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VolumeFromPressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a volume trace given a pressure trace.</p>
 <p>Using Cantera to evaluate the thermodynamic properties, compute a
 volume trace from a pressure trace.</p>

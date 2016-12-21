@@ -49,7 +49,7 @@
 <p>Data Processing Module</p>
 <dl class="class">
 <dt id="uconnrcmpy.dataprocessing.AltCondition">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">AltCondition</code><span class="sig-paren">(</span><em>plotting=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.AltCondition" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">AltCondition</code><span class="sig-paren">(</span><em>cti_file=None</em>, <em>plotting=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.AltCondition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class containing all of the alternate experiments at a condition</p>
 <dl class="method">
 <dt id="uconnrcmpy.dataprocessing.AltCondition.add_experiment">
@@ -129,13 +129,19 @@ following names:<ul class="simple">
 
 <dl class="class">
 <dt id="uconnrcmpy.dataprocessing.Condition">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Condition</code><span class="sig-paren">(</span><em>plotting=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Condition</code><span class="sig-paren">(</span><em>cti_file=None</em>, <em>plotting=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class containing all the experiments at a condition.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plotting</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; Set to True to enable plotting when experiments are added</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) &#8211; The location of the CTI file to use for Cantera. If it is
+not specified, the default is <code class="xref py py-obj docutils literal"><span class="pre">/species.cti</span></code>, but if that
+file cannot be found, the user is prompted for a filename.</li>
+<li><strong>plotting</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; Set to True to enable plotting when experiments are added</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -518,16 +524,21 @@ The YAML file format is detailed in <a class="reference internal" href="#uconnrc
 
 <dl class="class">
 <dt id="uconnrcmpy.dataprocessing.Experiment">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>file_path=None</em>, <em>cti_file=None</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains all the information of a single RCM experiment.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) &#8211; If an argument is supplied, it should be an instance of
-<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a>. If no argument is supplied, the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) &#8211; If an argument is supplied, it should be an instance of
+<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>. If no argument is supplied, the
 filename is read from the standard input as a string and
-resolved into a <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object.</td>
+resolved into a <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object.</li>
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) &#8211; Location of the CTI file for Cantera</li>
+<li><strong>cti_source</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; String containing the source of a CTI file for Cantera</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -651,7 +662,7 @@ following names:<ul class="simple">
 
 <dl class="class">
 <dt id="uconnrcmpy.dataprocessing.Simulation">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Simulation</code><span class="sig-paren">(</span><em>initial_temperature</em>, <em>initial_pressure</em>, <em>volume</em>, <em>is_reactive</em>, <em>end_temp=2500.0</em>, <em>end_time=0.2</em>, <em>chem_file='species.cti'</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Simulation</code><span class="sig-paren">(</span><em>initial_temperature</em>, <em>initial_pressure</em>, <em>volume</em>, <em>is_reactive</em>, <em>end_temp=2500.0</em>, <em>end_time=0.2</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains a single simulation of the experiment.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -768,7 +779,7 @@ of the unequal spacing of the simulated data.</p>
 
 <dl class="function">
 <dt id="uconnrcmpy.dataprocessing.process_alt_folder">
-<code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">process_alt_folder</code><span class="sig-paren">(</span><em>path='.'</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.process_alt_folder" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">process_alt_folder</code><span class="sig-paren">(</span><em>cti_file</em>, <em>path='.'</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.process_alt_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a folder of alternative experimental files.</p>
 <p>Process a folder containing files with reactive experiments to
 calculate the ignition delays and copy a table with the results
@@ -778,6 +789,7 @@ to the clipboard.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) &#8211; File containing the CTI for Cantera</li>
 <li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; Path to folder to be analyzed. Defaults to the current folder.</li>
 <li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to enable plotting. False by default.</li>
 </ul>
@@ -789,7 +801,7 @@ to the clipboard.</p>
 
 <dl class="function">
 <dt id="uconnrcmpy.dataprocessing.process_folder">
-<code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">process_folder</code><span class="sig-paren">(</span><em>path='.'</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.process_folder" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">process_folder</code><span class="sig-paren">(</span><em>cti_file</em>, <em>path='.'</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.process_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a folder of experimental files.</p>
 <p>Process a folder containing files with reactive experiments to
 calculate the ignition delays and copy a table with the results
@@ -799,6 +811,7 @@ to the clipboard.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) &#8211; File containing the CTI for Cantera</li>
 <li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; Path to folder to be analyzed. Defaults to the current folder.</li>
 <li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to enable plotting. False by default.</li>
 </ul>
