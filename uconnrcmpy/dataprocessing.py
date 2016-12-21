@@ -29,6 +29,10 @@ class Condition(object):
 
     Parameters
     ----------
+    cti_file : `str` or `pathlib.Path`, optional
+        The location of the CTI file to use for Cantera. If it is
+        not specified, the default is `./species.cti`, but if that
+        file cannot be found, the user is prompted for a filename.
     plotting : `bool`, optional
         Set to True to enable plotting when experiments are added
 
@@ -70,7 +74,7 @@ class Condition(object):
         Comparison of the simulation with the reactive_case pressure
     """
 
-    def __init__(self, plotting=True):
+    def __init__(self, cti_file=None, plotting=True):
         self.reactive_experiments = {}
         self.nonreactive_experiments = {}
         self.reactive_case = None
@@ -97,9 +101,20 @@ class Condition(object):
             'reactive_file', 'nonreactive_file', 'nonreactive_end_time', 'reactive_end_time',
             'reactive_compression_time', 'nonreactive_offset_points', 'reactive_offset_points'
         ]
+        if cti_file is None:
+            try:
+                cti_file = Path('./species.cti').resolve()
+            except OSError:
+                cti_file = Path(input('Input the name of the CTI file: ')).resolve()
+
+        with open(str(cti_file), 'r') as in_file:
+            self.cti_source = in_file.read()
+
+        ct.Solution(source=self.cti_source)
+        ct.suppress_thermo_warnings()
 
     def __repr__(self):
-        return 'Condition(plotting={self.plotting!r})'.format(self=self)
+        return 'Condition(cti_file, plotting={self.plotting!r})'.format(self=self)
 
     def summary(self):
         summary_str = [('Date-Time     P0 (Torr)  T0 (Kelvin)  Pc (bar)  τ (ms)  τ1 (ms)\n'
@@ -156,7 +171,7 @@ class Condition(object):
     @reactive_file.setter
     def reactive_file(self, value):
         if value not in self.reactive_experiments:
-            self.reactive_case = Experiment(value)
+            self.reactive_case = Experiment(value, cti_source=self.cti_source)
             self.reactive_experiments[value] = self.reactive_case
         else:
             self.reactive_case = self.reactive_experiments[value]
@@ -177,7 +192,7 @@ class Condition(object):
     @nonreactive_file.setter
     def nonreactive_file(self, value):
         if value not in self.nonreactive_experiments:
-            self.nonreactive_case = Experiment(value)
+            self.nonreactive_case = Experiment(value, cti_source=self.cti_source)
             self.nonreactive_experiments[value] = self.nonreactive_case
         else:
             self.nonreactive_case = self.nonreactive_experiments[value]
@@ -257,7 +272,7 @@ class Condition(object):
             Filename of the file with the voltage trace of the
             experiment to be added.
         """
-        exp = Experiment(file_name)
+        exp = Experiment(file_name, cti_source=self.cti_source)
         if exp.pressure_trace.is_reactive:
             self.reactive_experiments[exp.file_path.name] = exp
             if self.plotting:
@@ -461,17 +476,23 @@ class Condition(object):
         n_print_pts = len(print_pressure)
         time = np.arange(-self.reactive_compression_time/1000.0, self.nonreactive_end_time/1000.0,
                          1/self.reactive_case.pressure_trace.frequency)
-        stroke_volume = VolumeFromPressure(stroke_pressure, 1.0,
-                                           self.reactive_case.experiment_parameters['Tin']).volume
+        stroke_volume = VolumeFromPressure(
+            stroke_pressure,
+            1.0,
+            self.reactive_case.experiment_parameters['Tin'],
+            cti_source=self.cti_source,
+        ).volume
         stroke_temperature = TemperatureFromPressure(
             stroke_pressure,
             self.reactive_case.experiment_parameters['Tin'],
+            cti_source=self.cti_source,
         ).temperature
 
         post_volume = VolumeFromPressure(
             post_pressure,
             stroke_volume[-1],
             stroke_temperature[-1],
+            cti_source=self.cti_source,
         ).volume
 
         # The post_volume array is indexed from the second element to
@@ -483,6 +504,7 @@ class Condition(object):
             volume[::5],
             stroke_pressure[0]*1E5,
             self.reactive_case.experiment_parameters['Tin'],
+            cti_source=self.cti_source,
         ).pressure
 
         copy('{:.4f}'.format(stroke_pressure[0]))
@@ -599,6 +621,7 @@ class Condition(object):
                     is_reactive=False,
                     end_temp=end_temp,
                     end_time=end_time,
+                    cti_source=self.cti_source,
                 )
             else:
                 if process_choice('nonreactive'):
@@ -609,6 +632,7 @@ class Condition(object):
                         is_reactive=False,
                         end_temp=end_temp,
                         end_time=end_time,
+                        cti_source=self.cti_source,
                     )
                 else:
                     print('Nothing was done')
@@ -622,6 +646,7 @@ class Condition(object):
                     is_reactive=True,
                     end_temp=end_temp,
                     end_time=end_time,
+                    cti_source=self.cti_source,
                 )
             else:
                 if process_choice('reactive'):
@@ -632,6 +657,7 @@ class Condition(object):
                         is_reactive=True,
                         end_temp=end_temp,
                         end_time=end_time,
+                        cti_source=self.cti_source,
                     )
                 else:
                     print('Nothing was done')
@@ -736,7 +762,7 @@ class AltCondition(Condition):
             Filename of the file with the voltage trace of the
             experiment to be added.
         """
-        exp = AltExperiment(file_name)
+        exp = AltExperiment(file_name, cti_source=self.cti_source)
         if exp.pressure_trace.is_reactive:
             self.reactive_experiments[exp.file_path.name] = exp
             if self.plotting:
@@ -800,7 +826,7 @@ class Simulation(object):
     """
 
     def __init__(self, initial_temperature, initial_pressure, volume, is_reactive,
-                 end_temp=2500., end_time=0.2, chem_file='species.cti'):
+                 end_temp=2500., end_time=0.2, chem_file='species.cti', cti_source=None):
 
         if volume is None:
             volume = np.genfromtxt('volume.csv', delimiter=',')
@@ -820,7 +846,10 @@ class Simulation(object):
         self.initial_temperature = initial_temperature
         self.initial_pressure = initial_pressure
 
-        gas = ct.Solution(chem_file)
+        if cti_source is None:
+            gas = ct.Solution(chem_file)
+        else:
+            gas = ct.Solution(source=cti_source)
         gas.TP = self.initial_temperature, self.initial_pressure
         if not self.is_reactive:
             gas.set_multiplier(0)
@@ -898,11 +927,15 @@ class Experiment(object):
 
     Parameters
     ----------
-    file_path : `pathlib.Path`, optional
+    file_path : `str` or `pathlib.Path`, optional
         If an argument is supplied, it should be an instance of
-        `~pathlib.Path`. If no argument is supplied, the
+        `~pathlib.Path` or `str`. If no argument is supplied, the
         filename is read from the standard input as a string and
         resolved into a `~pathlib.Path` object.
+    cti_file : `str` or `pathlib.Path`, optional
+        Location of the CTI file for Cantera
+    cti_source : `str`, optional
+        String containing the source of a CTI file for Cantera
 
     Attributes
     ----------
@@ -934,7 +967,7 @@ class Experiment(object):
         The temperature estimated at the end of compression
     """
 
-    def __init__(self, file_path=None):
+    def __init__(self, file_path=None, cti_file=None, cti_source=None):
         self.resolve_file_path(file_path)
         self.experiment_parameters = self.parse_file_name(self.file_path)
         self.voltage_trace = VoltageTrace(self.file_path)
@@ -945,6 +978,12 @@ class Experiment(object):
         self.compression_time = None
         self.output_end_time = None
         self.offset_points = None
+        if cti_source is None:
+            cti_file = Path(cti_file).resolve()
+            with open(str(cti_file), 'r') as in_file:
+                self.cti_source = in_file.read()
+        else:
+            self.cti_source = cti_source
         self.process_pressure_trace()
         self.copy_to_clipboard()
 
@@ -1072,7 +1111,11 @@ class Experiment(object):
         comp_time_length = int(est_comp_time*self.pressure_trace.frequency)
         pres_to_temp_start_idx = self.pressure_trace.EOC_idx - comp_time_length
         tempp = self.pressure_trace.pressure[pres_to_temp_start_idx:self.pressure_trace.EOC_idx]
-        temperature_trace = TemperatureFromPressure(tempp, self.experiment_parameters['Tin'])
+        temperature_trace = TemperatureFromPressure(
+            tempp,
+            self.experiment_parameters['Tin'],
+            cti_source=self.cti_source,
+        )
         return np.amax(temperature_trace.temperature)
 
     def plot_pressure_trace(self):
@@ -1176,7 +1219,7 @@ class AltExperiment(Experiment):
         return name_parts
 
 
-def process_folder(path='.', plot=False):
+def process_folder(cti_file, path='.', plot=False):
     """Process a folder of experimental files.
 
     Process a folder containing files with reactive experiments to
@@ -1185,6 +1228,8 @@ def process_folder(path='.', plot=False):
 
     Parameters
     ----------
+    cti_file : `str` or `pathlib.Path`
+        File containing the CTI for Cantera
     path : `str`, optional
         Path to folder to be analyzed. Defaults to the current folder.
     plot : `bool`, optional
@@ -1193,13 +1238,17 @@ def process_folder(path='.', plot=False):
     p = Path(path)
     result = []
 
+    cti_file = Path(cti_file).resolve()
+    with open(str(cti_file), 'r') as in_file:
+        cti_source = in_file.read()
+
     if plot:
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
 
     for f in p.glob('[0-3]*.txt'):
         print(f)
-        case = Experiment(f.resolve())
+        case = Experiment(f.resolve(), cti_source=cti_source)
         result.append('\t'.join(map(str, [
             case.experiment_parameters['time_of_day'], case.experiment_parameters['pin'],
             case.experiment_parameters['Tin'], case.pressure_trace.p_EOC, case.ignition_delay,
@@ -1213,7 +1262,7 @@ def process_folder(path='.', plot=False):
     print('Finished')
 
 
-def process_alt_folder(path='.', plot=False):
+def process_alt_folder(cti_file, path='.', plot=False):
     """Process a folder of alternative experimental files.
 
     Process a folder containing files with reactive experiments to
@@ -1222,6 +1271,8 @@ def process_alt_folder(path='.', plot=False):
 
     Parameters
     ----------
+    cti_file : `str` or `pathlib.Path`
+        File containing the CTI for Cantera
     path : `str`, optional
         Path to folder to be analyzed. Defaults to the current folder.
     plot : `bool`, optional
@@ -1229,6 +1280,10 @@ def process_alt_folder(path='.', plot=False):
     """
     p = Path(path)
     result = []
+
+    cti_file = Path(cti_file).resolve()
+    with open(str(cti_file), 'r') as in_file:
+        cti_source = in_file.read()
 
     if plot:
         fig = plt.figure()
@@ -1238,7 +1293,7 @@ def process_alt_folder(path='.', plot=False):
         if 'NR' in f.name:
             continue
         print(f)
-        case = AltExperiment(f.resolve())
+        case = AltExperiment(f.resolve(), cti_source=cti_source)
         result.append('\t'.join(map(str, [
             case.experiment_parameters['date_year'], case.experiment_parameters['time_of_day'],
             case.experiment_parameters['pin'], case.experiment_parameters['Tin'],

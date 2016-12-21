@@ -355,8 +355,11 @@ class PressureFromVolume(object):
     setting the volume and the entropy according to an isentropic
     process using the given volume trace.
     """
-    def __init__(self, volume, p_initial, T_initial, chem_file='species.cti'):
-        gas = ct.Solution(chem_file)
+    def __init__(self, volume, p_initial, T_initial, chem_file='species.cti', cti_source=None):
+        if cti_source is None:
+            gas = ct.Solution(chem_file)
+        else:
+            gas = ct.Solution(source=cti_source)
         gas.TP = T_initial, p_initial
         initial_volume = gas.volume_mass
         initial_entropy = gas.entropy_mass
@@ -403,8 +406,11 @@ class VolumeFromPressure(object):
     and the entropy to be constant. The volume is computed by the
     isentropic relationship described above.
     """
-    def __init__(self, pressure, v_initial, T_initial, chem_file='species.cti'):
-        gas = ct.Solution(chem_file)
+    def __init__(self, pressure, v_initial, T_initial, chem_file='species.cti', cti_source=None):
+        if cti_source is None:
+            gas = ct.Solution(chem_file)
+        else:
+            gas = ct.Solution(source=cti_source)
         gas.TP = T_initial, pressure[0]*one_bar_in_pa
         initial_entropy = gas.entropy_mass
         initial_density = gas.density
@@ -444,8 +450,11 @@ class TemperatureFromPressure(object):
     setting the pressure and the entropy according to an isentropic
     process using the given pressure trace.
     """
-    def __init__(self, pressure, T_initial, chem_file='species.cti'):
-        gas = ct.Solution(chem_file)
+    def __init__(self, pressure, T_initial, chem_file='species.cti', cti_source=None):
+        if cti_source is None:
+            gas = ct.Solution(chem_file)
+        else:
+            gas = ct.Solution(source=cti_source)
         gas.TP = T_initial, pressure[0]*one_bar_in_pa
         initial_entropy = gas.entropy_mass
         self.temperature = np.zeros((len(pressure)))
