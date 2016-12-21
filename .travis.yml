@@ -31,7 +31,7 @@ install:
   - conda update -q --all
   - conda install -q anaconda-client conda-build
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.6" ]]; then
-      conda install -q sphinx doctr
+      conda install -q sphinx doctr;
     fi
   - conda info -a
   - conda list
