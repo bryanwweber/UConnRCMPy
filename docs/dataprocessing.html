@@ -1,0 +1,886 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data Processing &#8212; UConnRCMPy 2.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Traces" href="traces.html" />
+    <link rel="prev" title="Welcome to UConnRCMPy’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-uconnrcmpy.dataprocessing">
+<span id="data-processing"></span><h1>Data Processing<a class="headerlink" href="#module-uconnrcmpy.dataprocessing" title="Permalink to this headline">¶</a></h1>
+<p>Data Processing Module</p>
+<dl class="class">
+<dt id="uconnrcmpy.dataprocessing.AltCondition">
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">AltCondition</code><span class="sig-paren">(</span><em>plotting=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.AltCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing all of the alternate experiments at a condition</p>
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.AltCondition.add_experiment">
+<code class="descname">add_experiment</code><span class="sig-paren">(</span><em>file_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.AltCondition.add_experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an experiment to the Condition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; Filename of the file with the voltage trace of the
+experiment to be added.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="uconnrcmpy.dataprocessing.AltExperiment">
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">AltExperiment</code><span class="sig-paren">(</span><em>file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.AltExperiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all the information of a single alternate RCM experiment.
+See the documentation for <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> for attribute descriptions.</p>
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.AltExperiment.parse_file_name">
+<code class="descname">parse_file_name</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.AltExperiment.parse_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the file name of an experimental trace, where the name is in an alternate format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">pathlib.Path</span></code></a>) &#8211; <p>The Path object that contains the path of the current experimental data file.
+The filename associated with the path should be in the following format:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;Fuel_FF_EqRatio_P.PP_PercentAr_AR_PercentN2_N2_[NR_]XX_in_YY_mm_ZZZK_AAAAtorr-DD-Mon-YY-Time_Endplug_CC.txt&#39;</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul>
+<li><code class="docutils literal"><span class="pre">[NR_]</span></code>: Optional non-reactive indicator</li>
+<li><code class="docutils literal"><span class="pre">FF</span></code>: Fuel symbol</li>
+<li><code class="docutils literal"><span class="pre">P.PP</span></code>: Equivalence ratio to two decimal places</li>
+<li><code class="docutils literal"><span class="pre">AR</span></code>: Percent of argon in the oxidizer</li>
+<li><code class="docutils literal"><span class="pre">N2</span></code>: Percent of nitrogen in the oxidizer</li>
+<li><code class="docutils literal"><span class="pre">XX</span></code>: inches of spacers</li>
+<li><code class="docutils literal"><span class="pre">YY</span></code>: millimeters of shims</li>
+<li><code class="docutils literal"><span class="pre">ZZZ</span></code>: Initial temperature in Kelvin</li>
+<li><code class="docutils literal"><span class="pre">AAAA</span></code>: Initial pressure in Torr</li>
+<li><code class="docutils literal"><span class="pre">BBB</span></code>: Multiplication factor set on the charge amplifier</li>
+<li><code class="docutils literal"><span class="pre">DD-Mon-YY-Time</span></code>: Day, Month, Year, and Time of experiment</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">CC</span></code>: <code class="docutils literal"><span class="pre">HC</span></code> or <code class="docutils literal"><span class="pre">LC</span></code> to indicate the high clearance or</dt>
+<dd>low clearance endplug, respectively</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary containing the parameters of the experiment with the
+following names:<ul class="simple">
+<li><code class="docutils literal"><span class="pre">spacers</span></code>: Inches of spacers</li>
+<li><code class="docutils literal"><span class="pre">shims</span></code>: Millimeters of shims</li>
+<li><code class="docutils literal"><span class="pre">Tin</span></code>: Initial temperature in Kelvin</li>
+<li><code class="docutils literal"><span class="pre">pin</span></code>: Initial pressure in Torr</li>
+<li><code class="docutils literal"><span class="pre">time_of_day</span></code>: Time of day of the experiment</li>
+<li><code class="docutils literal"><span class="pre">date</span></code>: Date of the experiment with the time</li>
+<li><code class="docutils literal"><span class="pre">date_year</span></code>: Date of the experiment with the year</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="uconnrcmpy.dataprocessing.Condition">
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Condition</code><span class="sig-paren">(</span><em>plotting=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing all the experiments at a condition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plotting</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; Set to True to enable plotting when experiments are added</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.reactive_experiments">
+<code class="descname">reactive_experiments</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.reactive_experiments" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> &#8211; Dictionary of instances of class <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> containing
+reactive experiments. Indexed by the file name of the
+underlying voltage trace from the experiment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.nonreactive_experiments">
+<code class="descname">nonreactive_experiments</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_experiments" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> &#8211; Dictionary of instances of class <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> containing
+nonreactive experiments. Indexed by the file name of the
+underlying voltage trace from the experiment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.reactive_case">
+<code class="descname">reactive_case</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.reactive_case" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> &#8211; Single instance of class <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> that is the closest to
+the mean of all of the experiments.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.nonreactive_case">
+<code class="descname">nonreactive_case</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_case" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> &#8211; Single instance of class <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> that best matches the
+<code class="docutils literal"><span class="pre">reactive_case</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.presout">
+<code class="descname">presout</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.presout" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Pressure array that will be saved to the output file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.volout">
+<code class="descname">volout</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.volout" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Volume array that will be saved to the output file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.nonreactive_sim">
+<code class="descname">nonreactive_sim</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_sim" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#uconnrcmpy.dataprocessing.Simulation" title="uconnrcmpy.dataprocessing.Simulation"><code class="xref py py-obj docutils literal"><span class="pre">Simulation</span></code></a> &#8211; Instance containing the nonreactive simulation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.reactive_sim">
+<code class="descname">reactive_sim</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.reactive_sim" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#uconnrcmpy.dataprocessing.Simulation" title="uconnrcmpy.dataprocessing.Simulation"><code class="xref py py-obj docutils literal"><span class="pre">Simulation</span></code></a> &#8211; Instance containing the reactive simulation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.plotting">
+<code class="descname">plotting</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.plotting" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a> &#8211; Set to True when plotting of experiments is enabled</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.all_runs_figure">
+<code class="descname">all_runs_figure</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.all_runs_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> &#8211; Figure showing all the runs at a condition</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.nonreactive_figure">
+<code class="descname">nonreactive_figure</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> &#8211; Figure showing a comparison of the nonreactive pressure trace
+with the reactive_case</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.pressure_comparison_figure">
+<code class="descname">pressure_comparison_figure</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.pressure_comparison_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> &#8211; Comparison figure of the reactive_case pressure and the
+pressure calculated by the volume trace routine</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.simulation_figure">
+<code class="descname">simulation_figure</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.simulation_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> &#8211; Comparison of the simulation with the reactive_case pressure</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.add_experiment">
+<code class="descname">add_experiment</code><span class="sig-paren">(</span><em>file_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.add_experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an experiment to the Condition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; Filename of the file with the voltage trace of the
+experiment to be added.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.compare_to_sim">
+<code class="descname">compare_to_sim</code><span class="sig-paren">(</span><em>run_reactive=False</em>, <em>run_nonreactive=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.compare_to_sim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the experiments to the simulations.</p>
+<p>Run the simulations for this condition, and if plotting is on,
+generate the comparison plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>run_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to run the reactive comparison. False by default.</li>
+<li><strong>run_nonreactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to run the nonreactive comparison. True by default.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.create_volume_trace">
+<code class="descname">create_volume_trace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.create_volume_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the volume trace based on the information in the loaded
+yaml file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.load_old_yaml">
+<code class="descname">load_old_yaml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.load_old_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the yaml file called <code class="docutils literal"><span class="pre">volume-trace.yaml</span></code> containing the
+information needed to construct the volume trace. All the
+following data are required unless otherwise noted. The format
+of the yaml file is:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">variable</span><span class="p">:</span> <span class="n">value</span>
+</pre></div>
+</div>
+<ul>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">nonrfile</span></code>: File name of the non-reactive pressure trace.</dt>
+<dd><p class="first last">Type: String</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">reacfile</span></code>: File name of the reactive pressure trace.</dt>
+<dd><p class="first last">Type: String</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">comptime</span></code>: Length of time of the compression stroke, in ms.</dt>
+<dd><p class="first last">Type: Float</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">nonrend</span></code>: End time used for the produced volume trace, in ms.</dt>
+<dd><p class="first last">Type: Float</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">reacend</span></code>: End time of the output reactive pressure trace, in ms.</dt>
+<dd><p class="first last">Type: Float</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">reacoffs</span></code>: Offset in number of points from EOC for the</dt>
+<dd><p class="first last">reactive case. Optional, defaults to zero.
+Type: Integer</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">nonroffs</span></code>: Offset in number of points from EOC for the</dt>
+<dd><p class="first last">non-reactive case. Optional, defaults to zero.
+Type: Integer</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.load_yaml">
+<code class="descname">load_yaml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.load_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the yaml file called <code class="docutils literal"><span class="pre">volume-trace.yaml</span></code> containing the
+information needed to construct the volume trace. This method
+reads the YAML file and sets the appropriate attributes of the
+<a class="reference internal" href="#uconnrcmpy.dataprocessing.Condition" title="uconnrcmpy.dataprocessing.Condition"><code class="xref py py-obj docutils literal"><span class="pre">Condition</span></code></a> instance. All the following data are required unless
+otherwise noted. The format of the yaml file is:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">variable</span><span class="p">:</span> <span class="n">value</span>
+</pre></div>
+</div>
+<ul>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">nonreactive_file</span></code>: File name of the non-reactive pressure trace.</dt>
+<dd><p class="first last">Type: String</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">reactive_file</span></code>: File name of the reactive pressure trace.</dt>
+<dd><p class="first last">Type: String</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">reactive_compression_time</span></code>: Length of time of the compression stroke, in ms.</dt>
+<dd><p class="first last">Type: Float</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">nonreactive_end_time</span></code>: End time used for the produced volume trace, in ms.</dt>
+<dd><p class="first last">Type: Float</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">reactive_end_time</span></code>: End time of the output reactive pressure trace, in ms.</dt>
+<dd><p class="first last">Type: Float</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">reactive_offset_points</span></code>: Offset in number of points from EOC for the</dt>
+<dd><p class="first last">reactive case. Optional, defaults to zero.
+Type: Integer</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">nonreactive_offset_points</span></code>: Offset in number of points from EOC for the</dt>
+<dd><p class="first last">non-reactive case. Optional, defaults to zero.
+Type: Integer</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.nonreactive_end_time">
+<code class="descname">nonreactive_end_time</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The end time for the output of the nonreactive case to a file, relative to
+the end of compression in milliseconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.nonreactive_file">
+<code class="descname">nonreactive_file</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_file" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> &#8211; File name of the non-reactive case that best matches
+the pressure trace of the reactive case.</p>
+<p>If the file hasn&#8217;t been added to the <a class="reference internal" href="#uconnrcmpy.dataprocessing.Condition" title="uconnrcmpy.dataprocessing.Condition"><code class="xref py py-obj docutils literal"><span class="pre">Condition</span></code></a>, it is added and the
+<a class="reference internal" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_case" title="uconnrcmpy.dataprocessing.Condition.nonreactive_case"><code class="xref py py-obj docutils literal"><span class="pre">Condition.nonreactive_case</span></code></a> attribute is set to the <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> loaded
+from the file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.nonreactive_offset_points">
+<code class="descname">nonreactive_offset_points</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.nonreactive_offset_points" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The number of points to offset the end of compression, to better
+match the non-reactive and reactive pressure traces together</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.plot_nonreactive_figure">
+<code class="descname">plot_nonreactive_figure</code><span class="sig-paren">(</span><em>exp</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.plot_nonreactive_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the nonreactive pressure traces on a figure.</p>
+<p>Plots the nonreactive pressure traces in comparison with the
+reactive pressure trace. Adds additional traces each time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exp</strong> (<a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a>) &#8211; Experiment to plot</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.plot_reactive_figures">
+<code class="descname">plot_reactive_figures</code><span class="sig-paren">(</span><em>exp</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.plot_reactive_figures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the reactive pressure trace on figures.</p>
+<p>Plots the reactive pressure trace on two figures. The first is
+a comparison of all of the processed reactive pressure traces.
+The second plot is a comparison of the pressure trace and the
+derivative for a single experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exp</strong> (<a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a>) &#8211; Experiment to plot</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.reactive_compression_time">
+<code class="descname">reactive_compression_time</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.reactive_compression_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The compression time for the reactive case, in milliseconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.reactive_end_time">
+<code class="descname">reactive_end_time</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.reactive_end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The end time for the output of the reactive case to a file, relative to
+the end of compression in milliseconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.reactive_file">
+<code class="descname">reactive_file</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.reactive_file" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> &#8211; File name of the case that is the closest to the mean of all
+the experiments.</p>
+<p>If the file hasn&#8217;t been added to the <a class="reference internal" href="#uconnrcmpy.dataprocessing.Condition" title="uconnrcmpy.dataprocessing.Condition"><code class="xref py py-obj docutils literal"><span class="pre">Condition</span></code></a>, it is added and the
+<a class="reference internal" href="#uconnrcmpy.dataprocessing.Condition.reactive_case" title="uconnrcmpy.dataprocessing.Condition.reactive_case"><code class="xref py py-obj docutils literal"><span class="pre">Condition.reactive_case</span></code></a> attribute is set to the <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> loaded
+from the file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Condition.reactive_offset_points">
+<code class="descname">reactive_offset_points</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.reactive_offset_points" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The number of points to offset the end of compression, to better
+match the non-reactive and reactive pressure traces together</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.run_simulation">
+<code class="descname">run_simulation</code><span class="sig-paren">(</span><em>run_reactive=False</em>, <em>run_nonreactive=True</em>, <em>end_temp=2500.0</em>, <em>end_time=0.2</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.run_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the simulations for this condition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>run_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to run the reactive case. False by default.</li>
+<li><strong>run_nonreactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to run the nonreactive case. True by default.</li>
+<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Temperature at which the simulation is ended</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Time at which the simulation is ended.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.write_output">
+<code class="descname">write_output</code><span class="sig-paren">(</span><em>volout</em>, <em>presout</em>, <em>Tin</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.write_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the output files from the volume and pressure traces.
+The traces are sampled every 5 points to reduce the amount
+of required computational time. This has negligible effect on
+the computed pressure trace. The volume trace is written in
+<code class="docutils literal"><span class="pre">csv</span></code> format to the file <code class="docutils literal"><span class="pre">volume.csv</span></code> and the experimental
+pressure trace is written to the file
+<code class="docutils literal"><span class="pre">Tc__P0__T0_XXXK_pressure.txt</span></code>, where <code class="docutils literal"><span class="pre">XXX</span></code> represents the
+initial temperature of the experiment. The user should fill the
+missing values into the file name after simulations are
+completed and the values are known.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.write_yaml">
+<code class="descname">write_yaml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.write_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the volume-trace.yaml output file for storage of parameters.
+The YAML file format is detailed in <a class="reference internal" href="#uconnrcmpy.dataprocessing.Condition.load_yaml" title="uconnrcmpy.dataprocessing.Condition.load_yaml"><code class="xref py py-obj docutils literal"><span class="pre">Condition.load_yaml</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="uconnrcmpy.dataprocessing.Experiment">
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>file_path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all the information of a single RCM experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) &#8211; If an argument is supplied, it should be an instance of
+<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a>. If no argument is supplied, the
+filename is read from the standard input as a string and
+resolved into a <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.compression_time">
+<code class="descname">compression_time</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.compression_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The compression time in milliseconds, from the end of compression to the
+approximate start of piston motion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.file_path">
+<code class="descname">file_path</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> &#8211; Object storing the file path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.experiment_parameters">
+<code class="descname">experiment_parameters</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.experiment_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> &#8211; Stores the parameters of the experiment parsed from the
+filename by <code class="xref py py-obj docutils literal"><span class="pre">parse_file_name</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.voltage_trace">
+<code class="descname">voltage_trace</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.voltage_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="traces.html#uconnrcmpy.traces.VoltageTrace" title="uconnrcmpy.traces.VoltageTrace"><code class="xref py py-obj docutils literal"><span class="pre">VoltageTrace</span></code></a> &#8211; Stores the experimental voltage signal and related traces</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.pressure_trace">
+<code class="descname">pressure_trace</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.pressure_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="traces.html#uconnrcmpy.traces.ExperimentalPressureTrace" title="uconnrcmpy.traces.ExperimentalPressureTrace"><code class="xref py py-obj docutils literal"><span class="pre">ExperimentalPressureTrace</span></code></a> &#8211; Stores the experimental pressure trace and its derivative</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.output_end_time">
+<code class="descname">output_end_time</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.output_end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The end time for the output to a file, relative to the end of compression in milliseconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.offset_points">
+<code class="descname">offset_points</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.offset_points" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The number of points to offset the end of compression, to better
+match the non-reactive and reactive pressure traces together</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.ignition_delay">
+<code class="descname">ignition_delay</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.ignition_delay" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The overall ignition delay of the experiment. Will be zero for
+a non-reactive experiment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.first_stage">
+<code class="descname">first_stage</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.first_stage" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The first stage ignition delay of the experiment. Will be zero
+for a non-reactive experiment of if there is no first-stage
+ignition.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Experiment.T_EOC">
+<code class="descname">T_EOC</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.T_EOC" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The temperature estimated at the end of compression</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Experiment.calculate_ignition_delay">
+<code class="descname">calculate_ignition_delay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.calculate_ignition_delay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the ignition delay from the pressure trace.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Experiment.parse_file_name">
+<code class="descname">parse_file_name</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.parse_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the file name of an experimental trace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">pathlib.Path</span></code></a>) &#8211; <p>The Path object that contains the path of the current experimental data file.
+The filename associated with the path should be in the following format:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">NR_</span><span class="p">]</span><span class="n">XX_in_YY_mm_ZZZK</span><span class="o">-</span><span class="n">AAAAt</span><span class="o">-</span><span class="n">BBBx</span><span class="o">-</span><span class="n">DD</span><span class="o">-</span><span class="n">Mon</span><span class="o">-</span><span class="n">YY</span><span class="o">-</span><span class="n">Time</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">[NR_]</span></code>: Optional non-reactive indicator</li>
+<li><code class="docutils literal"><span class="pre">XX</span></code>: inches of spacers</li>
+<li><code class="docutils literal"><span class="pre">YY</span></code>: millimeters of shims</li>
+<li><code class="docutils literal"><span class="pre">ZZZ</span></code>: Initial temperature in Kelvin</li>
+<li><code class="docutils literal"><span class="pre">AAAA</span></code>: Initial pressure in Torr</li>
+<li><code class="docutils literal"><span class="pre">BBB</span></code>: Multiplication factor set on the charge amplifier</li>
+<li><code class="docutils literal"><span class="pre">DD-Mon-YY-Time</span></code>: Day, Month, Year, and Time of experiment</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary containing the parameters of the experiment with the
+following names:<ul class="simple">
+<li><code class="docutils literal"><span class="pre">spacers</span></code>: Inches of spacers</li>
+<li><code class="docutils literal"><span class="pre">shims</span></code>: Millimeters of shims</li>
+<li><code class="docutils literal"><span class="pre">Tin</span></code>: Initial temperature in Kelvin</li>
+<li><code class="docutils literal"><span class="pre">pin</span></code>: Initial pressure in Torr</li>
+<li><code class="docutils literal"><span class="pre">factor</span></code>: Multiplication factor set on the charge amplifier</li>
+<li><code class="docutils literal"><span class="pre">time_of_day</span></code>: Time of day of the experiment</li>
+<li><code class="docutils literal"><span class="pre">date</span></code>: Date of the experiment with the time</li>
+<li><code class="docutils literal"><span class="pre">date_year</span></code>: Date of the experiment with the year</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="uconnrcmpy.dataprocessing.Simulation">
+<em class="property">class </em><code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">Simulation</code><span class="sig-paren">(</span><em>initial_temperature</em>, <em>initial_pressure</em>, <em>volume</em>, <em>is_reactive</em>, <em>end_temp=2500.0</em>, <em>end_time=0.2</em>, <em>chem_file='species.cti'</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains a single simulation of the experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial_temperature</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The initial temperature of the simulation</li>
+<li><strong>initial_pressure</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The initial pressure of the simulation</li>
+<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; The volume trace to be used for the simulation. Must be
+supplied, but if the input value is <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, the volume trace
+will be read from the file <code class="docutils literal"><span class="pre">volume.csv</span></code>. The first column
+should be the time, the second column should be the volume.</li>
+<li><strong>is_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>) &#8211; If the simulation should be reactive or non-reactive. If <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#False" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">False</span></code></a>
+sets the Cantera reaction rate multiplier to 0.0 via the
+<a class="reference external" href="http://cantera.github.io/dev-docs/sphinx/html/cython/kinetics.html#cantera.Kinetics.set_multiplier" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">set_multiplier</span></code></a> function.</li>
+<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Reactor temperature at which the simulation will be ended</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Time at which the simulation will be ended</li>
+<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; String filename of the chemistry file to use</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.time">
+<code class="descname">time</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated time values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.temperature">
+<code class="descname">temperature</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated temperature values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.pressure">
+<code class="descname">pressure</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.pressure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated pressure values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.input_volume">
+<code class="descname">input_volume</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.input_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of input volume values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.simulated_volume">
+<code class="descname">simulated_volume</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.simulated_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated volume values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.end_temp">
+<code class="descname">end_temp</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.end_temp" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; Reactor temperature at which the simulation will be ended</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; Time at which the simulation will be ended</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.chem_file">
+<code class="descname">chem_file</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.chem_file" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> &#8211; String filename of the chemistry file to use</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.initial_temperature">
+<code class="descname">initial_temperature</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.initial_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The initial temperature of the simulation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.dataprocessing.Simulation.initial_pressure">
+<code class="descname">initial_pressure</code><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.initial_pressure" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The initial pressure of the simulation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Simulation.calculate_derivative">
+<code class="descname">calculate_derivative</code><span class="sig-paren">(</span><em>dep_var</em>, <em>indep_var</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Simulation.calculate_derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the derivative.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Dependent variable (e.g., the pressure)</li>
+<li><strong>indep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Independent variable (e.g., the time)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">1-D array containing the derivative</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The derivative is calculated by computing the first-order
+Lagrange polynomial fit to the point under consideration and
+its nearest neighbors. The Lagrange polynomial is used because
+of the unequal spacing of the simulated data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="uconnrcmpy.dataprocessing.process_alt_folder">
+<code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">process_alt_folder</code><span class="sig-paren">(</span><em>path='.'</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.process_alt_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a folder of alternative experimental files.</p>
+<p>Process a folder containing files with reactive experiments to
+calculate the ignition delays and copy a table with the results
+to the clipboard.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; Path to folder to be analyzed. Defaults to the current folder.</li>
+<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to enable plotting. False by default.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="uconnrcmpy.dataprocessing.process_folder">
+<code class="descclassname">uconnrcmpy.dataprocessing.</code><code class="descname">process_folder</code><span class="sig-paren">(</span><em>path='.'</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.process_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a folder of experimental files.</p>
+<p>Process a folder containing files with reactive experiments to
+calculate the ignition delays and copy a table with the results
+to the clipboard.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; Path to folder to be analyzed. Defaults to the current folder.</li>
+<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; True to enable plotting. False by default.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">UConnRCMPy</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=bryanwweber&repo=uconnrcmpy&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="traces.html">Traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">Constants</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to UConnRCMPy&#8217;s documentation!</a></li>
+      <li>Next: <a href="traces.html" title="next chapter">Traces</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Bryan W. Weber.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/dataprocessing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/bryanwweber/uconnrcmpy" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
