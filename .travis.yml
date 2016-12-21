@@ -40,6 +40,9 @@ install:
   - conda info -a
   - conda list
 
+before_script:
+  - rvm get head || true
+
 script:
   - conda build conda.recipe --python=${BUILD_PYTHON}
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.5" ]]; then
