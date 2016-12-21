@@ -1,0 +1,46 @@
+sudo: false
+
+matrix:
+  include:
+    - os: linux
+      env: BUILD_PYTHON="3.4"
+    - os: linux
+      env: BUILD_PYTHON="3.5"
+    - os: linux
+      env: BUILD_PYTHON="3.6"
+    - os: osx
+      env: BUILD_PYTHON="3.4"
+    - os: osx
+      env: BUILD_PYTHON="3.5"
+    - os: osx
+      env: BUILD_PYTHON="3.6"
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh 0b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - conda config --set always_yes yes --set changeps1 no
+  - conda config --add channels cantera/label/dev
+  - conda config --add channels bryanwweber
+  - conda config --append channels conda-forge
+  - conda update -q --all
+  - conda install -q anaconda-client conda-build
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.6" ]]; then
+      conda install -q sphinx doctr
+    fi
+  - conda info -a
+  - conda list
+
+script:
+  - conda build conda.recipe --python=${BUILD_PYTHON}
+  - set -e
+  - cd docs
+  - make html
+  - cd ..
+  # - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.6" ]]; then
+  #     doctr deploy;
+  #   fi
