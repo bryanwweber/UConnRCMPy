@@ -291,10 +291,7 @@ class ExperimentalPressureTrace(object):
         """
         m = len(dep_var)
         ddt = np.zeros(m)
-        for i in range(m-2):
-            ddt[i] = (-dep_var[i+2] + 4*dep_var[i+1] -
-                      3*dep_var[i])/(2*(indep_var[i+1] -
-                                        indep_var[i]))
+        ddt[:m-2] = (-3*dep_var[:m-2] + 4*(dep_var[1:m-1]) - dep_var[2:m])/(2*np.diff(indep_var[:m-1]))  # NOQA
         ddt[np.isinf(ddt)] = 0
         return ddt
 
