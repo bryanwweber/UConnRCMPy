@@ -25,8 +25,8 @@ install:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda config --set always_yes yes --set changeps1 no
-  - conda config --add channels cantera/label/dev
-  - conda config --add channels bryanwweber
+  - conda config --append channels cantera/label/dev
+  - conda config --append channels bryanwweber
   - conda config --append channels conda-forge
   - conda update -q --all
   - conda install -q anaconda-client conda-build
@@ -38,9 +38,10 @@ install:
 
 script:
   - conda build conda.recipe --python=${BUILD_PYTHON}
+  - conda install --use-local uconnrcmpy
   - set -e
   - cd docs
-  - make html
+  - make html SPHINXOPTS="-W"
   - cd ..
   # - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.5" ]]; then
   #     doctr deploy;
