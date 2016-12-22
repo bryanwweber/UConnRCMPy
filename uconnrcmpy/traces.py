@@ -208,7 +208,7 @@ class VoltageTrace(object):
         # C corrects the frequencies for the multiple passes
         C = (2**(1/n_passes) - 1)**0.25
         b, a = sig.butter(2, (self.filter_frequency/C)/nyquist_freq)
-        return sig.filtfilt(b, a, data)
+        return sig.filtfilt(b, a, data, padtype='odd', padlen=101, method='pad')
 
 
 class ExperimentalPressureTrace(object):
