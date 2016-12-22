@@ -339,23 +339,29 @@ class ExperimentalPressureTrace(object):
 class AltExperimentalPressureTrace(ExperimentalPressureTrace):
     """Process an alternate experimental pressure trace.
 
-    These pressure traces do not have an associated voltage trace.
+    These pressure traces do not have an associated voltage trace,
+    but the machinery in the VoltageTrace class is useful for
+    filtering.
     """
     def __init__(self, file_path, initial_pressure_in_torr):
-        self.signal = np.genfromtxt(str(file_path))
+        # This is not a real voltage trace
+        pressure_trace = VoltageTrace(file_path)
 
-        self.time = self.signal[:, 0]
-        self.frequency = np.rint(1/self.time[1])
+        self.time = pressure_trace.time
+        self.frequency = pressure_trace.frequency
 
-        self.filtered_pressure = VoltageTrace.filtering(self, self.signal[:, 1])
-        self.pressure = VoltageTrace.smoothing(self, self.filtered_pressure)
-        pressure_start = np.average(self.pressure[20:500])
+        self.pressure = pressure_trace.filtered_voltage
+        pressure_start = np.mean(self.pressure[20:500])
         self.pressure -= pressure_start
         self.pressure += initial_pressure_in_torr*one_atm_in_bar/one_atm_in_torr
 
+        self.raw_pressure = pressure_trace.signal[:, 1]
+        raw_pressure_start = np.mean(self.raw_pressure[20:500])
+        self.raw_pressure -= raw_pressure_start
+        self.raw_pressure += initial_pressure_in_torr*one_atm_in_bar/one_atm_in_torr
+
         self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
         self.derivative = self.calculate_derivative(self.pressure, self.time)
-        self.smoothed_derivative = VoltageTrace.smoothing(self, self.derivative, span=21)
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
     def __repr__(self):
