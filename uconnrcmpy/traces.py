@@ -259,6 +259,10 @@ class ExperimentalPressureTrace(object):
         self.pressure *= factor
         self.pressure += initial_pressure_in_bar
 
+        self.raw_pressure = (voltage_trace.signal[:, 1] - voltage_trace.signal[0, 1])
+        self.raw_pressure *= factor
+        self.raw_pressure += initial_pressure_in_bar
+
         self.time = voltage_trace.time
         self.frequency = voltage_trace.frequency
 

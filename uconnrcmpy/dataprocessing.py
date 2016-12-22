@@ -1175,14 +1175,18 @@ class Experiment(object):
         # on a new figure every time
         self.exp_fig = plt.figure(self.experiment_parameters['date'])
         self.p_axis = self.exp_fig.add_subplot(1, 1, 1)
+        raw_line, = self.p_axis.plot(self.pressure_trace.zeroed_time*1000,
+                                     self.pressure_trace.raw_pressure,
+                                     'b', label="Raw Pressure")
         p_line, = self.p_axis.plot(self.pressure_trace.zeroed_time*1000.0,
                                    self.pressure_trace.pressure,
-                                   label="Pressure")
+                                   'g', label="Pressure")
         self.dpdt_axis = self.p_axis.twinx()
         dpdt_line, = self.dpdt_axis.plot(self.pressure_trace.zeroed_time*1000.0,
                                          self.pressure_trace.smoothed_derivative/1000.0,
-                                         'g', label="Derivative")
-        self.p_axis.legend([p_line, dpdt_line], [l.get_label() for l in [p_line, dpdt_line]],
+                                         'm', label="Derivative")
+        self.p_axis.legend([raw_line, p_line, dpdt_line],
+                           [l.get_label() for l in [p_line, dpdt_line]],
                            loc='best')
         self.p_axis.set_xlabel('Time [ms]')
         self.p_axis.set_ylabel('Pressure [bar]')
