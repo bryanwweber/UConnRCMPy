@@ -148,7 +148,7 @@ class VoltageTrace(object):
         freqs = np.linspace(nyquist_freq/n_freqs, nyquist_freq*C, n_freqs)
         # The indices of the frequencies used for fitting the straight line
         fit_freqs = np.arange(np.nonzero(freqs >= nyquist_freq/10)[0][0],
-                              np.nonzero(freqs >= nyquist_freq*3*C/4)[0][0] + 1)
+                              np.nonzero(freqs >= nyquist_freq*C/2)[0][0] + 1)
         resid = np.zeros(n_freqs)
         for i, fc in enumerate(freqs):
             b, a = sig.butter(2, (fc/C)/nyquist_freq)
