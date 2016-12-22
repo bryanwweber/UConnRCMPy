@@ -41,6 +41,7 @@ class VoltageTrace(object):
     def __init__(self, file_path):
         self.file_path = file_path
         self.signal = np.genfromtxt(str(self.file_path))
+        self.filter_frequency = None
 
         self.time = self.signal[:, 0]
         self.frequency = np.rint(1/self.time[1])
@@ -50,6 +51,83 @@ class VoltageTrace(object):
 
     def __repr__(self):
         return 'VoltageTrace(file_path={self.file_path!r})'.format(self=self)
+
+    @property
+    def filter_frequency(self):
+        """The cutoff frequency for the low-pass filter
+
+        When setting the frequency, if the ``value`` is `None`,
+        determines the optimal cutoff frequency for a second-order
+        Butterworth low-pass filter by analyzing the root-mean-squared
+        residuals for a sequence of cutoff frequencies. The residuals
+        plotted as a function of the cutoff frequency tend to have a
+        linear portion for a range of cutoff frequencies. Analysis of
+        typical data files from our RCM has shown this range to be
+        approximately from ``nyquist_freq*0.1`` to
+        ``nyquist_freq*0.5``. A line is fit to this portion of the
+        residuals curve and the intersection point of a horizontal
+        line through the y-intercept of the fit and the residuals
+        curve is used to determine the optimal cutoff frequency (see
+        Figure 2 in Yu et al. [1]_). The methodology is described by
+        Yu et al. [1]_, and the code is modifed from Duarte [2]_.
+
+        References
+        ----------
+        .. [1] B. Yu, D. Gabriel, L. Noble, and K.N. An, "Estimate of
+               the Optimum Cutoff Frequency for the Butterworth Low-Pass
+               Digital Filter", Journal of Applied Biomechanics, Vol. 15,
+               pp. 318-329, 1999.
+               DOI: `10.1123/jab.15.3.318 <http://dx.doi.org/10.1123/jab.15.3.318>`_
+
+        .. [2] M. Duarte, "Residual Analysis", v.3 2014/06/13,
+               http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb
+        """
+
+        return self._filter_frequency
+
+    @filter_frequency.setter
+    def filter_frequency(self, value):
+        if value is None:
+            nyquist_freq = self.frequency/2.0
+            # filtfilt applies the filter forwards then backwards to avoid phase offset, so 2 passes
+            n_passes = 2
+            n_freqs = 101
+            # C corrects the frequencies for the multiple passes
+            C = (2**(1/n_passes) - 1)**0.25
+            freqs = np.linspace(nyquist_freq/n_freqs, nyquist_freq*C, n_freqs)
+            # The indices of the frequencies used for fitting the straight line
+            fit_freqs = np.arange(np.nonzero(freqs >= nyquist_freq/10)[0][0],
+                                  np.nonzero(freqs >= nyquist_freq*C/2)[0][0] + 1)
+            resid = np.zeros(n_freqs)
+            for i, fc in enumerate(freqs):
+                b, a = sig.butter(2, (fc/C)/nyquist_freq)
+                yf = sig.filtfilt(b, a, self.signal[:, 1])
+                resid[i] = np.sqrt(np.mean((yf - self.signal[:, 1])**2))
+            _, intercept = np.polyfit(freqs[fit_freqs], resid[fit_freqs], 1)
+            # The UnivariateSpline with s=0 forces the spline fit through every
+            # data point in the array. The residuals are shifted down by the
+            # intercept so that the root of the spline is the optimum cutoff
+            # frequency
+            self._filter_frequency = UnivariateSpline(freqs, resid - intercept, s=0).roots()[0]
+        else:
+            self._filter_frequency = value
+
+    def change_filter_freq(self, value):
+        """Change the filter frequency
+
+        This method is intended to be used after the `VoltageTrace` has
+        already been created. It sets the `~VoltageTrace.filter_frequency`
+        attribute and then runs the filtering.
+
+        Parameters
+        ----------
+        value : `float` or `None`
+            Value for the filter frequency. If `None`, an optimal frequency
+            will be estimated by the procedure detailed in the documentation
+            for the `~VoltageTrace.filter_frequency` attribute.
+        """
+        self.filter_frequency = value
+        self.filtered_voltage = self.filtering(self.signal[:, 1])
 
     def savetxt(self, filename, **kwargs):
         """Save a text file output of the voltage trace.
@@ -102,6 +180,10 @@ class VoltageTrace(object):
     def filtering(self, data):
         """Filter the input using a low-pass filter.
 
+        The filter is a second-order Butterworth filter, with the
+        cutoff frequency taken from the instance attribute
+        `~VoltageTrace.filter_frequency`.
+
         Parameters
         ----------
         data : `numpy.ndarray`
@@ -111,56 +193,13 @@ class VoltageTrace(object):
         -------
         `numpy.ndarray`
             1-D array of the same length as the input data
-
-        Notes
-        -----
-        Determines the optimal cutoff frequency for a second-order
-        Butterworth low-pass filter by analyzing the root-mean-squared
-        residuals for a sequence of cutoff frequencies. The residuals
-        plotted as a function of the cutoff frequency tend to have a
-        linear portion for a range of cutoff frequencies. Analysis of
-        typical data files from our RCM has shown this range to be
-        approximately from ``nyquist_freq*0.1`` to
-        ``nyquist_freq*0.75``. A line is fit to this portion of the
-        residuals curve and the intersection point of a horizontal
-        line through the y-intercept of the fit and the residuals
-        curve is used to determine the optimal cutoff frequency (see
-        Figure 2 in Yu et al. [1]_). The methodology is described by
-        Yu et al. [1]_, and the code is modifed from Duarte [2]_.
-
-        References
-        ----------
-        .. [1] B. Yu, D. Gabriel, L. Noble, and K.N. An, "Estimate of
-               the Optimum Cutoff Frequency for the Butterworth Low-Pass
-               Digital Filter", Journal of Applied Biomechanics, Vol. 15,
-               pp. 318-329, 1999.
-               DOI: `10.1123/jab.15.3.318 <http://dx.doi.org/10.1123/jab.15.3.318>`_
-
-        .. [2] M. Duarte, "Residual Analysis", v.3 2014/06/13,
-               http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb
         """
         nyquist_freq = self.frequency/2.0
         # filtfilt applies the filter forwards then backwards to avoid phase offset, so 2 passes
         n_passes = 2
-        n_freqs = 101
         # C corrects the frequencies for the multiple passes
         C = (2**(1/n_passes) - 1)**0.25
-        freqs = np.linspace(nyquist_freq/n_freqs, nyquist_freq*C, n_freqs)
-        # The indices of the frequencies used for fitting the straight line
-        fit_freqs = np.arange(np.nonzero(freqs >= nyquist_freq/10)[0][0],
-                              np.nonzero(freqs >= nyquist_freq*C/2)[0][0] + 1)
-        resid = np.zeros(n_freqs)
-        for i, fc in enumerate(freqs):
-            b, a = sig.butter(2, (fc/C)/nyquist_freq)
-            yf = sig.filtfilt(b, a, data)
-            resid[i] = np.sqrt(np.mean((yf - data)**2))
-        _, intercept = np.polyfit(freqs[fit_freqs], resid[fit_freqs], 1)
-        # The UnivariateSpline with s=0 forces the spline fit through every
-        # data point in the array. The residuals are shifted down by the
-        # intercept so that the root of the spline is the optimum cutoff
-        # frequency
-        fc_opt = UnivariateSpline(freqs, resid - intercept, s=0).roots()[0]
-        b, a = sig.butter(2, (fc_opt/C)/nyquist_freq)
+        b, a = sig.butter(2, (self.filter_frequency/C)/nyquist_freq)
         return sig.filtfilt(b, a, data)
 
 
