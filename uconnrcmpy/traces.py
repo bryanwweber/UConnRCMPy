@@ -35,8 +35,6 @@ class VoltageTrace(object):
         The sampling frequency of the pressure trace
     filtered_voltage : `numpy.ndarray`
         The voltage trace after filtering
-    smoothed_voltage : `numpy.ndarray`
-        The voltage trace after filtering and smoothing
 
     Note
     ----
@@ -55,7 +53,6 @@ class VoltageTrace(object):
         self.signal[0, 1] = np.mean(self.signal[:200, 1])
 
         self.filtered_voltage = self.filtering(self.signal[:, 1])
-        self.smoothed_voltage = self.smoothing(self.filtered_voltage)
 
     def __repr__(self):
         return 'VoltageTrace(file_path={self.file_path!r})'.format(self=self)
@@ -140,7 +137,7 @@ class VoltageTrace(object):
     def savetxt(self, filename, **kwargs):
         """Save a text file output of the voltage trace.
 
-        Save a text file with the time in the first column and the smoothed
+        Save a text file with the time in the first column and the filtered
         voltage in the second column. The keyword arguments are the same as
         `numpy.savetxt`.
 
@@ -149,41 +146,7 @@ class VoltageTrace(object):
         filename : `str`
             Filename of the output file
         """
-        np.savetxt(fname=filename, X=np.vstack(self.time, self.smoothed_voltage).T, **kwargs)
-
-    def smoothing(self, data, span=21):
-        """Smooth the input using a moving average.
-
-        Parameters
-        ----------
-        data : `numpy.ndarray`
-            The data that should be smoothed
-        span : `int`, optional
-            The width of the moving average. Should be an odd integer.
-            The number of points included in the average on either side
-            of the current point is given by ``(span-1)/2``.
-
-        Returns
-        -------
-        `numpy.ndarray`
-            A 1-D array of the same length as the input data.
-
-        Notes
-        -----
-        This function effects the smoothing by convolving the input
-        array with a uniform window array whose values are equal to
-        ``1.0/span`` and whose length is equal to ``span``. The
-        `~scipy.signal.fftconvolve` function from SciPy is used
-        to do the convolution for speed. Since we desire an output
-        array of the same length as the input, the first ``(span-1)/2``
-        points will have improper values, so these are set equal to the
-        value of the average at the point ``(span-1)/2``.
-        """
-        window = np.ones(span)/span
-        output = sig.fftconvolve(data, window, mode='same')
-        midpoint = int((span - 1)/2)
-        output[:midpoint] = output[midpoint]
-        return output
+        np.savetxt(fname=filename, X=np.vstack(self.time, self.filtered_voltage).T, **kwargs)
 
     def filtering(self, data):
         """Filter the input using a low-pass filter.
@@ -227,8 +190,7 @@ class ExperimentalPressureTrace(object):
     Attributes
     ----------
     pressure : `numpy.ndarray`
-        The pressure trace computed from the smoothed and filtered
-        voltage trace
+        The pressure trace computed from the filtered voltage trace
     time : `numpy.ndarray`
         A 1-D array containting the time. Copied from
         `VoltageTrace.time`
@@ -246,16 +208,13 @@ class ExperimentalPressureTrace(object):
     derivative : `numpy.ndarray`
         1-D array containing the raw derivative computed from the
         `pressure` trace.
-    smoothed_derivative : `numpy.ndarray`
-        1-D array containing the smoothed derivative computed from
-        the `derivative`
     zeroed_time : `numpy.ndarray`
         1-D array containing the time, with the zero point set at
         the end of compression.
     """
     def __init__(self, voltage_trace, initial_pressure_in_torr, factor):
         initial_pressure_in_bar = initial_pressure_in_torr*one_atm_in_bar/one_atm_in_torr
-        self.pressure = (voltage_trace.smoothed_voltage - voltage_trace.smoothed_voltage[0])
+        self.pressure = (voltage_trace.filtered_voltage - voltage_trace.filtered_voltage[0])
         self.pressure *= factor
         self.pressure += initial_pressure_in_bar
 
@@ -268,7 +227,6 @@ class ExperimentalPressureTrace(object):
 
         self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
         self.derivative = self.calculate_derivative(self.pressure, self.time)
-        self.smoothed_derivative = voltage_trace.smoothing(self.derivative, span=151)
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
     def __repr__(self):
@@ -278,7 +236,7 @@ class ExperimentalPressureTrace(object):
     def savetxt(self, filename, **kwargs):
         """Save a text file output of the pressure trace.
 
-        Save a text file with the time in the first column and the smoothed
+        Save a text file with the time in the first column and the filtered
         pressure in the second column. The keyword arguments are the same as
         `numpy.savetxt`.
 

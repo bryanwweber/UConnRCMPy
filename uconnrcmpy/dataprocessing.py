@@ -317,7 +317,7 @@ class Condition(object):
         exp : `Experiment`
             Experiment to plot
         """
-        # Plot the smoothed pressure and overlay future runs
+        # Plot the filtered pressure and overlay future runs
         if self.all_runs_figure is None:
             self.all_runs_figure = plt.figure('Reactive Pressure Trace Comparison')
             self.all_runs_axis = self.all_runs_figure.add_subplot(1, 1, 1)
@@ -1138,9 +1138,9 @@ class Experiment(object):
         start_point = self.pressure_trace.EOC_idx + tau_points
         end_point = self.pressure_trace.EOC_idx + tau_points + 100000
 
-        # The index of the maximum of the smoothed derivative trace
+        # The index of the maximum of the derivative trace
         # is taken as the point of ignition
-        idx_of_ig = np.argmax(self.pressure_trace.smoothed_derivative[start_point:end_point])
+        idx_of_ig = np.argmax(self.pressure_trace.derivative[start_point:end_point])
 
         # Take the offset into account when calculating the ignition
         # delay. The index of ignition is already relative to zero,
@@ -1150,7 +1150,7 @@ class Experiment(object):
         try:
             end_first_stage = start_point + idx_of_ig - tau_points
             idx_of_first_stage = np.argmax(
-                self.pressure_trace.smoothed_derivative[start_point:end_first_stage]
+                self.pressure_trace.derivative[start_point:end_first_stage]
             )
             first_stage = self.pressure_trace.time[idx_of_first_stage + tau_points]*1000
         except ValueError:
@@ -1171,7 +1171,7 @@ class Experiment(object):
         return np.amax(temperature_trace.temperature)
 
     def plot_pressure_trace(self):
-        # Plot the smoothed pressure and the smoothed derivative
+        # Plot the filtered pressure and the derivative
         # on a new figure every time
         self.exp_fig = plt.figure(self.experiment_parameters['date'])
         self.p_axis = self.exp_fig.add_subplot(1, 1, 1)
@@ -1183,7 +1183,7 @@ class Experiment(object):
                                    'g', label="Pressure")
         self.dpdt_axis = self.p_axis.twinx()
         dpdt_line, = self.dpdt_axis.plot(self.pressure_trace.zeroed_time*1000.0,
-                                         self.pressure_trace.smoothed_derivative/1000.0,
+                                         self.pressure_trace.derivative/1000.0,
                                          'm', label="Derivative")
         self.p_axis.legend([raw_line, p_line, dpdt_line],
                            [l.get_label() for l in [p_line, dpdt_line]],
