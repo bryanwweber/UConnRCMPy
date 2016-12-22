@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [3.0.0a1]
 ### Added
 - Conda recipe
 - Summary output from `Condition`
@@ -149,7 +149,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Basic functionality of class-based interface to process data
 
-[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...HEAD
+[3.0.0a1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...HEAD
 [2.1.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.0...v2.0.1
