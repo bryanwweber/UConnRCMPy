@@ -340,30 +340,37 @@ voltage.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="uconnrcmpy.traces.VoltageTrace.filtering">
-<code class="descname">filtering</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filtering" title="Permalink to this definition">¶</a></dt>
-<dd><p>Filter the input using a low-pass filter.</p>
+<dt id="uconnrcmpy.traces.VoltageTrace.change_filter_freq">
+<code class="descname">change_filter_freq</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.change_filter_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the filter frequency</p>
+<p>This method is intended to be used after the <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace" title="uconnrcmpy.traces.VoltageTrace"><code class="xref py py-obj docutils literal"><span class="pre">VoltageTrace</span></code></a> has
+already been created. It sets the <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.filter_frequency" title="uconnrcmpy.traces.VoltageTrace.filter_frequency"><code class="xref py py-obj docutils literal"><span class="pre">filter_frequency</span></code></a>
+attribute and then runs the filtering.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; The data that should be filtered</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1-D array of the same length as the input data</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; Value for the filter frequency. If <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, an optimal frequency
+will be estimated by the procedure detailed in the documentation
+for the <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.filter_frequency" title="uconnrcmpy.traces.VoltageTrace.filter_frequency"><code class="xref py py-obj docutils literal"><span class="pre">filter_frequency</span></code></a> attribute.</td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>Determines the optimal cutoff frequency for a second-order
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.traces.VoltageTrace.filter_frequency">
+<code class="descname">filter_frequency</code><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filter_frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cutoff frequency for the low-pass filter</p>
+<p>When setting the frequency, if the <code class="docutils literal"><span class="pre">value</span></code> is <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>,
+determines the optimal cutoff frequency for a second-order
 Butterworth low-pass filter by analyzing the root-mean-squared
 residuals for a sequence of cutoff frequencies. The residuals
 plotted as a function of the cutoff frequency tend to have a
 linear portion for a range of cutoff frequencies. Analysis of
 typical data files from our RCM has shown this range to be
 approximately from <code class="docutils literal"><span class="pre">nyquist_freq*0.1</span></code> to
-<code class="docutils literal"><span class="pre">nyquist_freq*0.75</span></code>. A line is fit to this portion of the
+<code class="docutils literal"><span class="pre">nyquist_freq*0.5</span></code>. A line is fit to this portion of the
 residuals curve and the intersection point of a horizontal
 line through the y-intercept of the fit and the residuals
 curve is used to determine the optimal cutoff frequency (see
@@ -385,6 +392,27 @@ DOI: <a class="reference external" href="http://dx.doi.org/10.1123/jab.15.3.318"
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>M. Duarte, &#8220;Residual Analysis&#8221;, v.3 2014/06/13,
 <a class="reference external" href="http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb">http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb</a></td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.traces.VoltageTrace.filtering">
+<code class="descname">filtering</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filtering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the input using a low-pass filter.</p>
+<p>The filter is a second-order Butterworth filter, with the
+cutoff frequency taken from the instance attribute
+<a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.filter_frequency" title="uconnrcmpy.traces.VoltageTrace.filter_frequency"><code class="xref py py-obj docutils literal"><span class="pre">filter_frequency</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; The data that should be filtered</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1-D array of the same length as the input data</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></td>
+</tr>
 </tbody>
 </table>
 </dd></dl>

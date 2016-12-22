@@ -247,6 +247,25 @@ experiment to be added.</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Condition.change_filter_freq">
+<code class="descname">change_filter_freq</code><span class="sig-paren">(</span><em>experiment</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.change_filter_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the cutoff frequency of the filter for an experiment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>experiment</strong> (<a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) &#8211; The experiment to be modified, either as a filename
+or as the instance of an <a class="reference internal" href="#uconnrcmpy.dataprocessing.Experiment" title="uconnrcmpy.dataprocessing.Experiment"><code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code></a> class.</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The value for the cutoff frequency</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="uconnrcmpy.dataprocessing.Condition.compare_to_sim">
 <code class="descname">compare_to_sim</code><span class="sig-paren">(</span><em>run_reactive=False</em>, <em>run_nonreactive=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Condition.compare_to_sim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the experiments to the simulations.</p>
@@ -612,6 +631,40 @@ ignition.</p>
 <dt id="uconnrcmpy.dataprocessing.Experiment.calculate_ignition_delay">
 <code class="descname">calculate_ignition_delay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.calculate_ignition_delay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the ignition delay from the pressure trace.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Experiment.change_filter_freq">
+<code class="descname">change_filter_freq</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.change_filter_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the cutoff frequency of the filter for the voltage trace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The new value of the cutoff frequency</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.dataprocessing.Experiment.copy_to_clipboard">
+<code class="descname">copy_to_clipboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.dataprocessing.Experiment.copy_to_clipboard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy experimental information to the clipboard</p>
+<p>The information is intended to be pasted to a spreadsheet.
+The information is ordered by columns in the following way:</p>
+<ol class="upperalpha simple">
+<li>4-digit time of day</li>
+<li>The initial pressure of the experiment, in Torr</li>
+<li>The initial temperature of the experiment, in K</li>
+<li>The end of compression pressure</li>
+<li>The overall ignition delay</li>
+<li>The first stage ignition delay</li>
+<li>The estimated end of compression temperature</li>
+<li>The inches of spacers for the experiment</li>
+<li>The millimeters of shims for the experiment</li>
+<li>The cutoff frequency that was used to filter the voltage trace</li>
+</ol>
 </dd></dl>
 
 <dl class="method">
