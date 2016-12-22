@@ -14,12 +14,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Text-file output from relevant trace-type classes
 - `reactive_file` is an attribute of `Condition` as a property
 - This CHANGELOG file
+- Automatic filter cutoff frequency selection and override functions
+- Upload docs to gh-pages with [doctr](https://github.com/drdoctr/doctr)
+- Disable Cantera thermo warnings after loading a CTI file for the first time
+- `volume-trace.yaml` file is automatically written
+- Version information is stored in `_version.py`
 
 ### Fixed
 - Time in figure legend has a colon
 
 ### Changed
 - Convert all time axes on figures to ms
+- Split the dataprocessing module into experiments and conditions modules
+- Use slices to compute the derivative of the experimental pressure trace
+- A CTI filename is required as input when Condition is instantiated
+- The creation of the volume trace is controlled by instance attributes rather than `volume-trace.yaml`
+- Minimum version of Cantera is 2.3.0
+
+### Removed
+- Voltage traces are no longer smoothed, and the smoothing function has been removed
 
 ## [2.1.0] - 2016-05-31
 ### Added
