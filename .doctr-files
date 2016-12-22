@@ -1,5 +1,6 @@
+./_sources/conditions.rst.txt
 ./_sources/constants.rst.txt
-./_sources/dataprocessing.rst.txt
+./_sources/experiments.rst.txt
 ./_sources/index.rst.txt
 ./_sources/traces.rst.txt
 ./_sources/utilities.rst.txt
@@ -26,8 +27,9 @@
 ./_static/up-pressed.png
 ./_static/up.png
 ./_static/websupport.js
+./conditions.html
 ./constants.html
-./dataprocessing.html
+./experiments.html
 ./genindex.html
 ./index.html
 ./objects.inv
