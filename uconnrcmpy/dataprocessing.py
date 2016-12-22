@@ -1078,13 +1078,13 @@ class Experiment(object):
     def calculate_ignition_delay(self):
         """Calculate the ignition delay from the pressure trace.
         """
-        # offset_points is an offset from the EOC to ensure that if
+        # tau_points is an offset from the EOC to ensure that if
         # ignition is weak, the peak in dP/dt from the compression
         # stroke is not treated as the ignition event. Define points
         # to start looking for and stop looking for ignition.
-        offset_points = int(0.002*self.pressure_trace.frequency)
-        start_point = self.pressure_trace.EOC_idx + offset_points
-        end_point = self.pressure_trace.EOC_idx + offset_points + 100000
+        tau_points = int(0.002*self.pressure_trace.frequency)
+        start_point = self.pressure_trace.EOC_idx + tau_points
+        end_point = self.pressure_trace.EOC_idx + tau_points + 100000
 
         # The index of the maximum of the smoothed derivative trace
         # is taken as the point of ignition
@@ -1093,14 +1093,14 @@ class Experiment(object):
         # Take the offset into account when calculating the ignition
         # delay. The index of ignition is already relative to zero,
         # so we don't need to subtract any times. Stored in milliseconds
-        ignition_delay = self.pressure_trace.time[idx_of_ig + offset_points]*1000
+        ignition_delay = self.pressure_trace.time[idx_of_ig + tau_points]*1000
 
         try:
-            end_first_stage = start_point + idx_of_ig - offset_points
+            end_first_stage = start_point + idx_of_ig - tau_points
             idx_of_first_stage = np.argmax(
                 self.pressure_trace.smoothed_derivative[start_point:end_first_stage]
             )
-            first_stage = self.pressure_trace.time[idx_of_first_stage + offset_points]*1000
+            first_stage = self.pressure_trace.time[idx_of_first_stage + tau_points]*1000
         except ValueError:
             first_stage = 0.0
 
