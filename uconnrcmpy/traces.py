@@ -37,6 +37,12 @@ class VoltageTrace(object):
         The voltage trace after filtering
     smoothed_voltage : `numpy.ndarray`
         The voltage trace after filtering and smoothing
+
+    Note
+    ----
+    The first sample of the voltage is set equal to the
+    mean of the first 200 points to eliminate DAQ startup
+    effects seen in some data.
     """
     def __init__(self, file_path):
         self.file_path = file_path
@@ -45,6 +51,8 @@ class VoltageTrace(object):
 
         self.time = self.signal[:, 0]
         self.frequency = np.rint(1/self.time[1])
+
+        self.signal[0, 1] = np.mean(self.signal[:200, 1])
 
         self.filtered_voltage = self.filtering(self.signal[:, 1])
         self.smoothed_voltage = self.smoothing(self.filtered_voltage)
