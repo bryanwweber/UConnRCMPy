@@ -341,34 +341,52 @@ voltage.</p>
 
 <dl class="method">
 <dt id="uconnrcmpy.traces.VoltageTrace.filtering">
-<code class="descname">filtering</code><span class="sig-paren">(</span><em>data</em>, <em>cutoff_hz=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filtering" title="Permalink to this definition">¶</a></dt>
+<code class="descname">filtering</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filtering" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the input using a low-pass filter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; The data that should be filtered</li>
-<li><strong>cutoff_hz</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>, optional) &#8211; The cutoff frequency for the filter, in Hz. The default
-value was chosen empirically for a particular set of data
-and may need to be adjusted.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; The data that should be filtered</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">1-D array of the same length as the input data</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1-D array of the same length as the input data</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
-<p>Creates a low-pass filter using the window construction funtion
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.firwin.html#scipy.signal.firwin" title="(in SciPy v0.18.1)"><code class="xref py py-obj docutils literal"><span class="pre">firwin</span></code></a>. Applies the filter using the
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.fftconvolve.html#scipy.signal.fftconvolve" title="(in SciPy v0.18.1)"><code class="xref py py-obj docutils literal"><span class="pre">fftconvolve</span></code></a> function from the same module
-for speed. Defaults to the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.blackman.html#scipy.signal.blackman" title="(in SciPy v0.18.1)"><code class="xref py py-obj docutils literal"><span class="pre">blackman</span></code></a> window
-for the filter.</p>
+<p>Determines the optimal cutoff frequency for a second-order
+Butterworth low-pass filter by analyzing the root-mean-squared
+residuals for a sequence of cutoff frequencies. The residuals
+plotted as a function of the cutoff frequency tend to have a
+linear portion for a range of cutoff frequencies. Analysis of
+typical data files from our RCM has shown this range to be
+approximately from <code class="docutils literal"><span class="pre">nyquist_freq*0.1</span></code> to
+<code class="docutils literal"><span class="pre">nyquist_freq*0.75</span></code>. A line is fit to this portion of the
+residuals curve and the intersection point of a horizontal
+line through the y-intercept of the fit and the residuals
+curve is used to determine the optimal cutoff frequency (see
+Figure 2 in Yu et al. <a class="footnote-reference" href="#id4" id="id1">[1]</a>). The methodology is described by
+Yu et al. <a class="footnote-reference" href="#id4" id="id2">[1]</a>, and the code is modifed from Duarte <a class="footnote-reference" href="#id5" id="id3">[2]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> B. Yu, D. Gabriel, L. Noble, and K.N. An, &#8220;Estimate of
+the Optimum Cutoff Frequency for the Butterworth Low-Pass
+Digital Filter&#8221;, Journal of Applied Biomechanics, Vol. 15,
+pp. 318-329, 1999.
+DOI: <a class="reference external" href="http://dx.doi.org/10.1123/jab.15.3.318">10.1123/jab.15.3.318</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>M. Duarte, &#8220;Residual Analysis&#8221;, v.3 2014/06/13,
+<a class="reference external" href="http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb">http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb</a></td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
