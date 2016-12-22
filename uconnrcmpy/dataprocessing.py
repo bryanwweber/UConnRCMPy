@@ -1111,7 +1111,7 @@ class Experiment(object):
             self.experiment_parameters['time_of_day'], self.experiment_parameters['pin'],
             self.experiment_parameters['Tin'], self.pressure_trace.p_EOC, self.ignition_delay,
             self.first_stage, self.T_EOC, self.experiment_parameters['spacers'],
-            self.experiment_parameters['shims']])))
+            self.experiment_parameters['shims'], self.voltage_trace.filter_frequency])))
 
     def calculate_ignition_delay(self):
         """Calculate the ignition delay from the pressure trace.
