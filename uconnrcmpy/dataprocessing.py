@@ -282,6 +282,28 @@ class Condition(object):
             if self.plotting:
                 self.plot_nonreactive_figure(exp)
 
+    def change_filter_freq(self, experiment, value):
+        """Change the cutoff frequency of the filter for an experiment
+
+        Parameters
+        ----------
+        experiment : `Experiment` or `str` or `pathlib.Path`
+            The experiment to be modified, either as a filename
+            or as the instance of an `Experiment` class.
+        value : `float`
+            The value for the cutoff frequency
+        """
+        if isinstance(experiment, (str, Path)):
+            if str(experiment) in self.reactive_experiments:
+                experiment = self.reactive_experiments[str(experiment)]
+            elif str(experiment) in self.nonreactive_experiments:
+                experiment = self.nonreactive_experiments[str(experiment)]
+            else:
+                raise ValueError('{} could not be found in the Condition. '
+                                 'Did you add it with add_experiment?'.format(str(experiment)))
+
+        experiment.change_filter_freq(value)
+
     def plot_reactive_figures(self, exp):
         """Plot the reactive pressure trace on figures.
 
@@ -1065,6 +1087,22 @@ class Experiment(object):
                 print('Exception in computing the temperature at EOC', e)
         else:
             self.ignition_delay, self.first_stage, self.T_EOC = 0, 0, 0
+
+    def change_filter_freq(self, value):
+        """Change the cutoff frequency of the filter for the voltage trace
+
+        Parameters
+        ----------
+        value : `float`
+            The new value of the cutoff frequency
+        """
+        self.voltage_trace.change_filter_freq(value)
+        self.pressure_trace = ExperimentalPressureTrace(self.voltage_trace,
+                                                        self.experiment_parameters['pin'],
+                                                        self.experiment_parameters['factor'],
+                                                        )
+        self.process_pressure_trace()
+        self.copy_to_clipboard()
 
     def copy_to_clipboard(self):
         # Copy the relevant information to the clipboard for pasting
