@@ -131,13 +131,13 @@ class VoltageTrace(object):
         References
         ----------
         .. [1] B. Yu, D. Gabriel, L. Noble, and K.N. An, "Estimate of
-        the Optimum Cutoff Frequency for the Butterworth Low-Pass
-        Digital Filter", Journal of Applied Biomechanics, Vol. 15,
-        pp. 318-329, 1999.
-        DOI: `10.1123/jab.15.3.318 <http://dx.doi.org/10.1123/jab.15.3.318>`_
+               the Optimum Cutoff Frequency for the Butterworth Low-Pass
+               Digital Filter", Journal of Applied Biomechanics, Vol. 15,
+               pp. 318-329, 1999.
+               DOI: `10.1123/jab.15.3.318 <http://dx.doi.org/10.1123/jab.15.3.318>`_
 
         .. [2] M. Duarte, "Residual Analysis", v.3 2014/06/13,
-        http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb
+               http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb
         """
         nyquist_freq = self.frequency/2.0
         # filtfilt applies the filter forwards then backwards to avoid phase offset, so 2 passes
