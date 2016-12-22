@@ -1105,8 +1105,22 @@ class Experiment(object):
         self.copy_to_clipboard()
 
     def copy_to_clipboard(self):
-        # Copy the relevant information to the clipboard for pasting
-        # into a spreadsheet
+        """Copy experimental information to the clipboard
+
+        The information is intended to be pasted to a spreadsheet.
+        The information is ordered by columns in the following way:
+
+        A. 4-digit time of day
+        B. The initial pressure of the experiment, in Torr
+        C. The initial temperature of the experiment, in K
+        D. The end of compression pressure
+        E. The overall ignition delay
+        F. The first stage ignition delay
+        G. The estimated end of compression temperature
+        H. The inches of spacers for the experiment
+        I. The millimeters of shims for the experiment
+        J. The cutoff frequency that was used to filter the voltage trace
+        """
         copy('\t'.join(map(str, [
             self.experiment_parameters['time_of_day'], self.experiment_parameters['pin'],
             self.experiment_parameters['Tin'], self.pressure_trace.p_EOC, self.ignition_delay,
