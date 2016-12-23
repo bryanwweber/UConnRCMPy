@@ -107,6 +107,7 @@ class Condition(object):
         with open(str(cti_file), 'r') as in_file:
             self.cti_source = in_file.read()
 
+        ct.suppress_thermo_warnings(False)
         ct.Solution(source=self.cti_source)
         ct.suppress_thermo_warnings()
 
