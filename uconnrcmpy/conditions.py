@@ -76,13 +76,8 @@ class Condition(object):
         self.nonreactive_experiments = {}
         self.reactive_case = None
         self.reactive_file = None
-        self.reactive_end_time = None
-        self.reactive_compression_time = None
-        self.reactive_offset_points = 0
         self.nonreactive_case = None
         self.nonreactive_file = None
-        self.nonreactive_end_time = None
-        self.nonreactive_offset_points = 0
         self.presout = None
         self.volout = None
         self.nonreactive_sim = None
@@ -189,64 +184,97 @@ class Condition(object):
         """`float`: The end time for the output of the reactive case to a file, relative to
         the end of compression in milliseconds
         """
-        return self.reactive_case.output_end_time
+        if self.reactive_case is not None:
+            return self.reactive_case.output_end_time
+        else:
+            raise AttributeError('The reactive_case has not been set for this Condition yet.')
 
     @reactive_end_time.setter
     def reactive_end_time(self, value):
-        max_time = self.reactive_case.pressure_trace.zeroed_time[-1]*1000
-        if value > max_time:
-            raise ValueError('The reactive end time cannot be after the end of the pressure trace.'
-                             'The maximum time is: {} ms.'.format(max_time))
-        self.reactive_case.output_end_time = value
+        if self.reactive_case is not None:
+            max_time = self.reactive_case.pressure_trace.zeroed_time[-1]*1000
+            if value > max_time:
+                raise ValueError('The reactive end time cannot be after the end of the pressure '
+                                 'trace. The maximum time is: {} ms.'.format(max_time))
+
+            self.reactive_case.output_end_time = value
+        else:
+            raise AttributeError('The reactive_case has not been set for this Condition yet.')
 
     @property
     def nonreactive_end_time(self):
         """`float`: The end time for the output of the nonreactive case to a file, relative to
         the end of compression in milliseconds
         """
-        return self.nonreactive_case.output_end_time
+        if self.nonreactive_case is not None:
+            return self.nonreactive_case.output_end_time
+        else:
+            raise AttributeError('The nonreactive_case has not been set for this Condition yet.')
 
     @nonreactive_end_time.setter
     def nonreactive_end_time(self, value):
-        max_time = self.nonreactive_case.pressure_trace.zeroed_time[-1]*1000
-        if value > max_time:
-            raise ValueError('The nonreactive end time cannot be after the end of the pressure'
-                             ' trace. The maximum time is: {} ms.'.format(max_time))
-        self.nonreactive_case.output_end_time = value
+        if self.nonreactive_case is not None:
+            max_time = self.nonreactive_case.pressure_trace.zeroed_time[-1]*1000
+            if value > max_time:
+                raise ValueError('The nonreactive end time cannot be after the end of the pressure'
+                                 ' trace. The maximum time is: {} ms.'.format(max_time))
+
+            self.nonreactive_case.output_end_time = value
+        else:
+            raise AttributeError('The nonreactive_case has not been set for this Condition yet.')
 
     @property
     def reactive_compression_time(self):
         """`float`: The compression time for the reactive case, in milliseconds
         """
-        return self.reactive_case.compression_time
+        if self.reactive_case is not None:
+            return self.reactive_case.compression_time
+        else:
+            raise AttributeError('The reactive_case has not been set for this Condition yet.')
 
     @reactive_compression_time.setter
     def reactive_compression_time(self, value):
-        max_time = np.abs(self.reactive_case.pressure_trace.zeroed_time[0]*1000)
-        if value > max_time:
-            raise ValueError('The compression time cannot be longer than the time before'
-                             'compression. The maximum time is: {} ms'.format(max_time))
-        self.reactive_case.compression_time = value
+        if self.reactive_case is not None:
+            max_time = np.abs(self.reactive_case.pressure_trace.zeroed_time[0]*1000)
+            if value > max_time:
+                raise ValueError('The compression time cannot be longer than the time before'
+                                 'compression. The maximum time is: {} ms'.format(max_time))
+
+            self.reactive_case.compression_time = value
+        else:
+            raise AttributeError('The reactive_case has not been set for this Condition yet.')
 
     @property
     def reactive_offset_points(self):
-        """`float`: The number of points to offset the end of compression, to better
+        """`int`: The number of points to offset the end of compression, to better
         match the non-reactive and reactive pressure traces together"""
-        return self.reactive_case.offset_points
+        if self.reactive_case is not None:
+            return self.reactive_case.offset_points
+        else:
+            raise AttributeError('The reactive_case has not been set for this Condition yet.')
 
     @reactive_offset_points.setter
     def reactive_offset_points(self, value):
-        self.reactive_case.offset_points = value
+        if self.reactive_case is not None:
+            self.reactive_case.offset_points = value
+        else:
+            raise AttributeError('The reactive_case has not been set for this Condition yet.')
 
     @property
     def nonreactive_offset_points(self):
-        """`float`: The number of points to offset the end of compression, to better
+        """`int`: The number of points to offset the end of compression, to better
         match the non-reactive and reactive pressure traces together"""
-        return self.nonreactive_case.offset_points
+        if self.nonreactive_case is not None:
+            return self.nonreactive_case.offset_points
+        else:
+            raise AttributeError('The nonreactive_case has not been set for this Condition yet.')
 
     @nonreactive_offset_points.setter
     def nonreactive_offset_points(self, value):
-        self.nonreactive_case.offset_points = value
+        if self.nonreactive_case is not None:
+            self.nonreactive_case.offset_points = value
+        else:
+            raise AttributeError('The nonreactive_case has not been set for this Condition yet.')
 
     def add_experiment(self, file_name=None):
         """Add an experiment to the Condition.
