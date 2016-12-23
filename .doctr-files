@@ -2,6 +2,7 @@
 ./_sources/constants.rst.txt
 ./_sources/experiments.rst.txt
 ./_sources/index.rst.txt
+./_sources/simulations.rst.txt
 ./_sources/traces.rst.txt
 ./_sources/utilities.rst.txt
 ./_static/README
@@ -36,5 +37,6 @@
 ./py-modindex.html
 ./search.html
 ./searchindex.js
+./simulations.html
 ./traces.html
 ./utilities.html

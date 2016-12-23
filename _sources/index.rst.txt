@@ -13,6 +13,7 @@ Contents:
 
    conditions
    experiments
+   simulations
    traces
    utilities
    constants
