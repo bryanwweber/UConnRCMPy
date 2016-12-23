@@ -652,15 +652,19 @@ class Condition(object):
 
     def write_yaml(self):
         """Write the volume-trace.yaml output file for storage of parameters.
-        The YAML file format is detailed in `Condition.load_yaml`
+        The YAML file format is detailed in `~Condition.load_yaml`.
         """
 
         yaml_data = {}
         for attribute in self.output_attributes:
-            yaml_data[attribute] = getattr(self, attribute)
+            val = getattr(self, attribute)
+            if isinstance(val, Path):
+                yaml_data[attribute] = val.name
+            else:
+                yaml_data[attribute] = val
 
         with open('volume-trace.yaml', 'w') as yaml_file:
-            yaml.dump(yaml_data, yaml_file)
+            yaml.dump(yaml_data, yaml_file, default_flow_style=False)
 
     def write_output(self, volout, presout, Tin):
         """
