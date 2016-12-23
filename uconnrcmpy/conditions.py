@@ -48,7 +48,7 @@ class Condition(object):
         the mean of all of the experiments.
     nonreactive_case : `Experiment`
         Single instance of class `Experiment` that best matches the
-        ``reactive_case``.
+        `~Condition.reactive_case`.
     presout : `numpy.ndarray`
         Pressure array that will be saved to the output file
     volout : `numpy.ndarray`
