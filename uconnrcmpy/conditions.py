@@ -101,7 +101,7 @@ class Condition(object):
         if cti_file is None:
             try:
                 cti_file = Path('./species.cti').resolve()
-            except OSError:
+            except FileNotFoundError:
                 cti_file = Path(input('Input the name of the CTI file: ')).resolve()
 
         with open(str(cti_file), 'r') as in_file:
