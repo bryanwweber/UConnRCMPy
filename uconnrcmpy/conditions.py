@@ -413,6 +413,14 @@ class Condition(object):
             if self.reactive_file is None:
                 self.reactive_file = input('Reactive filename: ')
 
+            if (self.reactive_case is None or
+                    self.reactive_case.file_path.name != self.reactive_file.name):
+                if self.reactive_file in self.reactive_experiments:
+                    self.reactive_case = self.reactive_experiments[self.reactive_file]
+                else:
+                    self.reactive_case = Experiment(self.reactive_file, cti_source=self.cti_source)
+                    self.reactive_experiments[self.reactive_file] = self.reactive_case
+
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time*1000.0,
                 self.reactive_case.pressure_trace.pressure,
@@ -439,6 +447,29 @@ class Condition(object):
         Create the volume trace based on the information in the loaded
         yaml file.
         """
+        if self.reactive_file is None:
+            self.reactive_file = input('Reactive filename: ')
+
+        if (self.reactive_case is None or
+                self.reactive_case.file_path.name != self.reactive_file.name):
+            if self.reactive_file in self.reactive_experiments:
+                self.reactive_case = self.reactive_experiments[self.reactive_file]
+            else:
+                self.reactive_case = Experiment(self.reactive_file, cti_source=self.cti_source)
+                self.reactive_experiments[self.reactive_file] = self.reactive_case
+
+        if self.nonreactive_file is None:
+            self.nonreactive_file = input('Non-Reactive filename: ')
+
+        if (self.nonreactive_case is None or
+                self.nonreactive_case.file_path.name != self.nonreactive_file.name):
+            if self.nonreactive_file in self.nonreactive_experiments:
+                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
+            else:
+                self.nonreactive_case = Experiment(self.nonreactive_file,
+                                                   cti_source=self.cti_source)
+                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
+
         for attribute in self.output_attributes:
             if attribute is None:
                 temp_val = input('Specify a value for {}: '.format(attribute))
