@@ -410,6 +410,13 @@ class Condition(object):
         with open('volume-trace.yaml') as yaml_file:
             yaml_data = yaml.safe_load(yaml_file)
 
+        for attribute in ['nonreactive_file', 'reactive_file']:
+            if attribute in yaml_data:
+                setattr(self, attribute, yaml_data[attribute])
+
+        self.add_reactive_case()
+        self.add_nonreactive_case()
+
         for attribute in self.output_attributes:
             if attribute in yaml_data:
                 setattr(self, attribute, yaml_data[attribute])
