@@ -45,10 +45,10 @@ class VoltageTrace(object):
     def __init__(self, file_path):
         self.file_path = file_path
         self.signal = np.genfromtxt(str(self.file_path))
-        self.filter_frequency = None
-
         self.time = self.signal[:, 0]
         self.frequency = np.rint(1/self.time[1])
+
+        self.filter_frequency = None
 
         self.signal[0, 1] = np.mean(self.signal[:200, 1])
 
