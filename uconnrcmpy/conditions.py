@@ -157,45 +157,26 @@ class Condition(object):
 
     @property
     def reactive_file(self):
-        """`str`: File name of the case that is the closest to the mean of all
-        the experiments.
-
-        If the file hasn't been added to the `Condition`, it is added and the
-        `Condition.reactive_case` attribute is set to the `Experiment` loaded
-        from the file.
+        """`pathlib.Path`: File name of the case that is the closest to the mean of all
+        the experiments. Can be set with a `str` or `~pathlib.Path`.
         """
         return self._reactive_file
 
     @reactive_file.setter
     def reactive_file(self, value):
-        if value not in self.reactive_experiments:
-            self.reactive_case = Experiment(value, cti_source=self.cti_source)
-            self.reactive_experiments[value] = self.reactive_case
-        else:
-            self.reactive_case = self.reactive_experiments[value]
-
-        self._reactive_file = value
+        self._reactive_file = Path(value).resolve()
 
     @property
     def nonreactive_file(self):
-        """`str`: File name of the non-reactive case that best matches
-        the pressure trace of the reactive case.
-
-        If the file hasn't been added to the `Condition`, it is added and the
-        `Condition.nonreactive_case` attribute is set to the `Experiment` loaded
-        from the file.
+        """`pathlib.Path`: File name of the non-reactive case that best matches
+        the pressure trace of the `~Condition.reactive_case`. Can be set with a
+        `str` or `~pathlib.Path`.
         """
         return self._nonreactive_file
 
     @nonreactive_file.setter
     def nonreactive_file(self, value):
-        if value not in self.nonreactive_experiments:
-            self.nonreactive_case = Experiment(value, cti_source=self.cti_source)
-            self.nonreactive_experiments[value] = self.nonreactive_case
-        else:
-            self.nonreactive_case = self.nonreactive_experiments[value]
-
-        self._nonreactive_file = value
+        self._nonreactive_file = Path(value).resolve()
 
     @property
     def reactive_end_time(self):
