@@ -524,9 +524,9 @@ class Condition(object):
         self.add_nonreactive_case()
 
         for attribute in self.output_attributes:
-            if attribute is None:
-                temp_val = input('Specify a value for {}: '.format(attribute))
-                setattr(self, attribute, temp_val)
+            if not hasattr(self, attribute) or getattr(self, attribute) is None:
+                temp_val = input('Specify a value for the {}: '.format(attribute))
+                setattr(self, attribute, float(temp_val))
 
         nonreactive_end_idx = int(
             self.nonreactive_case.pressure_trace.EOC_idx + self.nonreactive_offset_points +
