@@ -164,7 +164,10 @@ class Condition(object):
 
     @reactive_file.setter
     def reactive_file(self, value):
-        self._reactive_file = Path(value).resolve()
+        if value is not None:
+            self._reactive_file = Path(value).resolve()
+        else:
+            self._reactive_file = value
 
     @property
     def nonreactive_file(self):
@@ -176,7 +179,10 @@ class Condition(object):
 
     @nonreactive_file.setter
     def nonreactive_file(self, value):
-        self._nonreactive_file = Path(value).resolve()
+        if value is not None:
+            self._nonreactive_file = Path(value).resolve()
+        else:
+            self._nonreactive_file = value
 
     @property
     def reactive_end_time(self):
