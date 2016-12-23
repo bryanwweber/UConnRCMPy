@@ -276,6 +276,37 @@ class Condition(object):
         else:
             raise AttributeError('The nonreactive_case has not been set for this Condition yet.')
 
+    def add_reactive_case(self):
+        """Add the `~Condition.reactive_case` to the `Condition` if
+        it hasn't been set yet. If the `~Condition.reactive_case`
+        exists but the name of the `~Condition.reactive_file` is
+        different than the name of the existing case, the case is
+        replaced. If neither of these is true, nothing is done.
+        """
+        if (self.reactive_case is None or
+                self.reactive_case.file_path.name != self.reactive_file.name):
+            if self.reactive_file in self.reactive_experiments:
+                self.reactive_case = self.reactive_experiments[self.reactive_file]
+            else:
+                self.reactive_case = Experiment(self.reactive_file, cti_source=self.cti_source)
+                self.reactive_experiments[self.reactive_file] = self.reactive_case
+
+    def add_nonreactive_case(self):
+        """Add the `~Condition.nonreactive_case` to the `Condition` if
+        it hasn't been set yet. If the `~Condition.nonreactive_case`
+        exists but the name of the `~Condition.nonreactive_file` is
+        different than the name of the existing case, the case is
+        replaced. If neither of these is true, nothing is done.
+        """
+        if (self.nonreactive_case is None or
+                self.nonreactive_case.file_path.name != self.nonreactive_file.name):
+            if self.nonreactive_file in self.nonreactive_experiments:
+                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
+            else:
+                self.nonreactive_case = Experiment(self.nonreactive_file,
+                                                   cti_source=self.cti_source)
+                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
+
     def add_experiment(self, file_name=None):
         """Add an experiment to the Condition.
 
@@ -447,13 +478,7 @@ class Condition(object):
             if self.reactive_file is None:
                 self.reactive_file = input('Reactive filename: ')
 
-            if (self.reactive_case is None or
-                    self.reactive_case.file_path.name != self.reactive_file.name):
-                if self.reactive_file in self.reactive_experiments:
-                    self.reactive_case = self.reactive_experiments[self.reactive_file]
-                else:
-                    self.reactive_case = Experiment(self.reactive_file, cti_source=self.cti_source)
-                    self.reactive_experiments[self.reactive_file] = self.reactive_case
+            self.add_reactive_case()
 
             self.nonreactive_axis.plot(
                 self.reactive_case.pressure_trace.zeroed_time*1000.0,
@@ -484,25 +509,12 @@ class Condition(object):
         if self.reactive_file is None:
             self.reactive_file = input('Reactive filename: ')
 
-        if (self.reactive_case is None or
-                self.reactive_case.file_path.name != self.reactive_file.name):
-            if self.reactive_file in self.reactive_experiments:
-                self.reactive_case = self.reactive_experiments[self.reactive_file]
-            else:
-                self.reactive_case = Experiment(self.reactive_file, cti_source=self.cti_source)
-                self.reactive_experiments[self.reactive_file] = self.reactive_case
+        self.add_reactive_case()
 
         if self.nonreactive_file is None:
             self.nonreactive_file = input('Non-Reactive filename: ')
 
-        if (self.nonreactive_case is None or
-                self.nonreactive_case.file_path.name != self.nonreactive_file.name):
-            if self.nonreactive_file in self.nonreactive_experiments:
-                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
-            else:
-                self.nonreactive_case = Experiment(self.nonreactive_file,
-                                                   cti_source=self.cti_source)
-                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
+        self.add_nonreactive_case()
 
         for attribute in self.output_attributes:
             if attribute is None:
