@@ -523,6 +523,12 @@ class Condition(object):
 
         self.add_nonreactive_case()
 
+        # Set the offsets to zero by default for the initial run through
+        # The user should modify these after the first run if necessary
+        for attribute in ['reactive_offset_points', 'nonreactive_offset_points']:
+            if not hasattr(self, attribute) or getattr(self, attribute) is None:
+                setattr(self, attribute, 0)
+
         for attribute in self.output_attributes:
             if not hasattr(self, attribute) or getattr(self, attribute) is None:
                 temp_val = input('Specify a value for the {}: '.format(attribute))
