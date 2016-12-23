@@ -75,7 +75,11 @@ class Experiment(object):
         self.compression_time = None
         self.output_end_time = None
         self.offset_points = None
-        if cti_source is None:
+        if cti_source is None and cti_file is None:
+            raise ValueError('One of cti_file or cti_source must be specified')
+        elif cti_source is not None and cti_file is not None:
+            raise ValueError('Only one of cti_file or cti_source can be specified')
+        elif cti_source is None:
             cti_file = Path(cti_file).resolve()
             with open(str(cti_file), 'r') as in_file:
                 self.cti_source = in_file.read()
