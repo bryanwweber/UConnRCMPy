@@ -265,7 +265,7 @@ class Experiment(object):
                                          self.pressure_trace.derivative/1000.0,
                                          'm', label="Derivative")
         self.p_axis.legend([raw_line, p_line, dpdt_line],
-                           [l.get_label() for l in [p_line, dpdt_line]],
+                           [l.get_label() for l in [raw_line, p_line, dpdt_line]],
                            loc='best')
         self.p_axis.set_xlabel('Time [ms]')
         self.p_axis.set_ylabel('Pressure [bar]')
