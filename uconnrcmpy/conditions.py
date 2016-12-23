@@ -28,7 +28,7 @@ class Condition(object):
     ----------
     cti_file : `str` or `pathlib.Path`, optional
         The location of the CTI file to use for Cantera. If it is
-        not specified, the default is `./species.cti`, but if that
+        not specified, the default is ``./species.cti``, but if that
         file cannot be found, the user is prompted for a filename.
     plotting : `bool`, optional
         Set to True to enable plotting when experiments are added
