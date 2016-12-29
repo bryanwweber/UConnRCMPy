@@ -113,7 +113,12 @@ class VoltageTrace(object):
             # data point in the array. The residuals are shifted down by the
             # intercept so that the root of the spline is the optimum cutoff
             # frequency
-            self._filter_frequency = UnivariateSpline(freqs, resid - intercept, s=0).roots()[0]
+            try:
+                self._filter_frequency = UnivariateSpline(freqs, resid - intercept, s=0).roots()[0]
+            except IndexError:
+                self._filter_frequency = float(input(
+                    'Automatic setting of the filter frequency failed. Please input a frequency; '
+                    'typical values are between 1000-5000 Hz: '))
         else:
             self._filter_frequency = value
 
