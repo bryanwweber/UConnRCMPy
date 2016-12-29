@@ -10,16 +10,16 @@ matrix:
       env: BUILD_PYTHON="3.4"
     - os: linux
       env: BUILD_PYTHON="3.5"
-    # - os: linux
-    #   env: BUILD_PYTHON="3.6"
+    - os: linux
+      env: BUILD_PYTHON="3.6"
     - os: osx
       env: BUILD_PYTHON="3.4"
       language: generic
     - os: osx
       env: BUILD_PYTHON="3.5"
       language: generic
-    # - os: osx
-    #   env: BUILD_PYTHON="3.6"
+    - os: osx
+      env: BUILD_PYTHON="3.6"
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
