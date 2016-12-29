@@ -20,6 +20,7 @@ matrix:
       language: generic
     - os: osx
       env: BUILD_PYTHON="3.6"
+      language: generic
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
