@@ -1,5 +1,6 @@
 sudo: false
-language: python
+language: generic
+
 env:
   global:
     - secure: "TFvHncH5F75jn5uqhhetNoPSZAkgboeLO2+OcjCtLwEzGN9pvy/ElGubPtLIGIZedT826tJDgssRv4ZKF3K5dYcNRt9Oc86rc2V3uEnoLapH5ZirVEmVMKPc61D/cawgPVZchdU050GALtXg+k/pYeNzBng+I5VdOq8NdJWSKGAkaSVtNyNhDKLAnmPlagZcPxhGYmGe4HTodRb+4xh0KnMP5NS/AQFUbs1aEq8f6XLNuFAAk8Tp/1I5ryOJdqxyVNr/AoIe5+i/ZRlIEO9R/oh3TUoDmnjQNLuK9QeR4jvM7axh0vwe0WkA013JBhd0BzPx5OoiBBIOIqr7t0Sw//RiUTY9v9K/dL83lpCnwwmY1QgZg7+a8drtr+3Y24IaIygMWudOmTpH73+KVuGdBNaTRceAcbXBu2WMGzg0rzO6w70tKoEKYeOt3SaIW+tBrbRZ6b4BPdzcG3Ck7K4lij+UxUMV6S0WvizQGV5LgBbql5YFCcdoMMx+Ewz0vgc77p2gZXPcLTg6L/tn0VsUpjnrlUdF11d1oQBjhwNOcljgkFt88HXd6Ja5QTyQ3MMQibBBQvks7lAzmkxDi+FbrN9rEEg/kzTXwZ4HN0WYz6aQb5d0qzutgAaZMPgf0Z5YcVwyoA2batMddRrO4H3LEMXIA/5kEakHawWlx0Gppn4="
@@ -7,20 +8,22 @@ env:
 matrix:
   include:
     - os: linux
-      env: BUILD_PYTHON="3.4"
+      env: PYTHON="3.4"
+
     - os: linux
-      env: BUILD_PYTHON="3.5"
+      env: PYTHON="3.5"
+
     - os: linux
-      env: BUILD_PYTHON="3.6"
+      env: PYTHON="3.6"
+
     - os: osx
-      env: BUILD_PYTHON="3.4"
-      language: generic
+      env: PYTHON="3.4"
+
     - os: osx
-      env: BUILD_PYTHON="3.5"
-      language: generic
+      env: PYTHON="3.5"
+
     - os: osx
-      env: BUILD_PYTHON="3.6"
-      language: generic
+      env: PYTHON="3.6"
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -37,15 +40,15 @@ install:
   - conda config --append channels conda-forge
   - conda update -q --all
   - conda install -q anaconda-client conda-build
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.5" ]]; then
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.5" ]]; then
       conda install -q sphinx doctr;
     fi
   - conda info -a
   - conda list
 
 script:
-  - conda build conda.recipe --python=${BUILD_PYTHON}
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_PYTHON" == "3.5" ]]; then
+  - conda build conda.recipe --python=${PYTHON}
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.5" ]]; then
       conda install --use-local uconnrcmpy;
       set -e;
       cd docs;
