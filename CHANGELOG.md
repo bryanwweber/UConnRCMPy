@@ -4,7 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.0.0a1]
+## [Unreleased]
+### Added
+- Python 3.6 builds on Travis
+
+### Fixed
+
+### Changed
+
+### Removed
+
+## [3.0.0a3] - 2016-12-29
+### Added
+- Prompt user for filter frequency when auto-setting fails
+
+## [3.0.0a2] - 2016-12-23
+### Added
+- Label for raw pressure line
+- Refactor `Simulation` class to new module
+
+### Fixed
+- Fix docs after `dataprocessing` -> `conditions`/`experiments` module split
+- Unsuppress thermo warnings before loading a new CTI file
+- Properly set `reactive_case` and `nonreactive_case`, and other attributes important for the `VolumeTrace` generation
+- Filter frequency has to be set after the experiment sampling frequency is calculated
+- Writing the `volume-trace.yaml` file now has filenames instead of `Path` reprs
+
+### Changed
+- Catch `FileNotFoundError`s instead of `OSError`s when files are missing
+- Raise exceptions if CTI arguments are specified incorrectly to `Experiment`
+
+## [3.0.0a1] - 2016-12-22
 ### Added
 - Conda recipe
 - Summary output from `Condition`
@@ -149,7 +179,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Basic functionality of class-based interface to process data
 
-[3.0.0a1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a3...HEAD
+[3.0.0a3]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a2...v3.0.0a3
+[3.0.0a2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a1...v3.0.0a2
+[3.0.0a1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...v3.0.0a1
 [2.1.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.0...v2.0.1
