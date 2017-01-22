@@ -1,0 +1,35 @@
+version: 1.0.{build}
+environment:
+  ANACONDA_KEY:
+    secure: j+gQbqTaDRlQ1+n6jfVoWVCtfqxM8lVM5Ri62cGXc1Vs5Q8IWH7UtZH2SBsabIyf
+
+  matrix:
+    - PYTHON_LOC: "C:\\Miniconda35-x64"
+      PYTHON_VERSION: "3.4"
+
+    - PYTHON_LOC: "C:\\Miniconda35-x64"
+      PYTHON_VERSION: "3.5"
+
+    - PYTHON_LOC: "C:\\Miniconda35-x64"
+      PYTHON_VERSION: "3.6"
+
+install:
+  - cmd: call %PYTHON_LOC%\Scripts\activate.bat
+  - cmd: conda config --set always_yes yes --set changeps1 no
+  - cmd: conda config --append channels cantera
+  - cmd: conda config --append channels bryanwweber
+  - cmd: conda config --append channels conda-forge
+  - cmd: conda update --all -q
+  - ps: (get-content environment.yml) | %{$_ -replace "\$\{PYTHON\}" "$env:PYTHON_VERSION"} | set-content environment.yml
+  - cmd: IF "%APPVEYOR_REPO_TAG%"=="false" conda env create -qf environment.yml
+  - cmd: IF "%APPVEYOR_REPO_TAG%"=="false" call %PYTHON_LOC%\Scripts\activate.bat test-environment
+  - cmd: IF "%APPVEYOR_REPO_TAG%"=="true" conda install -yq anaconda-client conda-build
+  - cmd: conda info -a
+  - cmd: conda list
+
+build_script:
+  - cmd: IF "%APPVEYOR_REPO_TAG%"=="false" python setup.py test
+  - cmd: IF "%APPVEYOR_REPO_TAG%"=="true" conda build conda.recipe --python=%PYTHON_VERSION%
+
+deploy_script:
+  - cmd: IF "%APPVEYOR_REPO_TAG%"=="true" anaconda -t %ANACONDA_KEY% upload "%PYTHON_LOC%\conda-bld\win-64\uconnrcmpy*.tar.bz2"
