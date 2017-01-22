@@ -4,6 +4,7 @@
 from pathlib import Path
 from glob import glob
 import platform
+import sys
 
 # Third-party imports
 import numpy as np
@@ -94,8 +95,9 @@ class Condition(object):
             'reactive_compression_time', 'nonreactive_offset_points', 'reactive_offset_points'
         ]
         if cti_file is None:
+            path_args = {'strict': True} if sys.version_info >= (3, 6) else {}
             try:
-                cti_file = Path('./species.cti').resolve()
+                cti_file = Path('./species.cti').resolve(**path_args)
             except FileNotFoundError:
                 cti_file = Path(input('Input the name of the CTI file: ')).resolve()
 
