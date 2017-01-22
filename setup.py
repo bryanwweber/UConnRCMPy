@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 import os.path as op
+import sys
+import platform
 
 with open(op.join(op.dirname(op.realpath(__file__)), 'uconnrcmpy', '_version.py')) as version_file:
     exec(version_file.read())
@@ -9,6 +11,26 @@ with open(op.join(op.dirname(op.realpath(__file__)), 'README.md')) as readme_fil
 
 with open(op.join(op.dirname(op.realpath(__file__)), 'CHANGELOG.md')) as changelog_file:
     changelog = changelog_file.read()
+
+install_requires = [
+    'cantera>=2.3.0',
+    'numpy>=1.8.0',
+    'scipy>=0.18.0',
+    'pyyaml>-3.12',
+    'matplotlib>=1.4.0',
+    'cansen>=1.2.0',
+]
+
+if platform.system() == 'Windows':
+    install_requires.append('pywin32')
+
+tests_require = [
+    'pytest>=3.0.0',
+    'pytest-cov>=2.3.1',
+]
+
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+setup_requires = ['pytest-runner'] if needs_pytest else []
 
 setup(
     name='UConnRCMPy',
@@ -33,4 +55,7 @@ setup(
             'processrcmfolder=uconnrcmpy.dataprocessing:process_folder',
         ],
     },
+    install_requires=install_requires,
+    tests_require=tests_require,
+    setup_requires=setup_requires,
 )
