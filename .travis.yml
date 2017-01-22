@@ -54,6 +54,7 @@ script:
   - if [[ -z "$TRAVIS_TAG" ]]; then
       python setup.py test;
       if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.5" ]]; then
+        git checkout -- environment.yml
         conda install -q sphinx doctr;
         python setup.py install;
         set -e;
