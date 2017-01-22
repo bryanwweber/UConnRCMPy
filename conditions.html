@@ -119,13 +119,13 @@ the mean of all of the experiments.</p>
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.presout">
 <code class="descname">presout</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.presout" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Pressure array that will be saved to the output file</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Pressure array that will be saved to the output file</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.volout">
 <code class="descname">volout</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.volout" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Volume array that will be saved to the output file</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Volume array that will be saved to the output file</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -263,49 +263,42 @@ of the yaml file is:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">variable</span><span class="p">:</span> <span class="n">value</span>
 </pre></div>
 </div>
-<ul>
+<ul class="simple">
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">nonrfile</span></code>: File name of the non-reactive pressure trace.</dt>
-<dd><p class="first last">Type: String</p>
-</dd>
+<dd>Type: String</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">reacfile</span></code>: File name of the reactive pressure trace.</dt>
-<dd><p class="first last">Type: String</p>
-</dd>
+<dd>Type: String</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">comptime</span></code>: Length of time of the compression stroke, in ms.</dt>
-<dd><p class="first last">Type: Float</p>
-</dd>
+<dd>Type: Float</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">nonrend</span></code>: End time used for the produced volume trace, in ms.</dt>
-<dd><p class="first last">Type: Float</p>
-</dd>
+<dd>Type: Float</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">reacend</span></code>: End time of the output reactive pressure trace, in ms.</dt>
-<dd><p class="first last">Type: Float</p>
-</dd>
+<dd>Type: Float</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">reacoffs</span></code>: Offset in number of points from EOC for the</dt>
-<dd><p class="first last">reactive case. Optional, defaults to zero.
-Type: Integer</p>
-</dd>
+<dd>reactive case. Optional, defaults to zero.
+Type: Integer</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">nonroffs</span></code>: Offset in number of points from EOC for the</dt>
-<dd><p class="first last">non-reactive case. Optional, defaults to zero.
-Type: Integer</p>
-</dd>
+<dd>non-reactive case. Optional, defaults to zero.
+Type: Integer</dd>
 </dl>
 </li>
 </ul>
@@ -322,49 +315,42 @@ otherwise noted. The format of the yaml file is:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">variable</span><span class="p">:</span> <span class="n">value</span>
 </pre></div>
 </div>
-<ul>
+<ul class="simple">
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">nonreactive_file</span></code>: File name of the non-reactive pressure trace.</dt>
-<dd><p class="first last">Type: String</p>
-</dd>
+<dd>Type: String</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">reactive_file</span></code>: File name of the reactive pressure trace.</dt>
-<dd><p class="first last">Type: String</p>
-</dd>
+<dd>Type: String</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">reactive_compression_time</span></code>: Length of time of the compression stroke, in ms.</dt>
-<dd><p class="first last">Type: Float</p>
-</dd>
+<dd>Type: Float</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">nonreactive_end_time</span></code>: End time used for the produced volume trace, in ms.</dt>
-<dd><p class="first last">Type: Float</p>
-</dd>
+<dd>Type: Float</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">reactive_end_time</span></code>: End time of the output reactive pressure trace, in ms.</dt>
-<dd><p class="first last">Type: Float</p>
-</dd>
+<dd>Type: Float</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">reactive_offset_points</span></code>: Offset in number of points from EOC for the</dt>
-<dd><p class="first last">reactive case. Optional, defaults to zero.
-Type: Integer</p>
-</dd>
+<dd>reactive case. Optional, defaults to zero.
+Type: Integer</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">nonreactive_offset_points</span></code>: Offset in number of points from EOC for the</dt>
-<dd><p class="first last">non-reactive case. Optional, defaults to zero.
-Type: Integer</p>
-</dd>
+<dd>non-reactive case. Optional, defaults to zero.
+Type: Integer</dd>
 </dl>
 </li>
 </ul>
@@ -599,7 +585,7 @@ to the clipboard.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2016, Bryan W. Weber.
+      &copy;2017, Bryan W. Weber.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
