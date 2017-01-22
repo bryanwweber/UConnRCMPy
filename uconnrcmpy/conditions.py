@@ -13,7 +13,7 @@ import yaml
 import cantera as ct
 
 # Local imports
-from .utilities import copy
+from pyperclip import copy
 from .traces import (TemperatureFromPressure,
                      VolumeFromPressure,
                      PressureFromVolume,

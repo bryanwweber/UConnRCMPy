@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages
 import os.path as op
 import sys
-import platform
 
 with open(op.join(op.dirname(op.realpath(__file__)), 'uconnrcmpy', '_version.py')) as version_file:
     exec(version_file.read())
@@ -19,10 +18,8 @@ install_requires = [
     'pyyaml>-3.12',
     'matplotlib>=1.4.0',
     'cansen>=1.2.0',
+    'pyperclip>=1.5.27'
 ]
-
-if platform.system() == 'Windows':
-    install_requires.append('pywin32')
 
 tests_require = [
     'pytest>=3.0.0',

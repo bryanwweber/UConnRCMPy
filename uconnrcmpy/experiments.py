@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Local imports
-from .utilities import copy
+from pyperclip import copy
 from .traces import (VoltageTrace,
                      ExperimentalPressureTrace,
                      AltExperimentalPressureTrace,

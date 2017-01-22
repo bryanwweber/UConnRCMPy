@@ -7,10 +7,11 @@ channels:
 dependencies:
   - cansen>=1.2.0
   - cantera>=2.3.0
-  - scipy>=0.18.0
   - matplotlib>=1.4.0
   - numpy>=1.8.0
   - pyyaml>=3.12
+  - pyperclip>=1.5.27
   - pytest>=3.0.0
   - pytest-cov>=2.3.1
   - python=${PYTHON}
+  - scipy>=0.18.0

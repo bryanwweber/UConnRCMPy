@@ -17,6 +17,7 @@ build:
 requirements:
   build:
     - python >=3.4,{{PY_VER}}*
+    - setuptools
 
   run:
     - python {{PY_VER}}*
@@ -26,7 +27,7 @@ requirements:
     - pyyaml >=3.12
     - matplotlib >=1.4*
     - cansen >=1.2*
-    - pywin32  # [win]
+    - pyperclip >=1.5.27
 
 test:
   imports:
