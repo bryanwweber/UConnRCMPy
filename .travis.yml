@@ -42,7 +42,7 @@ install:
   - conda update -q --all
   - sed -i -e "s/\${PYTHON}/"${PYTHON}"/" environment.yml
   - if [[ -z "$TRAVIS_TAG" ]]; then
-      conda env create -f environment.yml;
+      conda env create -qf environment.yml;
       source activate test-environment;
     else
       conda install -q conda-build anaconda-client;
@@ -66,4 +66,9 @@ script:
     else
       conda build conda.recipe --python=${PYTHON};
       anaconda -t $ANACONDA_TOKEN upload $HOME/miniconda/conda-bld/*/uconnrcmpy*.tar.bz2;
+    fi
+
+after_success:
+  - if [[ -z "$TRAVIS_TAG" ]]; then
+      bash <(curl -s https://codecov.io/bash);
     fi
