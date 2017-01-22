@@ -40,21 +40,30 @@ install:
   - conda config --append channels bryanwweber
   - conda config --append channels conda-forge
   - conda update -q --all
-  - conda install -q anaconda-client conda-build
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.5" ]]; then
-      conda install -q sphinx doctr;
+  - sed -i -e "s/\${PYTHON}/"${PYTHON}"/" environment.yml
+  - if [[ -z "$TRAVIS_TAG" ]]; then
+      conda env create -f environment.yml;
+      source activate test-environment;
+    else
+      conda install -q conda-build anaconda-client;
     fi
   - conda info -a
   - conda list
 
 script:
-  - conda build conda.recipe --python=${PYTHON}
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.5" ]]; then
-      conda install --use-local uconnrcmpy;
-      set -e;
-      cd docs;
-      make html SPHINXOPTS="-W";
-      cd ..;
-      doctr deploy --gh-pages-docs .;
-      set +e;
+  - if [[ -z "$TRAVIS_TAG" ]]; then
+      python setup.py test;
+      if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.5" ]]; then
+        conda install -q sphinx doctr;
+        python setup.py install;
+        set -e;
+        cd docs;
+        make html SPHINXOPTS="-W";
+        cd ..;
+        doctr deploy --gh-pages-docs .;
+        set +e;
+      fi
+    else
+      conda build conda.recipe --python=${PYTHON};
+      anaconda -t $ANACONDA_TOKEN upload $HOME/miniconda/conda-bld/*/uconnrcmpy*.tar.bz2;
     fi
