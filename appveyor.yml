@@ -20,7 +20,7 @@ install:
   - cmd: conda config --append channels bryanwweber
   - cmd: conda config --append channels conda-forge
   - cmd: conda update --all -q
-  - ps: (get-content environment.yml) | %{$_ -replace "\$\{PYTHON\}" "$env:PYTHON_VERSION"} | set-content environment.yml
+  - ps: (get-content environment.yml) | %{$_ -replace "\$\{PYTHON\}",$env:PYTHON_VERSION} | set-content environment.yml
   - cmd: IF "%APPVEYOR_REPO_TAG%"=="false" conda env create -qf environment.yml
   - cmd: IF "%APPVEYOR_REPO_TAG%"=="false" call %PYTHON_LOC%\Scripts\activate.bat test-environment
   - cmd: IF "%APPVEYOR_REPO_TAG%"=="true" conda install -yq anaconda-client conda-build
