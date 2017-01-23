@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Fixed
+- Travis builds now fail appropriately
 
 ### Changed
 
@@ -192,7 +193,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Basic functionality of class-based interface to process data
 
 [Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0b2...HEAD
-[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0b1...v3.0.0b2
+[3.0.0b2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0b1...v3.0.0b2
 [3.0.0b1]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a3...v3.0.0b1
 [3.0.0a3]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a2...v3.0.0a3
 [3.0.0a2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a1...v3.0.0a2

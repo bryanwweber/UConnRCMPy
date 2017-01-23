@@ -29,6 +29,3 @@ class TestCondition(object):
         c = Condition(cti_file=cti_file, plotting=False)
         c.add_experiment(reacfile)
         c.add_experiment(nonrfile)
-
-    def test_fail(self):
-        assert False
