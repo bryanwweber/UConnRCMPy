@@ -86,6 +86,7 @@ class Condition(object):
         self.plotting = plotting
         if self.plotting:
             self.all_runs_figure = None
+            self.all_runs_lines = {}
             self.nonreactive_figure = None
             self.pressure_comparison_figure = None
             self.simulation_figure = None
@@ -349,6 +350,14 @@ class Condition(object):
                                  'Did you add it with add_experiment?'.format(str(experiment)))
 
         experiment.change_filter_freq(value)
+        if self.plotting:
+            self.all_runs_lines[experiment.file_path.name].remove()
+            self.all_runs_lines[experiment.file_path.name], = self.all_runs_axis.plot(
+                experiment.pressure_trace.zeroed_time*1000.0,
+                experiment.pressure_trace.pressure,
+                label=experiment.experiment_parameters['date'],
+            )
+            self.all_runs_axis.legend(loc='best')
 
     def plot_reactive_figures(self, exp):
         """Plot the reactive pressure trace on figures.
@@ -373,7 +382,7 @@ class Condition(object):
                 m = plt.get_current_fig_manager()
                 m.window.showMaximized()
 
-        self.all_runs_axis.plot(
+        self.all_runs_lines[exp.file_path.name], = self.all_runs_axis.plot(
             exp.pressure_trace.zeroed_time*1000.0,
             exp.pressure_trace.pressure,
             label=exp.experiment_parameters['date'],

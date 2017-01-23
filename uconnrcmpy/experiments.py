@@ -182,6 +182,28 @@ class Experiment(object):
                                                         )
         self.process_pressure_trace()
         self.copy_to_clipboard()
+        if hasattr(self, 'p_axis'):
+            # Create a list of the lines in the axis so that
+            # removing one doesn't affect the list as its
+            # looping. Use the loop rather than axis.clear()
+            # so that the axis labels and legend are preserved.
+            for l in list(self.p_axis.lines):
+                l.remove()
+
+            self.p_axis.plot(self.pressure_trace.zeroed_time*1000,
+                             self.pressure_trace.raw_pressure,
+                             'b', label="Raw Pressure")
+            self.p_axis.plot(self.pressure_trace.zeroed_time*1000.0,
+                             self.pressure_trace.pressure,
+                             'g', label="Pressure")
+
+        if hasattr(self, 'dpdt_axis'):
+            for l in list(self.dpdt_axis.lines):
+                l.remove()
+
+            self.dpdt_axis.plot(self.pressure_trace.zeroed_time*1000.0,
+                                self.pressure_trace.derivative/1000.0,
+                                'm', label="Derivative")
 
     def copy_to_clipboard(self):
         """Copy experimental information to the clipboard
