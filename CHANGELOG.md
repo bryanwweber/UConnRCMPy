@@ -13,11 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-## [3.0.0b2]
+## [3.0.0b2] 2017-01-22
 ### Fixed
 - Added MANIFEST.in and modified setup.py to include test data files
 
-## [3.0.0b1]
+## [3.0.0b1] - 2017-01-22
 ### Added
 - Python 3.6 builds on Travis
 - Conda builds on Travis/Appveyor upload to anaconda.org when a tag is pushed.
