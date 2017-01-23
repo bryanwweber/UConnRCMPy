@@ -6,13 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Python 3.6 builds on Travis
 
 ### Fixed
 
 ### Changed
 
 ### Removed
+
+## [3.0.0b1]
+### Added
+- Python 3.6 builds on Travis
+- Conda builds on Travis/Appveyor upload to anaconda.org when a tag is pushed.
+- Appveyor builds for Windows tests/packaging
+
+### Fixed
+- Replot lines when filtering frequency is changed
 
 ## [3.0.0a3] - 2016-12-29
 ### Added
@@ -180,6 +188,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Basic functionality of class-based interface to process data
 
 [Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a3...HEAD
+[3.0.0b1]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a3...v3.0.0b1
 [3.0.0a3]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a2...v3.0.0a3
 [3.0.0a2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a1...v3.0.0a2
 [3.0.0a1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...v3.0.0a1
