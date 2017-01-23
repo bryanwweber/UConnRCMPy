@@ -851,6 +851,10 @@ class Condition(object):
             print_str += '{:.6f}'.format(ignition_delay)
             copy_str += '{}'.format(ignition_delay)
 
+        if self.nonreactive_sim is not None and self.reactive_sim is not None:
+            # Use np.where to find the index of EOC for reqctive simulation
+            # Use that index to find T_EOC_reactive
+            # Compare to T_EOC_nonreactive using np.isclose
         print(print_str)
         copy(copy_str)
 
