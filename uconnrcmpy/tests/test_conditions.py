@@ -1,6 +1,7 @@
 """
 Test module for the conditions module
 """
+import pytest
 from unittest import mock
 import os
 from ..conditions import Condition
@@ -18,6 +19,8 @@ class TestCondition(object):
         cti_file = os.path.join(os.path.dirname(__file__), 'species.cti')
         Condition(cti_file=cti_file, plotting=False)
 
+    @pytest.skipif(os.getenv('TRAVIS_OS_NAME') == 'linux',
+                   reason="Travis-linux is headless, so xclip won't work")
     def test_add_experiment(self):
         datadir = os.path.dirname(__file__)
         cti_file = os.path.join(datadir, 'species.cti')
