@@ -15,7 +15,6 @@ Contents:
    experiments
    simulations
    traces
-   utilities
    constants
 
 Indices and tables
