@@ -852,9 +852,14 @@ class Condition(object):
             copy_str += '{}'.format(ignition_delay)
 
         if self.nonreactive_sim is not None and self.reactive_sim is not None:
-            # Use np.where to find the index of EOC for reqctive simulation
-            # Use that index to find T_EOC_reactive
+            # Use np.where to find the index of EOC for reactive simulation
+            # Use the given index to find T_EOC_reactive
             # Compare to T_EOC_nonreactive using np.isclose
+            EOC_reactive_idx = np.where(self.reactive_sim.time >= compression_time)
+            T_EOC_reactive = self.reactive_sim.temperature[EOC_reactive_idx][0]
+            if not np.isclose(T_EOC_nonreactive,T_EOC_reactive, rtol = 0.001):
+                print('WARNING: Reactive EOC and non-reactive EOC did not match')
+
         print(print_str)
         copy(copy_str)
 
@@ -868,6 +873,7 @@ class AltCondition(Condition):
 
         Parameters
         ----------
+
         file_name : `str` or `None`
             Filename of the file with the voltage trace of the
             experiment to be added.
