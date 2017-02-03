@@ -858,8 +858,9 @@ class Condition(object):
             EOC_reactive_idx = np.where(self.reactive_sim.time >= compression_time)
             T_EOC_reactive = self.reactive_sim.temperature[EOC_reactive_idx][0]
             if not np.isclose(T_EOC, T_EOC_reactive, rtol = 0.001):
-                print('T_EOC_reactive =', T_EOC_reactive, 'K', '\n', 'T_EOC_nonreactive =', T_EOC, 'K', '\n', 'WARNING: Temperatures at Reactive EOC and non-reactive EOC did not match')
-
+                print('WARNING: Temperatures at Reactive EOC and non-reactive EOC did not match')
+                print('T_EOC_nonreactive = {} K'.format(T_EOC))
+                print('T_EOC_reactive = {} K'.format(T_EOC_reactive))
         print(print_str)
         copy(copy_str)
 
