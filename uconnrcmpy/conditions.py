@@ -851,6 +851,16 @@ class Condition(object):
             print_str += '{:.6f}'.format(ignition_delay)
             copy_str += '{}'.format(ignition_delay)
 
+        if self.nonreactive_sim is not None and self.reactive_sim is not None:
+            # Use np.where to find the index of EOC for reactive simulation
+            # Use the given index to find T_EOC_reactive
+            # Compare to T_EOC (nonreactive case) using np.isclose
+            EOC_reactive_idx = np.where(self.reactive_sim.time >= compression_time)
+            T_EOC_reactive = self.reactive_sim.temperature[EOC_reactive_idx][0]
+            if not np.isclose(T_EOC, T_EOC_reactive, rtol = 0.001):
+                print('WARNING: Temperatures at Reactive EOC and non-reactive EOC did not match')
+                print('T_EOC_nonreactive = {} K'.format(T_EOC))
+                print('T_EOC_reactive = {} K'.format(T_EOC_reactive))
         print(print_str)
         copy(copy_str)
 
