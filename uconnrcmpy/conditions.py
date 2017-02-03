@@ -854,11 +854,11 @@ class Condition(object):
         if self.nonreactive_sim is not None and self.reactive_sim is not None:
             # Use np.where to find the index of EOC for reactive simulation
             # Use the given index to find T_EOC_reactive
-            # Compare to T_EOC_nonreactive using np.isclose
+            # Compare to T_EOC (nonreactive case) using np.isclose
             EOC_reactive_idx = np.where(self.reactive_sim.time >= compression_time)
             T_EOC_reactive = self.reactive_sim.temperature[EOC_reactive_idx][0]
-            if not np.isclose(T_EOC_nonreactive,T_EOC_reactive, rtol = 0.001):
-                print('WARNING: Reactive EOC and non-reactive EOC did not match')
+            if not np.isclose(T_EOC, T_EOC_reactive, rtol = 0.001):
+                print('T_EOC_reactive =', T_EOC_reactive, 'K', '\n', 'T_EOC_nonreactive =', T_EOC, 'K', '\n', 'WARNING: Temperatures at Reactive EOC and non-reactive EOC did not match')
 
         print(print_str)
         copy(copy_str)
@@ -873,7 +873,6 @@ class AltCondition(Condition):
 
         Parameters
         ----------
-
         file_name : `str` or `None`
             Filename of the file with the voltage trace of the
             experiment to be added.
