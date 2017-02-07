@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Simulations &#8212; UConnRCMPy 3.0.0b2 documentation</title>
+    <title>Simulations &#8212; UConnRCMPy 3.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.0.0b2',
+        VERSION:     '3.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -160,6 +160,48 @@ sets the Cantera reaction rate multiplier to 0.0 via the
 Lagrange polynomial fit to the point under consideration and
 its nearest neighbors. The Lagrange polynomial is used because
 of the unequal spacing of the simulated data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="uconnrcmpy.simulations.VolumeProfile">
+<em class="property">class </em><code class="descclassname">uconnrcmpy.simulations.</code><code class="descname">VolumeProfile</code><span class="sig-paren">(</span><em>time</em>, <em>volume</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the velocity of the piston by using a user specified volume
+profile. The initialization and calling of this class are handled
+by the <a class="reference external" href="http://cantera.github.io/dev-docs/sphinx/html/cython/zerodim.html#cantera.Func1" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">cantera.Func1</span></code></a> interface of Cantera.</p>
+<p>The velocity is calculated by assuming a unit area and using the
+forward difference, calculated by <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.diff</span></code></a>. This function is
+only called once when the class is initialized at the beginning of
+a problem so it is efficient.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>time</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Array or list of time values</li>
+<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Array or list of volume values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="uconnrcmpy.simulations.VolumeProfile.time">
+<code class="descname">time</code><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile.time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of time values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.simulations.VolumeProfile.volume">
+<code class="descname">volume</code><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile.volume" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of volume values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="uconnrcmpy.simulations.VolumeProfile.velocity">
+<code class="descname">velocity</code><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile.velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of velocity values</p>
 </dd></dl>
 
 </dd></dl>
