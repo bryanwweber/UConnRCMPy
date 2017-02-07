@@ -6,51 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Print warning when the simulated TCs don't match
 
 ### Fixed
-- Travis builds now fail appropriately
 
 ### Changed
 
 ### Removed
-- CanSen dependency is no longer required
 
-## [3.0.0b2] 2017-01-22
-### Fixed
-- Added MANIFEST.in and modified setup.py to include test data files
-
-## [3.0.0b1] - 2017-01-22
+## [3.0.0] 2017-02-07
 ### Added
+- Print warning when the simulated TCs don't match
 - Python 3.6 builds on Travis
 - Conda builds on Travis/Appveyor upload to anaconda.org when a tag is pushed.
 - Appveyor builds for Windows tests/packaging
-
-### Fixed
-- Replot lines when filtering frequency is changed
-
-## [3.0.0a3] - 2016-12-29
-### Added
 - Prompt user for filter frequency when auto-setting fails
-
-## [3.0.0a2] - 2016-12-23
-### Added
 - Label for raw pressure line
 - Refactor `Simulation` class to new module
-
-### Fixed
-- Fix docs after `dataprocessing` -> `conditions`/`experiments` module split
-- Unsuppress thermo warnings before loading a new CTI file
-- Properly set `reactive_case` and `nonreactive_case`, and other attributes important for the `VolumeTrace` generation
-- Filter frequency has to be set after the experiment sampling frequency is calculated
-- Writing the `volume-trace.yaml` file now has filenames instead of `Path` reprs
-
-### Changed
-- Catch `FileNotFoundError`s instead of `OSError`s when files are missing
-- Raise exceptions if CTI arguments are specified incorrectly to `Experiment`
-
-## [3.0.0a1] - 2016-12-22
-### Added
 - Conda recipe
 - Summary output from `Condition`
 - String input to `Experiment`
@@ -66,9 +37,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Version information is stored in `_version.py`
 
 ### Fixed
+- Travis builds now fail appropriately
+- Added MANIFEST.in and modified setup.py to include test data files
+- Replot lines when filtering frequency is changed
+- Fix docs after `dataprocessing` -> `conditions`/`experiments` module split
+- Unsuppress thermo warnings before loading a new CTI file
+- Properly set `reactive_case` and `nonreactive_case`, and other attributes important for the `VolumeTrace` generation
+- Filter frequency has to be set after the experiment sampling frequency is calculated
+- Writing the `volume-trace.yaml` file now has filenames instead of `Path` reprs
 - Time in figure legend has a colon
 
 ### Changed
+- Catch `FileNotFoundError`s instead of `OSError`s when files are missing
+- Raise exceptions if CTI arguments are specified incorrectly to `Experiment`
 - Convert all time axes on figures to ms
 - Split the dataprocessing module into experiments and conditions modules
 - Use slices to compute the derivative of the experimental pressure trace
@@ -77,6 +58,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Minimum version of Cantera is 2.3.0
 
 ### Removed
+- CanSen dependency is no longer required
 - Voltage traces are no longer smoothed, and the smoothing function has been removed
 
 ## [2.1.0] - 2016-05-31
@@ -194,12 +176,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Basic functionality of class-based interface to process data
 
-[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0b2...HEAD
-[3.0.0b2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0b1...v3.0.0b2
-[3.0.0b1]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a3...v3.0.0b1
-[3.0.0a3]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a2...v3.0.0a3
-[3.0.0a2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0a1...v3.0.0a2
-[3.0.0a1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...v3.0.0a1
+[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...v3.0.0
 [2.1.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.0...v2.0.1
