@@ -3,7 +3,6 @@
 # Third party imports
 import numpy as np
 import cantera as ct
-from cansen.profiles import VolumeProfile
 
 
 class Simulation(object):
@@ -60,9 +59,9 @@ class Simulation(object):
 
         if volume is None:
             volume = np.genfromtxt('volume.csv', delimiter=',')
-            keywords = {'vproTime': volume[:, 0], 'vproVol': volume[:, 1]}
-        else:
-            keywords = {'vproTime': volume[:, 0], 'vproVol': volume[:, 1]}
+
+        inp_time = volume[:, 0]
+        inp_vol = volume[:, 1]
 
         self.time = []
         self.temperature = []
@@ -85,9 +84,9 @@ class Simulation(object):
             gas.set_multiplier(0)
         reac = ct.IdealGasReactor(gas)
         env = ct.Reservoir(ct.Solution('air.xml'))
-        ct.Wall(reac, env, A=1.0, velocity=VolumeProfile(keywords))
+        ct.Wall(reac, env, A=1.0, velocity=VolumeProfile(inp_time, inp_vol))
         netw = ct.ReactorNet([reac])
-        netw.set_max_time_step(keywords['vproTime'][1])
+        netw.set_max_time_step(inp_time[1])
         self.time.append(netw.time)
         self.temperature.append(reac.T)
         self.pressure.append(gas.P/1E5)
@@ -150,3 +149,73 @@ class Simulation(object):
                       y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
 
         return ddt
+
+
+class VolumeProfile(object):
+    """
+    Set the velocity of the piston by using a user specified volume
+    profile. The initialization and calling of this class are handled
+    by the `cantera.Func1` interface of Cantera.
+
+    The velocity is calculated by assuming a unit area and using the
+    forward difference, calculated by `numpy.diff`. This function is
+    only called once when the class is initialized at the beginning of
+    a problem so it is efficient.
+
+    Parameters
+    ----------
+    time: `numpy.ndarray`
+        Array or list of time values
+    volume: `numpy.ndarray`
+        Array or list of volume values
+
+    Attributes
+    ----------
+    time: `numpy.ndarray`
+        Array of time values
+    volume: `numpy.ndarray`
+        Array of volume values
+    velocity: `numpy.ndarray`
+        Array of velocity values
+    """
+
+    def __init__(self, time, volume):
+        # The time and volume are stored as lists in the keywords
+        # dictionary. The volume is normalized by the first volume
+        # element so that a unit area can be used to calculate the
+        # velocity.
+        self.time = np.array(time)
+        self.volume = np.array(volume)/volume[0]
+
+        # The velocity is calculated by the forward difference.
+        # numpy.diff returns an array one element smaller than the
+        # input array, so we append a zero to match the length of the
+        # self.time array.
+        self.velocity = np.diff(self.volume)/np.diff(self.time)
+        self.velocity = np.append(self.velocity, 0)
+
+    def __repr__(self):
+        return ('VolumeProfile(time={self.time!r}, volume={self.volume!r}, '
+                'velocity={self.velocity!r}').format(
+                    self=self,
+                )
+
+    def __call__(self, t):
+        """Return the velocity when called during a time step.
+
+        Parameters
+        ----------
+        t : `float`
+            Current simulation time.
+        """
+
+        if t < self.time[-1]:
+            # prev_time_point is the previous value in the time array
+            # after the current simulation time
+            prev_time_point = self.time[self.time <= t][-1]
+            # index is the index of the time array where
+            # prev_time_point occurs
+            index = np.where(self.time == prev_time_point)[0][0]
+            return self.velocity[index]
+        else:
+            return 0

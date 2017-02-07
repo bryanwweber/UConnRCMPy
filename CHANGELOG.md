@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Print warning when the simulated TCs don't match
 
 ### Fixed
 - Travis builds now fail appropriately
@@ -13,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Removed
+- CanSen dependency is no longer required
 
 ## [3.0.0b2] 2017-01-22
 ### Fixed
