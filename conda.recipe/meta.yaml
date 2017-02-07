@@ -26,7 +26,6 @@ requirements:
     - cantera >=2.3*
     - pyyaml >=3.12
     - matplotlib >=1.4*
-    - cansen >=1.2*
     - pyperclip >=1.5.27
 
 test:

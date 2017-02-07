@@ -17,7 +17,6 @@ install_requires = [
     'scipy>=0.18.0',
     'pyyaml>-3.12',
     'matplotlib>=1.4.0',
-    'cansen>=1.2.0',
     'pyperclip>=1.5.27'
 ]
 
