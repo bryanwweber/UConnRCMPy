@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Butterworth filter is now first order
 - Butterworth filter cutoff frequency is no longer corrected
+- End point for linear fit of filter residuals is chosen automatically
 
 ### Removed
 

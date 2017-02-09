@@ -7,6 +7,7 @@ import numpy as np
 import cantera as ct
 from scipy import signal as sig
 from scipy.interpolate import UnivariateSpline
+from scipy.stats import linregress
 
 # Local imports
 from .constants import (one_atm_in_bar,
@@ -67,14 +68,17 @@ class VoltageTrace(object):
         residuals for a sequence of cutoff frequencies. The residuals
         plotted as a function of the cutoff frequency tend to have a
         linear portion for a range of cutoff frequencies. Analysis of
-        typical data files from our RCM has shown this range to be
-        approximately from ``nyquist_freq*0.1`` to
-        ``nyquist_freq*0.5``. A line is fit to this portion of the
-        residuals curve and the intersection point of a horizontal
-        line through the y-intercept of the fit and the residuals
-        curve is used to determine the optimal cutoff frequency (see
-        Figure 2 in Yu et al. [1]_). The methodology is described by
-        Yu et al. [1]_, and the code is modifed from Duarte [2]_.
+        typical data files from our RCM has shown this range to start
+        near ``nyquist_freq*0.05``. The end point is determined by
+        looping through values from ``nyquist_freq*0.5`` to
+        ``nyquist_freq*0.1`` and finding the location where the
+        coefficient of determination of a linear fit is maximized.
+        A line is fit to this portion of the residuals curve and
+        the intersection point of a horizontal line through the
+        y-intercept of the fit and the residuals curve is used to
+        determine the optimal cutoff frequency (see Figure 2 in Yu
+        et al. [1]_). The methodology is described by Yu et al. [1]_,
+        and the code is modifed from Duarte [2]_.
 
         References
         ----------
@@ -96,15 +100,24 @@ class VoltageTrace(object):
             nyquist_freq = self.frequency/2.0
             n_freqs = 101
             freqs = np.linspace(nyquist_freq/n_freqs, nyquist_freq, n_freqs)
-            # The indices of the frequencies used for fitting the straight line
-            fit_freqs = np.arange(np.nonzero(freqs >= nyquist_freq/10)[0][0],
-                                  np.nonzero(freqs >= nyquist_freq/2)[0][0] + 1)
             resid = np.zeros(n_freqs)
             for i, fc in enumerate(freqs):
                 b, a = sig.butter(1, fc/nyquist_freq)
                 yf = sig.filtfilt(b, a, self.signal[:, 1])
                 resid[i] = np.sqrt(np.mean((yf - self.signal[:, 1])**2))
-            _, intercept = np.polyfit(freqs[fit_freqs], resid[fit_freqs], 1)
+
+            end_points = np.linspace(0.5, 0.1, 9)
+            r_sq = np.zeros(len(end_points))
+            intercepts = np.zeros(len(end_points))
+            for i, end_point in enumerate(end_points):
+                # The indices of the frequencies used for fitting the straight line
+                fit_freqs = np.arange(np.nonzero(freqs >= nyquist_freq*0.05)[0][0],
+                                      np.nonzero(freqs >= nyquist_freq*end_point)[0][0] + 1)
+                _, intercepts[i], r, _, _ = linregress(freqs[fit_freqs], resid[fit_freqs])
+                r_sq[i] = r**2
+
+            intercept = intercepts[np.argmax(r_sq)]
+
             # The UnivariateSpline with s=0 forces the spline fit through every
             # data point in the array. The residuals are shifted down by the
             # intercept so that the root of the spline is the optimum cutoff
