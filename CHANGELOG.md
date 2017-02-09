@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Copy keyword in Experiment init to avoid auto-copy to clipboard
+- Tests for Experiment
+- `kwargs` are passed through to the Experiment init in `add_experiment`
 
 ### Fixed
+- `copy=False` kwarg passed to `add_experiment` in tests fixes tests on Travis
 
 ### Changed
 - Butterworth filter is now first order
