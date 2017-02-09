@@ -310,7 +310,7 @@ class Condition(object):
                                                    cti_source=self.cti_source)
                 self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
 
-    def add_experiment(self, file_name=None):
+    def add_experiment(self, file_name=None, **kwargs):
         """Add an experiment to the Condition.
 
         Parameters
@@ -319,7 +319,7 @@ class Condition(object):
             Filename of the file with the voltage trace of the
             experiment to be added.
         """
-        exp = Experiment(file_name, cti_source=self.cti_source)
+        exp = Experiment(file_name, cti_source=self.cti_source, **kwargs)
         if exp.pressure_trace.is_reactive:
             self.reactive_experiments[exp.file_path.name] = exp
             if self.plotting:
