@@ -33,6 +33,9 @@ class Experiment(object):
         Location of the CTI file for Cantera
     cti_source : `str`, optional
         String containing the source of a CTI file for Cantera
+    copy : `bool`, optional
+        Boolean indicating whether values should be copied to
+        the clipboard.
 
     Attributes
     ----------
@@ -64,7 +67,7 @@ class Experiment(object):
         The temperature estimated at the end of compression
     """
 
-    def __init__(self, file_path=None, cti_file=None, cti_source=None):
+    def __init__(self, file_path=None, cti_file=None, cti_source=None, copy=True):
         self.resolve_file_path(file_path)
         self.experiment_parameters = self.parse_file_name(self.file_path)
         self.voltage_trace = VoltageTrace(self.file_path)
@@ -86,7 +89,8 @@ class Experiment(object):
         else:
             self.cti_source = cti_source
         self.process_pressure_trace()
-        self.copy_to_clipboard()
+        if copy:
+            self.copy_to_clipboard()
 
     def __repr__(self):
         return 'Experiment(file_path={self.file_path!r})'.format(self=self)
