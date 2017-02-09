@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Changed
+- Butterworth filter is now first order
+- Butterworth filter cutoff frequency is no longer corrected
 
 ### Removed
 
