@@ -357,19 +357,22 @@ for the <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.filt
 <code class="descname">filter_frequency</code><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filter_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>The cutoff frequency for the low-pass filter</p>
 <p>When setting the frequency, if the <code class="docutils literal"><span class="pre">value</span></code> is <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>,
-determines the optimal cutoff frequency for a second-order
+determines the optimal cutoff frequency for a first-order
 Butterworth low-pass filter by analyzing the root-mean-squared
 residuals for a sequence of cutoff frequencies. The residuals
 plotted as a function of the cutoff frequency tend to have a
 linear portion for a range of cutoff frequencies. Analysis of
-typical data files from our RCM has shown this range to be
-approximately from <code class="docutils literal"><span class="pre">nyquist_freq*0.1</span></code> to
-<code class="docutils literal"><span class="pre">nyquist_freq*0.5</span></code>. A line is fit to this portion of the
-residuals curve and the intersection point of a horizontal
-line through the y-intercept of the fit and the residuals
-curve is used to determine the optimal cutoff frequency (see
-Figure 2 in Yu et al. <a class="footnote-reference" href="#id4" id="id1">[1]</a>). The methodology is described by
-Yu et al. <a class="footnote-reference" href="#id4" id="id2">[1]</a>, and the code is modifed from Duarte <a class="footnote-reference" href="#id5" id="id3">[2]</a>.</p>
+typical data files from our RCM has shown this range to start
+near <code class="docutils literal"><span class="pre">nyquist_freq*0.05</span></code>. The end point is determined by
+looping through values from <code class="docutils literal"><span class="pre">nyquist_freq*0.5</span></code> to
+<code class="docutils literal"><span class="pre">nyquist_freq*0.1</span></code> and finding the location where the
+coefficient of determination of a linear fit is maximized.
+A line is fit to this portion of the residuals curve and
+the intersection point of a horizontal line through the
+y-intercept of the fit and the residuals curve is used to
+determine the optimal cutoff frequency (see Figure 2 in Yu
+et al. <a class="footnote-reference" href="#id4" id="id1">[1]</a>). The methodology is described by Yu et al. <a class="footnote-reference" href="#id4" id="id2">[1]</a>,
+and the code is modifed from Duarte <a class="footnote-reference" href="#id5" id="id3">[2]</a>.</p>
 <p class="rubric">References</p>
 <table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -394,7 +397,7 @@ DOI: <a class="reference external" href="http://dx.doi.org/10.1123/jab.15.3.318"
 <dt id="uconnrcmpy.traces.VoltageTrace.filtering">
 <code class="descname">filtering</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filtering" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the input using a low-pass filter.</p>
-<p>The filter is a second-order Butterworth filter, with the
+<p>The filter is a first-order Butterworth filter, with the
 cutoff frequency taken from the instance attribute
 <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.filter_frequency" title="uconnrcmpy.traces.VoltageTrace.filter_frequency"><code class="xref py py-obj docutils literal"><span class="pre">filter_frequency</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">

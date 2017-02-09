@@ -108,7 +108,7 @@ following names:<ul class="simple">
 
 <dl class="class">
 <dt id="uconnrcmpy.experiments.Experiment">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.experiments.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>file_path=None</em>, <em>cti_file=None</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.experiments.Experiment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.experiments.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>file_path=None</em>, <em>cti_file=None</em>, <em>cti_source=None</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.experiments.Experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains all the information of a single RCM experiment.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -121,6 +121,8 @@ filename is read from the standard input as a string and
 resolved into a <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object.</li>
 <li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) &#8211; Location of the CTI file for Cantera</li>
 <li><strong>cti_source</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; String containing the source of a CTI file for Cantera</li>
+<li><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) &#8211; Boolean indicating whether values should be copied to
+the clipboard.</li>
 </ul>
 </td>
 </tr>
