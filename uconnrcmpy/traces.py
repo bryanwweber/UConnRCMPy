@@ -62,7 +62,7 @@ class VoltageTrace(object):
         """The cutoff frequency for the low-pass filter
 
         When setting the frequency, if the ``value`` is `None`,
-        determines the optimal cutoff frequency for a second-order
+        determines the optimal cutoff frequency for a first-order
         Butterworth low-pass filter by analyzing the root-mean-squared
         residuals for a sequence of cutoff frequencies. The residuals
         plotted as a function of the cutoff frequency tend to have a
@@ -101,7 +101,7 @@ class VoltageTrace(object):
                                   np.nonzero(freqs >= nyquist_freq/2)[0][0] + 1)
             resid = np.zeros(n_freqs)
             for i, fc in enumerate(freqs):
-                b, a = sig.butter(2, fc/nyquist_freq)
+                b, a = sig.butter(1, fc/nyquist_freq)
                 yf = sig.filtfilt(b, a, self.signal[:, 1])
                 resid[i] = np.sqrt(np.mean((yf - self.signal[:, 1])**2))
             _, intercept = np.polyfit(freqs[fit_freqs], resid[fit_freqs], 1)
@@ -152,7 +152,7 @@ class VoltageTrace(object):
     def filtering(self, data):
         """Filter the input using a low-pass filter.
 
-        The filter is a second-order Butterworth filter, with the
+        The filter is a first-order Butterworth filter, with the
         cutoff frequency taken from the instance attribute
         `~VoltageTrace.filter_frequency`.
 
@@ -167,7 +167,7 @@ class VoltageTrace(object):
             1-D array of the same length as the input data
         """
         nyquist_freq = self.frequency/2.0
-        b, a = sig.butter(2, (self.filter_frequency)/nyquist_freq)
+        b, a = sig.butter(1, (self.filter_frequency)/nyquist_freq)
         return sig.filtfilt(b, a, data, padtype='odd', padlen=101, method='pad')
 
 
