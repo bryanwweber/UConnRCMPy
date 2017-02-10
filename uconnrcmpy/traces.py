@@ -237,6 +237,8 @@ class ExperimentalPressureTrace(object):
 
         self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
         self.derivative = self.calculate_derivative(self.pressure, self.time)
+        # Smooth the derivative with a moving average 151 points wide
+        self.derivative = sig.fftconvolve(self.derivative, np.ones(151)/151, mode='same')
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
     def __repr__(self):
