@@ -19,9 +19,9 @@ def files():
 def test_create_reactive_experiment(files):
     exp = Experiment(files['reacfile'],
                      cti_file=files['cti_file'], copy=False)
-    assert np.isclose(exp.ignition_delay, 66.22)
+    assert np.isclose(exp.ignition_delay, 65.81)
     assert np.isclose(exp.T_EOC, 765.374)
-    assert np.isclose(exp.first_stage, 64.04)
+    assert np.isclose(exp.first_stage, 63.80)
 
 
 def test_create_nonreactive_experiment(files):
