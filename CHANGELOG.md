@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `copy=False` kwarg passed to `add_experiment` in tests fixes tests on Travis
+- Load CTI file instead of from source string to avoid [Cantera/cantera#416](https://github.com/Cantera/cantera/issues/416)
 
 ### Changed
 - Butterworth filter is now first order

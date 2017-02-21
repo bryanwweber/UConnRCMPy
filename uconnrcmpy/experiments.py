@@ -83,7 +83,7 @@ class Experiment(object):
         elif cti_source is not None and cti_file is not None:
             raise ValueError('Only one of cti_file or cti_source can be specified')
         elif cti_source is None:
-            cti_file = Path(cti_file).resolve()
+            self.cti_file = Path(cti_file).resolve()
             with open(str(cti_file), 'r') as in_file:
                 self.cti_source = in_file.read()
         else:
@@ -271,7 +271,7 @@ class Experiment(object):
         temperature_trace = TemperatureFromPressure(
             tempp,
             self.experiment_parameters['Tin'],
-            cti_source=self.cti_source,
+            chem_file=str(self.cti_file),
         )
         return np.amax(temperature_trace.temperature)
 

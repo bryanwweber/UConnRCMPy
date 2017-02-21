@@ -102,11 +102,13 @@ class Condition(object):
             except FileNotFoundError:
                 cti_file = Path(input('Input the name of the CTI file: ')).resolve()
 
+        self.cti_file = cti_file
+
         with open(str(cti_file), 'r') as in_file:
             self.cti_source = in_file.read()
 
         ct.suppress_thermo_warnings(False)
-        ct.Solution(source=self.cti_source)
+        ct.Solution(self.cti_file)
         ct.suppress_thermo_warnings()
 
     def __repr__(self):
@@ -291,7 +293,7 @@ class Condition(object):
             if self.reactive_file in self.reactive_experiments:
                 self.reactive_case = self.reactive_experiments[self.reactive_file]
             else:
-                self.reactive_case = Experiment(self.reactive_file, cti_source=self.cti_source)
+                self.reactive_case = Experiment(self.reactive_file, cti_file=self.cti_file)
                 self.reactive_experiments[self.reactive_file] = self.reactive_case
 
     def add_nonreactive_case(self):
@@ -306,8 +308,7 @@ class Condition(object):
             if self.nonreactive_file in self.nonreactive_experiments:
                 self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
             else:
-                self.nonreactive_case = Experiment(self.nonreactive_file,
-                                                   cti_source=self.cti_source)
+                self.nonreactive_case = Experiment(self.nonreactive_file, cti_file=self.cti_file)
                 self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
 
     def add_experiment(self, file_name=None, **kwargs):
@@ -319,7 +320,7 @@ class Condition(object):
             Filename of the file with the voltage trace of the
             experiment to be added.
         """
-        exp = Experiment(file_name, cti_source=self.cti_source, **kwargs)
+        exp = Experiment(file_name, cti_file=self.cti_file, **kwargs)
         if exp.pressure_trace.is_reactive:
             self.reactive_experiments[exp.file_path.name] = exp
             if self.plotting:
@@ -582,19 +583,19 @@ class Condition(object):
             stroke_pressure,
             1.0,
             self.reactive_case.experiment_parameters['Tin'],
-            cti_source=self.cti_source,
+            chem_file=str(self.cti_file),
         ).volume
         stroke_temperature = TemperatureFromPressure(
             stroke_pressure,
             self.reactive_case.experiment_parameters['Tin'],
-            cti_source=self.cti_source,
+            chem_file=str(self.cti_file),
         ).temperature
 
         post_volume = VolumeFromPressure(
             post_pressure,
             stroke_volume[-1],
             stroke_temperature[-1],
-            cti_source=self.cti_source,
+            chem_file=str(self.cti_file),
         ).volume
 
         # The post_volume array is indexed from the second element to
@@ -606,7 +607,7 @@ class Condition(object):
             volume[::5],
             stroke_pressure[0]*1E5,
             self.reactive_case.experiment_parameters['Tin'],
-            cti_source=self.cti_source,
+            chem_file=str(self.cti_file),
         ).pressure
 
         copy('{:.4f}'.format(stroke_pressure[0]))
@@ -727,7 +728,7 @@ class Condition(object):
                     is_reactive=False,
                     end_temp=end_temp,
                     end_time=end_time,
-                    cti_source=self.cti_source,
+                    chem_file=str(self.cti_file),
                 )
             else:
                 if process_choice('nonreactive'):
@@ -738,7 +739,7 @@ class Condition(object):
                         is_reactive=False,
                         end_temp=end_temp,
                         end_time=end_time,
-                        cti_source=self.cti_source,
+                        chem_file=str(self.cti_file),
                     )
                 else:
                     print('Nothing was done')
@@ -752,7 +753,7 @@ class Condition(object):
                     is_reactive=True,
                     end_temp=end_temp,
                     end_time=end_time,
-                    cti_source=self.cti_source,
+                    chem_file=str(self.cti_file),
                 )
             else:
                 if process_choice('reactive'):
@@ -763,7 +764,7 @@ class Condition(object):
                         is_reactive=True,
                         end_temp=end_temp,
                         end_time=end_time,
-                        cti_source=self.cti_source,
+                        chem_file=str(self.cti_file),
                     )
                 else:
                     print('Nothing was done')
@@ -878,7 +879,7 @@ class AltCondition(Condition):
             Filename of the file with the voltage trace of the
             experiment to be added.
         """
-        exp = AltExperiment(file_name, cti_source=self.cti_source)
+        exp = AltExperiment(file_name, cti_file=self.cti_file)
         if exp.pressure_trace.is_reactive:
             self.reactive_experiments[exp.file_path.name] = exp
             if self.plotting:
@@ -912,8 +913,6 @@ def process_folder(cti_file, path='.', plot=False):
     result = []
 
     cti_file = Path(cti_file).resolve()
-    with open(str(cti_file), 'r') as in_file:
-        cti_source = in_file.read()
 
     if plot:
         fig = plt.figure()
@@ -921,12 +920,12 @@ def process_folder(cti_file, path='.', plot=False):
 
     for f in p.glob('[0-3]*.txt'):
         print(f)
-        case = Experiment(f.resolve(), cti_source=cti_source)
+        case = Experiment(f.resolve(), cti_file=cti_file, copy=False)
         result.append('\t'.join(map(str, [
             case.experiment_parameters['time_of_day'], case.experiment_parameters['pin'],
             case.experiment_parameters['Tin'], case.pressure_trace.p_EOC, case.ignition_delay,
             case.first_stage, case.T_EOC, case.experiment_parameters['spacers'],
-            case.experiment_parameters['shims']])))
+            case.experiment_parameters['shims'], case.voltage_trace.filter_frequency])))
         if plot:
             ax.plot(case.pressure_trace.zeroed_time, case.pressure_trace.pressure,
                     label=case.experiment_parameters['date'])
@@ -955,8 +954,6 @@ def process_alt_folder(cti_file, path='.', plot=False):
     result = []
 
     cti_file = Path(cti_file).resolve()
-    with open(str(cti_file), 'r') as in_file:
-        cti_source = in_file.read()
 
     if plot:
         fig = plt.figure()
@@ -966,18 +963,20 @@ def process_alt_folder(cti_file, path='.', plot=False):
         if 'NR' in f.name:
             continue
         print(f)
-        case = AltExperiment(f.resolve(), cti_source=cti_source)
+        case = AltExperiment(f.resolve(), cti_file=cti_file, copy=False)
         result.append('\t'.join(map(str, [
             case.experiment_parameters['date_year'], case.experiment_parameters['time_of_day'],
             case.experiment_parameters['pin'], case.experiment_parameters['Tin'],
             case.pressure_trace.p_EOC, case.ignition_delay, case.first_stage, case.T_EOC,
-            case.experiment_parameters['spacers'], case.experiment_parameters['shims'], f.name])))
+            case.experiment_parameters['spacers'], case.experiment_parameters['shims'],
+            case.pressure_trace.filter_frequency, f.name])))
         if plot:
             ax.plot(case.pressure_trace.zeroed_time, case.pressure_trace.pressure,
                     label=case.experiment_parameters['date'])
 
     copy('\n'.join(sorted(result)))
     print('Finished')
+
 
 if __name__ == '__main__':
     process_folder()
