@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Copy keyword in Experiment init to avoid auto-copy to clipboard
-- Tests for Experiment
+- Regression tests for Experiment, including ignition delay, p_EOC, and T_EOC estimate
 - `kwargs` are passed through to the Experiment init in `add_experiment`
 
 ### Fixed
