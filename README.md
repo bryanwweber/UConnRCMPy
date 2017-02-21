@@ -8,4 +8,4 @@ AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/xxs56c4iq
 Codecov: [![codecov](https://codecov.io/gh/bryanwweber/UConnRCMPy/branch/master/graph/badge.svg)](https://codecov.io/gh/bryanwweber/UConnRCMPy)
 
 ## DOI
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.269678.svg)](https://doi.org/10.5281/zenodo.269678)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.321426.svg)](https://doi.org/10.5281/zenodo.321426)

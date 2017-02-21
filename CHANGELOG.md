@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+## [3.0.1] 2017-02-21
+### Added
 - Copy keyword in Experiment init to avoid auto-copy to clipboard
 - Regression tests for Experiment, including ignition delay, p_EOC, and T_EOC estimate
 - `kwargs` are passed through to the Experiment init in `add_experiment`
@@ -19,8 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Butterworth filter cutoff frequency is no longer corrected
 - End point for linear fit of filter residuals is chosen automatically
 - Derivative is smoothed with moving average
-
-### Removed
 
 ## [3.0.0] 2017-02-07
 ### Added
@@ -185,7 +192,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Basic functionality of class-based interface to process data
 
-[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...v3.0.0
 [2.1.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.1...v2.0.2
