@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - DOI badges point to latest DOI from Zenodo
+- Relicensed to BSD 3-Clause
 
 ### Removed
 

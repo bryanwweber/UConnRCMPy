@@ -40,6 +40,12 @@ test:
     - pytest -vv --pyargs uconnrcmpy
 
 about:
-  home: https://github.com/bryanwweber/UConnRCMPy
-  license: MIT
+  home: data['url']
+  license: BSD 3-Clause
   license_file: LICENSE.md
+  license_family: BSD
+
+  summary: data['description']
+  description: data['long_description']
+  doc_url: https://bryanwweber.github.io/UConnRCMPy
+  dev_url: data['url']
