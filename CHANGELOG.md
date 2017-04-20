@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+## [3.0.2] - 2017-04-19
+### Added
 - CITATION file
 - PyPI packages
 
@@ -16,9 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - DOI badges point to latest DOI from Zenodo
 - Relicensed to BSD 3-Clause
 
-### Removed
-
-## [3.0.1] 2017-02-21
+## [3.0.1] - 2017-02-21
 ### Added
 - Copy keyword in Experiment init to avoid auto-copy to clipboard
 - Regression tests for Experiment, including ignition delay, p_EOC, and T_EOC estimate
@@ -34,7 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - End point for linear fit of filter residuals is chosen automatically
 - Derivative is smoothed with moving average
 
-## [3.0.0] 2017-02-07
+## [3.0.0] - 2017-02-07
 ### Added
 - Print warning when the simulated TCs don't match
 - Python 3.6 builds on Travis
@@ -197,7 +204,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Basic functionality of class-based interface to process data
 
-[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.1...HEAD
+[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.2...HEAD
+[3.0.2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.1.0...v3.0.0
 [2.1.0]: https://github.com/bryanwweber/UConnRCMPy/compare/v2.0.2...v2.1.0
