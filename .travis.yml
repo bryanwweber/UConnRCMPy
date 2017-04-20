@@ -39,7 +39,7 @@ install:
   - conda config --append channels cantera
   - conda config --append channels bryanwweber
   - conda config --append channels conda-forge
-  - conda update -q --all
+  - conda update -q conda
   - sed -i -e "s/\${PYTHON}/"${PYTHON}"/" environment.yml
   - if [[ -z "$TRAVIS_TAG" ]]; then
       conda env create -qf environment.yml;
@@ -54,14 +54,14 @@ script:
   - set -e
   - if [[ -z "$TRAVIS_TAG" ]]; then
       python setup.py test;
-      if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.5" ]]; then
+      if [[ "$TRAVIS_OS_NAME" == "linux" && "$PYTHON" == "3.6" ]]; then
         git checkout -- environment.yml;
         conda install -q sphinx doctr;
         python setup.py install;
         cd docs;
         make html SPHINXOPTS="-W";
         cd ..;
-        doctr deploy --gh-pages-docs .;
+        doctr deploy .;
       fi
     else
       conda build conda.recipe --python=${PYTHON};
