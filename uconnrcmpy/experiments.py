@@ -305,7 +305,7 @@ class AltExperiment(Experiment):
     """Contains all the information of a single alternate RCM experiment.
     See the documentation for `Experiment` for attribute descriptions.
     """
-    def __init__(self, file_path=None):
+    def __init__(self, file_path=None, cti_file=None, cti_source=None, copy=True):
         self.resolve_file_path(file_path)
         self.experiment_parameters = self.parse_file_name(self.file_path)
         self.pressure_trace = AltExperimentalPressureTrace(self.file_path,
@@ -313,11 +313,45 @@ class AltExperiment(Experiment):
         self.compression_time = None
         self.output_end_time = None
         self.offset_points = None
+        if cti_source is None and cti_file is None:
+            raise ValueError('One of cti_file or cti_source must be specified')
+        elif cti_source is not None and cti_file is not None:
+            raise ValueError('Only one of cti_file or cti_source can be specified')
+        elif cti_source is None:
+            self.cti_file = Path(cti_file).resolve()
+            with open(str(cti_file), 'r') as in_file:
+                self.cti_source = in_file.read()
+        else:
+            self.cti_source = cti_source
         self.process_pressure_trace()
-        self.copy_to_clipboard()
+        if copy:
+            self.copy_to_clipboard()
 
     def __repr__(self):
         return 'AltExperiment(file_path={self.file_path!r})'.format(self=self)
+
+    def copy_to_clipboard(self):
+        """Copy experimental information to the clipboard
+
+        The information is intended to be pasted to a spreadsheet.
+        The information is ordered by columns in the following way:
+
+        A. 4-digit time of day
+        B. The initial pressure of the experiment, in Torr
+        C. The initial temperature of the experiment, in K
+        D. The end of compression pressure
+        E. The overall ignition delay
+        F. The first stage ignition delay
+        G. The estimated end of compression temperature
+        H. The inches of spacers for the experiment
+        I. The millimeters of shims for the experiment
+        J. The cutoff frequency that was used to filter the voltage trace
+        """
+        copy('\t'.join(map(str, [
+            self.experiment_parameters['time_of_day'], self.experiment_parameters['pin'],
+            self.experiment_parameters['Tin'], self.pressure_trace.p_EOC, self.ignition_delay,
+            self.first_stage, self.T_EOC, self.experiment_parameters['spacers'],
+            self.experiment_parameters['shims'], self.pressure_trace.filter_frequency])))
 
     def parse_file_name(self, file_path):
         """Parse the file name of an experimental trace, where the name is in an alternate format.

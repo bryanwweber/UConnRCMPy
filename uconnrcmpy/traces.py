@@ -361,6 +361,7 @@ class AltExperimentalPressureTrace(ExperimentalPressureTrace):
 
         self.time = pressure_trace.time
         self.frequency = pressure_trace.frequency
+        self.filter_frequency = pressure_trace.filter_frequency
 
         self.pressure = pressure_trace.filtered_voltage
         pressure_start = np.mean(self.pressure[20:500])
