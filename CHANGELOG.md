@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Fixed
+- Comparing T_EOC between reactive and non-reactive caused a `ValueError`
 
 ### Changed
 
