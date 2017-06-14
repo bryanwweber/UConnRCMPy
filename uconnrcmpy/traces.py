@@ -280,6 +280,12 @@ class ExperimentalPressureTrace(object):
         linear_fit = np.polyfit(time, fit_pres, 1)
         return linear_fit
 
+    def change_EOC_time(self, time, is_reactive=True):
+        self.EOC_idx = np.searchsorted(self.zeroed_time, time, 'left')
+        self.p_EOC = self.pressure[self.p_EOC_idx]
+        self.is_reactive = is_reactive
+        self.zeroed_time = self.time - self.time[self.EOC_idx]
+
     def find_EOC(self):
         """Find the index and pressure at the end of compression.
 
