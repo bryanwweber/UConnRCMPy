@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Comparing T_EOC between reactive and non-reactive caused a `ValueError`
 - Add `copy` argument to `AltExperiment` class initializer
+- Fix how adding cases is handled in `AltCondition`
 
 ### Changed
 

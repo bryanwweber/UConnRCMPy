@@ -889,6 +889,36 @@ class AltCondition(Condition):
             if self.plotting:
                 self.plot_nonreactive_figure(exp)
 
+    def add_reactive_case(self):
+        """Add the `~AltCondition.reactive_case` to the `AltCondition` if
+        it hasn't been set yet. If the `~AltCondition.reactive_case`
+        exists but the name of the `~AltCondition.reactive_file` is
+        different than the name of the existing case, the case is
+        replaced. If neither of these is true, nothing is done.
+        """
+        if (self.reactive_case is None or
+                self.reactive_case.file_path.name != self.reactive_file.name):
+            if self.reactive_file in self.reactive_experiments:
+                self.reactive_case = self.reactive_experiments[self.reactive_file]
+            else:
+                self.reactive_case = AltExperiment(self.reactive_file, cti_file=self.cti_file)
+                self.reactive_experiments[self.reactive_file] = self.reactive_case
+
+    def add_nonreactive_case(self):
+        """Add the `~AltCondition.nonreactive_case` to the `AltCondition` if
+        it hasn't been set yet. If the `~AltCondition.nonreactive_case`
+        exists but the name of the `~AltCondition.nonreactive_file` is
+        different than the name of the existing case, the case is
+        replaced. If neither of these is true, nothing is done.
+        """
+        if (self.nonreactive_case is None or
+                self.nonreactive_case.file_path.name != self.nonreactive_file.name):
+            if self.nonreactive_file in self.nonreactive_experiments:
+                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
+            else:
+                self.nonreactive_case = AltExperiment(self.nonreactive_file, cti_file=self.cti_file)
+                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
+
     def __repr__(self):
         return 'AltCondition(plotting={!r})'.format(self.plotting)
 
