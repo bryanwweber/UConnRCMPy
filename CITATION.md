@@ -12,7 +12,7 @@ A BibTeX entry for LaTeX users is
 @software{uconnrcmpy,
   title = {{{UConnRCMPy}}},
   url = {https://github.com/bryanwweber/UConnRCMPy},
-  version = {3.0.2},
+  version = {3.0.3},
   author = {Weber, Bryan William and Fang, Ruozhou and Sung, Chih-Jen},
   date = {2017-04},
   doi = {10.5281/zenodo.594918}
