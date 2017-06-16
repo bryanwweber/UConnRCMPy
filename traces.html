@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Traces &#8212; UConnRCMPy 3.0.2 documentation</title>
+    <title>Traces &#8212; UConnRCMPy 3.0.3 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.0.2',
+        VERSION:     '3.0.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Constants" href="constants.html" />
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -65,10 +65,10 @@ filtering.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>voltage_trace</strong> (<a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace" title="uconnrcmpy.traces.VoltageTrace"><code class="xref py py-obj docutils literal"><span class="pre">VoltageTrace</span></code></a>) &#8211; Instance of class containing the voltage trace of the
+<li><strong>voltage_trace</strong> (<a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace" title="uconnrcmpy.traces.VoltageTrace"><code class="xref py py-obj docutils literal"><span class="pre">VoltageTrace</span></code></a>) – Instance of class containing the voltage trace of the
 experiment.</li>
-<li><strong>initial_pressure_in_torr</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The initial pressure of the experiment, in units of Torr</li>
-<li><strong>factor</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The factor set on the charge amplifier</li>
+<li><strong>initial_pressure_in_torr</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The initial pressure of the experiment, in units of Torr</li>
+<li><strong>factor</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The factor set on the charge amplifier</li>
 </ul>
 </td>
 </tr>
@@ -77,54 +77,54 @@ experiment.</li>
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.pressure">
 <code class="descname">pressure</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.pressure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; The pressure trace computed from the filtered voltage trace</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – The pressure trace computed from the filtered voltage trace</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.time">
 <code class="descname">time</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; A 1-D array containting the time. Copied from
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – A 1-D array containting the time. Copied from
 <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.time" title="uconnrcmpy.traces.VoltageTrace.time"><code class="xref py py-obj docutils literal"><span class="pre">VoltageTrace.time</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.frequency">
 <code class="descname">frequency</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.frequency" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> &#8211; Integer sampling frequency of the experiment. Copied from
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> – Integer sampling frequency of the experiment. Copied from
 <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.frequency" title="uconnrcmpy.traces.VoltageTrace.frequency"><code class="xref py py-obj docutils literal"><span class="pre">VoltageTrace.frequency</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.p_EOC">
 <code class="descname">p_EOC</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.p_EOC" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; Pressure at the end of compression</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – Pressure at the end of compression</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.EOC_idx">
 <code class="descname">EOC_idx</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.EOC_idx" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> &#8211; Integer index in the <a class="reference internal" href="#uconnrcmpy.traces.ExperimentalPressureTrace.pressure" title="uconnrcmpy.traces.ExperimentalPressureTrace.pressure"><code class="xref py py-obj docutils literal"><span class="pre">pressure</span></code></a> and <a class="reference internal" href="#uconnrcmpy.traces.ExperimentalPressureTrace.time" title="uconnrcmpy.traces.ExperimentalPressureTrace.time"><code class="xref py py-obj docutils literal"><span class="pre">time</span></code></a> arrays
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> – Integer index in the <a class="reference internal" href="#uconnrcmpy.traces.ExperimentalPressureTrace.pressure" title="uconnrcmpy.traces.ExperimentalPressureTrace.pressure"><code class="xref py py-obj docutils literal"><span class="pre">pressure</span></code></a> and <a class="reference internal" href="#uconnrcmpy.traces.ExperimentalPressureTrace.time" title="uconnrcmpy.traces.ExperimentalPressureTrace.time"><code class="xref py py-obj docutils literal"><span class="pre">time</span></code></a> arrays
 of the end of compression.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.is_reactive">
 <code class="descname">is_reactive</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.is_reactive" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a> &#8211; Boolean if the pressure trace represents a reactive or
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a> – Boolean if the pressure trace represents a reactive or
 or non-reactive experiment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.derivative">
 <code class="descname">derivative</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.derivative" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; 1-D array containing the raw derivative computed from the
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – 1-D array containing the raw derivative computed from the
 <a class="reference internal" href="#uconnrcmpy.traces.ExperimentalPressureTrace.pressure" title="uconnrcmpy.traces.ExperimentalPressureTrace.pressure"><code class="xref py py-obj docutils literal"><span class="pre">pressure</span></code></a> trace.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.ExperimentalPressureTrace.zeroed_time">
 <code class="descname">zeroed_time</code><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.zeroed_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; 1-D array containing the time, with the zero point set at
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – 1-D array containing the time, with the zero point set at
 the end of compression.</p>
 </dd></dl>
 
@@ -137,15 +137,15 @@ the end of compression.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Dependent variable (e.g., the pressure)</li>
-<li><strong>indep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Independent variable (e.g., the time)</li>
+<li><strong>dep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – Dependent variable (e.g., the pressure)</li>
+<li><strong>indep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – Independent variable (e.g., the time)</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">1-D array containing the derivative</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -154,6 +154,24 @@ the end of compression.</p>
 <p>The derivative is calculated by a second-order forward method
 and any places where the derivative is infinite are set to
 zero.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="uconnrcmpy.traces.ExperimentalPressureTrace.change_EOC_time">
+<code class="descname">change_EOC_time</code><span class="sig-paren">(</span><em>time</em>, <em>is_reactive=True</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.ExperimentalPressureTrace.change_EOC_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the EOC time for an experiment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The new value of the EOC time</li>
+<li><strong>is_reactive</strong> (<code class="xref py py-obj docutils literal"><span class="pre">boolean</span></code>) – The experiment is reactive or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -194,12 +212,12 @@ the EOC pressure and the index to the max pressure point.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>comptime</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Desired compression time, computed from the EOC, to when
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>comptime</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Desired compression time, computed from the EOC, to when
 the pressure fit should start</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Numpy object containing the parameters of the fit</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html#numpy.polyfit" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.polyfit</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html#numpy.polyfit" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.polyfit</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -211,12 +229,12 @@ the pressure fit should start</td>
 <dd><p>Save a text file output of the pressure trace.</p>
 <p>Save a text file with the time in the first column and the filtered
 pressure in the second column. The keyword arguments are the same as
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.savetxt.html#numpy.savetxt" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.savetxt</span></code></a>.</p>
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.savetxt.html#numpy.savetxt" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.savetxt</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) &#8211; Filename of the output file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – Filename of the output file</td>
 </tr>
 </tbody>
 </table>
@@ -226,7 +244,7 @@ pressure in the second column. The keyword arguments are the same as
 
 <dl class="class">
 <dt id="uconnrcmpy.traces.PressureFromVolume">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">PressureFromVolume</code><span class="sig-paren">(</span><em>volume</em>, <em>p_initial</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.PressureFromVolume" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">PressureFromVolume</code><span class="sig-paren">(</span><em>volume</em>, <em>p_initial</em>, <em>T_initial</em>, <em>chem_file=’species.cti’</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.PressureFromVolume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a pressure trace given a volume trace.</p>
 <p>Using Cantera to evaluate the thermodynamic properties, compute a
 pressure trace from a volume trace.</p>
@@ -235,11 +253,11 @@ pressure trace from a volume trace.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; 1-D array containing the reactor volume</li>
-<li><strong>p_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; Initial pressure of the experiment, in bar</li>
-<li><strong>T_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Initial temperature of the experiment, in Kelvin.
+<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – 1-D array containing the reactor volume</li>
+<li><strong>p_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – Initial pressure of the experiment, in bar</li>
+<li><strong>T_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Initial temperature of the experiment, in Kelvin.
 Optional for Cantera versions greater than 2.2.0.</li>
-<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; Filename of the chemistry file to be used</li>
+<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – Filename of the chemistry file to be used</li>
 </ul>
 </td>
 </tr>
@@ -248,7 +266,7 @@ Optional for Cantera versions greater than 2.2.0.</li>
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.PressureFromVolume.pressure">
 <code class="descname">pressure</code><a class="headerlink" href="#uconnrcmpy.traces.PressureFromVolume.pressure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; The pressure trace</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – The pressure trace</p>
 </dd></dl>
 
 <p class="rubric">Notes</p>
@@ -259,7 +277,7 @@ process using the given volume trace.</p>
 
 <dl class="class">
 <dt id="uconnrcmpy.traces.TemperatureFromPressure">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">TemperatureFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.TemperatureFromPressure" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">TemperatureFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>T_initial</em>, <em>chem_file=’species.cti’</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.TemperatureFromPressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a temperature trace given a pressure trace.</p>
 <p>Using Cantera to evaluate the thermodynamic properties, compute a
 pressure trace from a volume trace.</p>
@@ -268,10 +286,10 @@ pressure trace from a volume trace.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>pressure</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; 1-D array containing the pressure</li>
-<li><strong>T_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; Initial temperature of the experiment, in Kelvin.
+<li><strong>pressure</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – 1-D array containing the pressure</li>
+<li><strong>T_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – Initial temperature of the experiment, in Kelvin.
 Optional for Cantera versions greater than 2.2.0.</li>
-<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; Filename of the chemistry file to be used</li>
+<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – Filename of the chemistry file to be used</li>
 </ul>
 </td>
 </tr>
@@ -280,7 +298,7 @@ Optional for Cantera versions greater than 2.2.0.</li>
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.TemperatureFromPressure.temperature">
 <code class="descname">temperature</code><a class="headerlink" href="#uconnrcmpy.traces.TemperatureFromPressure.temperature" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; The temperature trace</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – The temperature trace</p>
 </dd></dl>
 
 <p class="rubric">Notes</p>
@@ -297,14 +315,14 @@ process using the given pressure trace.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) &#8211; <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object associated with the particular experiment</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object associated with the particular experiment</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.VoltageTrace.signal">
 <code class="descname">signal</code><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.signal" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; 2-D array containing the raw signal from the experimental
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – 2-D array containing the raw signal from the experimental
 text file. First column is the time, second column is the
 voltage.</p>
 </dd></dl>
@@ -312,19 +330,19 @@ voltage.</p>
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.VoltageTrace.time">
 <code class="descname">time</code><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; The time loaded from the signal trace</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – The time loaded from the signal trace</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.VoltageTrace.frequency">
 <code class="descname">frequency</code><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.frequency" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> &#8211; The sampling frequency of the pressure trace</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> – The sampling frequency of the pressure trace</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.VoltageTrace.filtered_voltage">
 <code class="descname">filtered_voltage</code><a class="headerlink" href="#uconnrcmpy.traces.VoltageTrace.filtered_voltage" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; The voltage trace after filtering</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – The voltage trace after filtering</p>
 </dd></dl>
 
 <div class="admonition note">
@@ -344,7 +362,7 @@ attribute and then runs the filtering.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; Value for the filter frequency. If <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, an optimal frequency
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – Value for the filter frequency. If <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, an optimal frequency
 will be estimated by the procedure detailed in the documentation
 for the <a class="reference internal" href="#uconnrcmpy.traces.VoltageTrace.filter_frequency" title="uconnrcmpy.traces.VoltageTrace.filter_frequency"><code class="xref py py-obj docutils literal"><span class="pre">filter_frequency</span></code></a> attribute.</td>
 </tr>
@@ -377,9 +395,9 @@ and the code is modifed from Duarte <a class="footnote-reference" href="#id5" id
 <table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> B. Yu, D. Gabriel, L. Noble, and K.N. An, &#8220;Estimate of
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> B. Yu, D. Gabriel, L. Noble, and K.N. An, “Estimate of
 the Optimum Cutoff Frequency for the Butterworth Low-Pass
-Digital Filter&#8221;, Journal of Applied Biomechanics, Vol. 15,
+Digital Filter”, Journal of Applied Biomechanics, Vol. 15,
 pp. 318-329, 1999.
 DOI: <a class="reference external" href="http://dx.doi.org/10.1123/jab.15.3.318">10.1123/jab.15.3.318</a></td></tr>
 </tbody>
@@ -387,7 +405,7 @@ DOI: <a class="reference external" href="http://dx.doi.org/10.1123/jab.15.3.318"
 <table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>M. Duarte, &#8220;Residual Analysis&#8221;, v.3 2014/06/13,
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>M. Duarte, “Residual Analysis”, v.3 2014/06/13,
 <a class="reference external" href="http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb">http://nbviewer.ipython.org/github/demotu/BMC/blob/master/notebooks/ResidualAnalysis.ipynb</a></td></tr>
 </tbody>
 </table>
@@ -404,11 +422,11 @@ cutoff frequency taken from the instance attribute
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; The data that should be filtered</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – The data that should be filtered</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1-D array of the same length as the input data</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -420,12 +438,12 @@ cutoff frequency taken from the instance attribute
 <dd><p>Save a text file output of the voltage trace.</p>
 <p>Save a text file with the time in the first column and the filtered
 voltage in the second column. The keyword arguments are the same as
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.savetxt.html#numpy.savetxt" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.savetxt</span></code></a>.</p>
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.savetxt.html#numpy.savetxt" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.savetxt</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) &#8211; Filename of the output file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – Filename of the output file</td>
 </tr>
 </tbody>
 </table>
@@ -435,7 +453,7 @@ voltage in the second column. The keyword arguments are the same as
 
 <dl class="class">
 <dt id="uconnrcmpy.traces.VolumeFromPressure">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">VolumeFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>v_initial</em>, <em>T_initial</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VolumeFromPressure" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.traces.</code><code class="descname">VolumeFromPressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>v_initial</em>, <em>T_initial</em>, <em>chem_file=’species.cti’</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.traces.VolumeFromPressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a volume trace given a pressure trace.</p>
 <p>Using Cantera to evaluate the thermodynamic properties, compute a
 volume trace from a pressure trace.</p>
@@ -444,11 +462,11 @@ volume trace from a pressure trace.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>pressure</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; 1-D array containing the reactor pressure</li>
-<li><strong>v_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; Initial volume of the experiment, in m**3</li>
-<li><strong>T_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Initial temperature of the experiment, in Kelvin. Optional for
+<li><strong>pressure</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – 1-D array containing the reactor pressure</li>
+<li><strong>v_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – Initial volume of the experiment, in m**3</li>
+<li><strong>T_initial</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Initial temperature of the experiment, in Kelvin. Optional for
 Cantera versions greater than 2.2.0.</li>
-<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; Filename of the chemistry file to be used</li>
+<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – Filename of the chemistry file to be used</li>
 </ul>
 </td>
 </tr>
@@ -457,7 +475,7 @@ Cantera versions greater than 2.2.0.</li>
 <dl class="attribute">
 <dt id="uconnrcmpy.traces.VolumeFromPressure.volume">
 <code class="descname">volume</code><a class="headerlink" href="#uconnrcmpy.traces.VolumeFromPressure.volume" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; The volume trace</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – The volume trace</p>
 </dd></dl>
 
 <p class="rubric">Notes</p>
@@ -530,7 +548,7 @@ isentropic relationship described above.</p>
       &copy;2017, Bryan W. Weber.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

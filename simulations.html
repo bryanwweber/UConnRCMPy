@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Simulations &#8212; UConnRCMPy 3.0.2 documentation</title>
+    <title>Simulations &#8212; UConnRCMPy 3.0.3 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3.0.2',
+        VERSION:     '3.0.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Traces" href="traces.html" />
@@ -36,7 +36,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -49,25 +49,25 @@
 <p>Simulations Module</p>
 <dl class="class">
 <dt id="uconnrcmpy.simulations.Simulation">
-<em class="property">class </em><code class="descclassname">uconnrcmpy.simulations.</code><code class="descname">Simulation</code><span class="sig-paren">(</span><em>initial_temperature</em>, <em>initial_pressure</em>, <em>volume</em>, <em>is_reactive</em>, <em>end_temp=2500.0</em>, <em>end_time=0.2</em>, <em>chem_file='species.cti'</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.simulations.Simulation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">uconnrcmpy.simulations.</code><code class="descname">Simulation</code><span class="sig-paren">(</span><em>initial_temperature</em>, <em>initial_pressure</em>, <em>volume</em>, <em>is_reactive</em>, <em>end_temp=2500.0</em>, <em>end_time=0.2</em>, <em>chem_file=’species.cti’</em>, <em>cti_source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.simulations.Simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains a single simulation of the experiment.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initial_temperature</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The initial temperature of the simulation</li>
-<li><strong>initial_pressure</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) &#8211; The initial pressure of the simulation</li>
-<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; The volume trace to be used for the simulation. Must be
+<li><strong>initial_temperature</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The initial temperature of the simulation</li>
+<li><strong>initial_pressure</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The initial pressure of the simulation</li>
+<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – The volume trace to be used for the simulation. Must be
 supplied, but if the input value is <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, the volume trace
 will be read from the file <code class="docutils literal"><span class="pre">volume.csv</span></code>. The first column
 should be the time, the second column should be the volume.</li>
-<li><strong>is_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>) &#8211; If the simulation should be reactive or non-reactive. If <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#False" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">False</span></code></a>
+<li><strong>is_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>) – If the simulation should be reactive or non-reactive. If <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#False" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">False</span></code></a>
 sets the Cantera reaction rate multiplier to 0.0 via the
 <a class="reference external" href="http://cantera.github.io/dev-docs/sphinx/html/cython/kinetics.html#cantera.Kinetics.set_multiplier" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">set_multiplier</span></code></a> function.</li>
-<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Reactor temperature at which the simulation will be ended</li>
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) &#8211; Time at which the simulation will be ended</li>
-<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) &#8211; String filename of the chemistry file to use</li>
+<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Reactor temperature at which the simulation will be ended</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Time at which the simulation will be ended</li>
+<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – String filename of the chemistry file to use</li>
 </ul>
 </td>
 </tr>
@@ -76,61 +76,61 @@ sets the Cantera reaction rate multiplier to 0.0 via the
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.time">
 <code class="descname">time</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated time values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of simulated time values</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.temperature">
 <code class="descname">temperature</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.temperature" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated temperature values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of simulated temperature values</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.pressure">
 <code class="descname">pressure</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.pressure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated pressure values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of simulated pressure values</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.input_volume">
 <code class="descname">input_volume</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.input_volume" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of input volume values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of input volume values</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.simulated_volume">
 <code class="descname">simulated_volume</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.simulated_volume" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of simulated volume values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of simulated volume values</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.end_temp">
 <code class="descname">end_temp</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.end_temp" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; Reactor temperature at which the simulation will be ended</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – Reactor temperature at which the simulation will be ended</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.end_time">
 <code class="descname">end_time</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.end_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; Time at which the simulation will be ended</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – Time at which the simulation will be ended</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.chem_file">
 <code class="descname">chem_file</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.chem_file" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> &#8211; String filename of the chemistry file to use</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> – String filename of the chemistry file to use</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.initial_temperature">
 <code class="descname">initial_temperature</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.initial_temperature" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The initial temperature of the simulation</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The initial temperature of the simulation</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.initial_pressure">
 <code class="descname">initial_pressure</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.initial_pressure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> &#8211; The initial pressure of the simulation</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The initial pressure of the simulation</p>
 </dd></dl>
 
 <dl class="method">
@@ -142,15 +142,15 @@ sets the Cantera reaction rate multiplier to 0.0 via the
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Dependent variable (e.g., the pressure)</li>
-<li><strong>indep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Independent variable (e.g., the time)</li>
+<li><strong>dep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – Dependent variable (e.g., the pressure)</li>
+<li><strong>indep_var</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – Independent variable (e.g., the time)</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">1-D array containing the derivative</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -171,7 +171,7 @@ of the unequal spacing of the simulated data.</p>
 profile. The initialization and calling of this class are handled
 by the <a class="reference external" href="http://cantera.github.io/dev-docs/sphinx/html/cython/zerodim.html#cantera.Func1" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">cantera.Func1</span></code></a> interface of Cantera.</p>
 <p>The velocity is calculated by assuming a unit area and using the
-forward difference, calculated by <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.diff</span></code></a>. This function is
+forward difference, calculated by <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.diff</span></code></a>. This function is
 only called once when the class is initialized at the beginning of
 a problem so it is efficient.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -179,8 +179,8 @@ a problem so it is efficient.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>time</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Array or list of time values</li>
-<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Array or list of volume values</li>
+<li><strong>time</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – Array or list of time values</li>
+<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a>) – Array or list of volume values</li>
 </ul>
 </td>
 </tr>
@@ -189,19 +189,19 @@ a problem so it is efficient.</p>
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.VolumeProfile.time">
 <code class="descname">time</code><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile.time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of time values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of time values</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.VolumeProfile.volume">
 <code class="descname">volume</code><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile.volume" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of volume values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of volume values</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.VolumeProfile.velocity">
 <code class="descname">velocity</code><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile.velocity" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> &#8211; Array of velocity values</p>
+<dd><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Array of velocity values</p>
 </dd></dl>
 
 </dd></dl>
@@ -266,7 +266,7 @@ a problem so it is efficient.</p>
       &copy;2017, Bryan W. Weber.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
