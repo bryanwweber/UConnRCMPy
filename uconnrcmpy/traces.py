@@ -290,7 +290,8 @@ class ExperimentalPressureTrace(object):
         is_reactive : `boolean`
             The experiment is reactive or not
         """
-        self.EOC_idx = np.searchsorted(self.zeroed_time, time, 'left')
+        offset = int(round(time/1000*self.frequency, 0))
+        self.EOC_idx += offset
         self.p_EOC = self.pressure[self.EOC_idx]
         self.is_reactive = is_reactive
         self.zeroed_time = self.time - self.time[self.EOC_idx]
