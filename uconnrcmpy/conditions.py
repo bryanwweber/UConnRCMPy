@@ -330,6 +330,38 @@ class Condition(object):
             if self.plotting:
                 self.plot_nonreactive_figure(exp)
 
+    def change_EOC_time(self, experiment, time, is_reactive=True):
+        """Change the EOC time manually for an experiment
+
+        Parameters
+        ----------
+        experiment : `Experiment` or `str` or `pathlib.Path`
+            The experiment to be modified, either as a filename
+            or as the instance of an `Experiment` class.
+        time : `float`
+            The value for the EOC time
+        is_reactive : `boolean`
+            The experiment is reactive or not
+        """
+        if isinstance(experiment, (str, Path)):
+            if str(experiment) in self.reactive_experiments:
+                experiment = self.reactive_experiments[str(experiment)]
+            elif str(experiment) in self.nonreactive_experiments:
+                experiment = self.nonreactive_experiments[str(experiment)]
+            else:
+                raise ValueError('{} could not be found in the Condition. '
+                                 'Did you add it with add_experiment?'.format(str(experiment)))
+
+        experiment.change_EOC_time(time, is_reactive)
+        if self.plotting:
+            self.all_runs_lines[experiment.file_path.name].remove()
+            self.all_runs_lines[experiment.file_path.name], = self.all_runs_axis.plot(
+                experiment.pressure_trace.zeroed_time*1000.0,
+                experiment.pressure_trace.pressure,
+                label=experiment.experiment_parameters['date'],
+            )
+            self.all_runs_axis.legend(loc='best')
+
     def change_filter_freq(self, experiment, value):
         """Change the cutoff frequency of the filter for an experiment
 

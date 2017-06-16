@@ -171,6 +171,43 @@ class Experiment(object):
         else:
             self.ignition_delay, self.first_stage, self.T_EOC = 0, 0, 0
 
+    def change_EOC_time(self, time, is_reactive=True):
+        """Change the EOC time for an experiment
+
+        Parameters
+        ----------
+        time : `float`
+            The new value of the EOC time
+        is_reactive : `boolean`
+            The experiment is reactive or not
+        """
+        self.pressure_trace.change_EOC_time(time, is_reactive)
+        self.process_pressure_trace()
+        self.copy_to_clipboard()
+        if hasattr(self, 'p_axis'):
+            # Create a list of the lines in the axis so that
+            # removing one doesn't affect the list as its
+            # looping. Use the loop rather than axis.clear()
+            # so that the axis labels and legend are preserved.
+            for l in list(self.p_axis.lines):
+                l.remove()
+
+            self.p_axis.plot(self.pressure_trace.zeroed_time*1000,
+                             self.pressure_trace.raw_pressure,
+                             'b', label="Raw Pressure")
+            self.p_axis.plot(self.pressure_trace.zeroed_time*1000.0,
+                             self.pressure_trace.pressure,
+                             'g', label="Pressure")
+
+        if hasattr(self, 'dpdt_axis'):
+            for l in list(self.dpdt_axis.lines):
+                l.remove()
+
+            self.dpdt_axis.plot(self.pressure_trace.zeroed_time*1000.0,
+                                self.pressure_trace.derivative/1000.0,
+                                'm', label="Derivative")
+
+
     def change_filter_freq(self, value):
         """Change the cutoff frequency of the filter for the voltage trace
 

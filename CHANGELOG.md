@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Function to manually set the EOC time, `change_EOC_time`
 
 ### Fixed
 - Comparing T_EOC between reactive and non-reactive caused a `ValueError`
