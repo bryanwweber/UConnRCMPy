@@ -331,7 +331,18 @@ class Condition(object):
                 self.plot_nonreactive_figure(exp)
 
     def change_EOC_time(self, experiment, time, is_reactive=True):
+        """Change the EOC time manually for an experiment
 
+        Parameters
+        ----------
+        experiment : `Experiment` or `str` or `pathlib.Path`
+            The experiment to be modified, either as a filename
+            or as the instance of an `Experiment` class.
+        time : `float`
+            The value for the EOC time
+        is_reactive : `boolean`
+            The experiment is reactive or not
+        """
         if isinstance(experiment, (str, Path)):
             if str(experiment) in self.reactive_experiments:
                 experiment = self.reactive_experiments[str(experiment)]

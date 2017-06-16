@@ -281,8 +281,17 @@ class ExperimentalPressureTrace(object):
         return linear_fit
 
     def change_EOC_time(self, time, is_reactive=True):
+        """Change the EOC time for an experiment
+
+        Parameters
+        ----------
+        time : `float`
+            The new value of the EOC time
+        is_reactive : `boolean`
+            The experiment is reactive or not
+        """
         self.EOC_idx = np.searchsorted(self.zeroed_time, time, 'left')
-        self.p_EOC = self.pressure[self.p_EOC_idx]
+        self.p_EOC = self.pressure[self.EOC_idx]
         self.is_reactive = is_reactive
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 

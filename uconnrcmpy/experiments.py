@@ -172,8 +172,18 @@ class Experiment(object):
             self.ignition_delay, self.first_stage, self.T_EOC = 0, 0, 0
 
     def change_EOC_time(self, time, is_reactive=True):
-        self.pressure_trace.change_EOC_time(time, is_reactive)
+        """Change the EOC time for an experiment
 
+        Parameters
+        ----------
+        time : `float`
+            The new value of the EOC time
+        is_reactive : `boolean`
+            The experiment is reactive or not
+        """
+        self.pressure_trace.change_EOC_time(time, is_reactive)
+        self.process_pressure_trace()
+        self.copy_to_clipboard()
         if hasattr(self, 'p_axis'):
             # Create a list of the lines in the axis so that
             # removing one doesn't affect the list as its
