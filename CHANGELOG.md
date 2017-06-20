@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Fixed
+- EOC time not respected after it had been changed in `change_EOC_time`
 
 ### Changed
 

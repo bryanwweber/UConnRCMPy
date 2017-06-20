@@ -290,8 +290,8 @@ class Condition(object):
         """
         if (self.reactive_case is None or
                 self.reactive_case.file_path.name != self.reactive_file.name):
-            if self.reactive_file in self.reactive_experiments:
-                self.reactive_case = self.reactive_experiments[self.reactive_file]
+            if self.reactive_file.name in self.reactive_experiments:
+                self.reactive_case = self.reactive_experiments[self.reactive_file.name]
             else:
                 self.reactive_case = Experiment(self.reactive_file, cti_file=self.cti_file)
                 self.reactive_experiments[self.reactive_file] = self.reactive_case
@@ -930,8 +930,8 @@ class AltCondition(Condition):
         """
         if (self.reactive_case is None or
                 self.reactive_case.file_path.name != self.reactive_file.name):
-            if self.reactive_file in self.reactive_experiments:
-                self.reactive_case = self.reactive_experiments[self.reactive_file]
+            if self.reactive_file.name in self.reactive_experiments:
+                self.reactive_case = self.reactive_experiments[self.reactive_file.name]
             else:
                 self.reactive_case = AltExperiment(self.reactive_file, cti_file=self.cti_file)
                 self.reactive_experiments[self.reactive_file] = self.reactive_case
