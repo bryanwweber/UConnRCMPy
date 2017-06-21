@@ -292,7 +292,7 @@ class ExperimentalPressureTrace(object):
         """
         offset = int(round(time/1000*self.frequency, 0))
         self.EOC_idx += offset
-        if self.EOC_idx <= 0:
+        if self.EOC_idx <= 0 or self.EOC_idx >= len(self.pressure):
             raise ValueError('EOC index out of range, please check the EOC time on the plot')
         else:
             self.p_EOC = self.pressure[self.EOC_idx]
