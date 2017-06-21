@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Fixed
+- Exception no longer raised when the EOC time is changed of an experiment that was mischaracterized as non-reactive
 
 ### Changed
 
