@@ -347,7 +347,10 @@ class Condition(object):
             if str(experiment) in self.reactive_experiments:
                 experiment = self.reactive_experiments[str(experiment)]
             elif str(experiment) in self.nonreactive_experiments:
-                experiment = self.nonreactive_experiments[str(experiment)]
+                experiment = Experiment(experiment, cti_file=self.cti_file)
+                self.reactive_experiments[experiment.file_path.name] = experiment
+                if self.plotting:
+                    self.plot_reactive_figures(experiment)
             else:
                 raise ValueError('{} could not be found in the Condition. '
                                  'Did you add it with add_experiment?'.format(str(experiment)))
