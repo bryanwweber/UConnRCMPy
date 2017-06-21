@@ -22,6 +22,7 @@ A BibTeX entry for LaTeX users is
 The DOI for the latest version can be found in the badge at the top.
 If you would like to cite a specific, older version, the DOIs for each release are:
 
+ * v3.0.4: [10.5281/zenodo.815568](https://doi.org/10.5281/zenodo.815568)
  * v3.0.3: [10.5281/zenodo.810181](https://doi.org/10.5281/zenodo.810181)
  * v3.0.2: [10.5281/zenodo.556469](https://doi.org/10.5281/zenodo.556469)
  * v3.0.1: [10.5281/zenodo.321427](https://doi.org/10.5281/zenodo.321427)
