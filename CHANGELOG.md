@@ -8,11 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Fixed
-- EOC time not respected after it had been changed in `change_EOC_time`
 
 ### Changed
 
 ### Removed
+
+## [3.0.4] - 2017-06-21
+### Fixed
+- EOC time not respected after it had been changed in `change_EOC_time`
 
 ## [3.0.3] - 2017-06-16
 ### Added
@@ -218,7 +221,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Basic functionality of class-based interface to process data
 
-[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.3...HEAD
+[Unreleased]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.4...HEAD
+[3.0.4]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.3...v3.0.4
 [3.0.3]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.2...v3.0.3
 [3.0.2]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/bryanwweber/UConnRCMPy/compare/v3.0.0...v3.0.1
