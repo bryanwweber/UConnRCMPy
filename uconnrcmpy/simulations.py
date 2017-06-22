@@ -133,7 +133,18 @@ class Simulation(object):
         The derivative is calculated by computing the first-order
         Lagrange polynomial fit to the point under consideration and
         its nearest neighbors. The Lagrange polynomial is used because
-        of the unequal spacing of the simulated data.
+        of the unequal spacing of the simulated data. The formula, from
+        Chapra and Canale is:
+
+        .. math::
+
+            \\left(\\frac{dy}{dt}\\right)_i =
+            y_{i-1}\\frac{(x_{i} - x_{i+1})}{(x_{i-1} - x_{i})(x_{i-1} - x_{i+1})} +
+
+            y_{i}\\frac{(2x_{i} - x_{i-1} - x_{i+1})}{(x_{i} - x_{i-1})(x_{i} - x_{i+1})} +
+
+            y_{i+1}\\frac{(x_{i} - x_{i-1})}{(x_{i+1} - x_{i-1})(x_{i+1} - x_{i})}
+
         """
         x_min = indep_var[:-2]
         x_mid = indep_var[1:-1]
