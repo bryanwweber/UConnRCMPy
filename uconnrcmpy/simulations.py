@@ -135,18 +135,17 @@ class Simulation(object):
         its nearest neighbors. The Lagrange polynomial is used because
         of the unequal spacing of the simulated data.
         """
-        m = len(dep_var)
-        ddt = np.zeros(m)
-        for i in range(1, m-2):
-            x = indep_var[i]
-            x_min = indep_var[i-1]
-            x_plu = indep_var[i+1]
-            y = dep_var[i]
-            y_min = dep_var[i-1]
-            y_plu = dep_var[i+1]
-            ddt[i] = (y_min*(x - x_plu)/((x_min - x)*(x_min - x_plu)) +
-                      y*(2*x - x_min - x_plu)/((x - x_min)*(x - x_plu)) +
-                      y_plu*(x - x_min)/((x_plu - x_min)*(x_plu - x)))
+        x_min = indep_var[:-2]
+        x_mid = indep_var[1:-1]
+        x_plu = indep_var[2:]
+        y_min = dep_var[:-2]
+        y_mid = dep_var[1:-1]
+        y_plu = dep_var[2:]
+        ddt = (y_min*(x_mid - x_plu)/((x_min - x_mid)*(x_min - x_plu)) +
+               y_mid*(2*x_mid - x_min - x_plu)/((x_mid - x_min)*(x_mid - x_plu)) +
+               y_plu*(x_mid - x_min)/((x_plu - x_min)*(x_plu - x_mid)))
+        ddt = np.insert(ddt, 0, 0)
+        ddt = np.append(ddt, 0)
 
         return ddt
 
