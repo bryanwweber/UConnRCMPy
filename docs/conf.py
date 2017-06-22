@@ -48,11 +48,11 @@ autoclass_content = 'class'
 napoleon_numpy_docstring = True
 napoleon_google_docstring = False
 # napoleon_use_ivar = True
-intersphinx_mapping = {'python': ('https://docs.python.org/3.5', None),
+intersphinx_mapping = {'python': ('https://docs.python.org/3.6', None),
                        'numpy': ('http://docs.scipy.org/doc/numpy/', None),
                        'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
-                       'matplotlib': ('http://matplotlib.org/1.5.1/', None),
-                       'cantera': ('http://cantera.github.io/dev-docs/sphinx/html/', None),
+                       'matplotlib': ('http://matplotlib.org/2.0.1/', None),
+                       'cantera': ('http://cantera.github.io/docs/sphinx/html/', None),
                        }
 
 # Add any paths that contain templates here, relative to this directory.

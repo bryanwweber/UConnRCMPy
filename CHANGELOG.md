@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Vectorize derivative computation in `Simulation` class
+- Update Intersphinx versions in documentation
 
 ### Removed
 
