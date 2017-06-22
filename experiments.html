@@ -80,7 +80,7 @@ The information is ordered by columns in the following way:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">pathlib.Path</span></code></a>) – <p>The Path object that contains the path of the current experimental data file.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">pathlib.Path</span></code></a>) – <p>The Path object that contains the path of the current experimental data file.
 The filename associated with the path should be in the following format:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;Fuel_FF_EqRatio_P.PP_PercentAr_AR_PercentN2_N2_[NR_]XX_in_YY_mm_ZZZK_AAAAtorr-DD-Mon-YY-Time_Endplug_CC.txt&#39;</span>
 </pre></div>
@@ -118,7 +118,7 @@ following names:<ul class="simple">
 </ul>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -135,13 +135,13 @@ following names:<ul class="simple">
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) – If an argument is supplied, it should be an instance of
-<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>. If no argument is supplied, the
+<li><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) – If an argument is supplied, it should be an instance of
+<a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>. If no argument is supplied, the
 filename is read from the standard input as a string and
-resolved into a <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object.</li>
-<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) – Location of the CTI file for Cantera</li>
-<li><strong>cti_source</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – String containing the source of a CTI file for Cantera</li>
-<li><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – Boolean indicating whether values should be copied to
+resolved into a <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a> object.</li>
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) – Location of the CTI file for Cantera</li>
+<li><strong>cti_source</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – String containing the source of a CTI file for Cantera</li>
+<li><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – Boolean indicating whether values should be copied to
 the clipboard.</li>
 </ul>
 </td>
@@ -151,20 +151,20 @@ the clipboard.</li>
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.compression_time">
 <code class="descname">compression_time</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.compression_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The compression time in milliseconds, from the end of compression to the
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The compression time in milliseconds, from the end of compression to the
 approximate start of piston motion</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.file_path">
 <code class="descname">file_path</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.file_path" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> – Object storing the file path</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> – Object storing the file path</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.experiment_parameters">
 <code class="descname">experiment_parameters</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.experiment_parameters" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> – Stores the parameters of the experiment parsed from the
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> – Stores the parameters of the experiment parsed from the
 filename by <code class="xref py py-obj docutils literal"><span class="pre">parse_file_name</span></code>.</p>
 </dd></dl>
 
@@ -183,27 +183,27 @@ filename by <code class="xref py py-obj docutils literal"><span class="pre">pars
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.output_end_time">
 <code class="descname">output_end_time</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.output_end_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The end time for the output to a file, relative to the end of compression in milliseconds</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The end time for the output to a file, relative to the end of compression in milliseconds</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.offset_points">
 <code class="descname">offset_points</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.offset_points" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The number of points to offset the end of compression, to better
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The number of points to offset the end of compression, to better
 match the non-reactive and reactive pressure traces together</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.ignition_delay">
 <code class="descname">ignition_delay</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.ignition_delay" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The overall ignition delay of the experiment. Will be zero for
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The overall ignition delay of the experiment. Will be zero for
 a non-reactive experiment.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.first_stage">
 <code class="descname">first_stage</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.first_stage" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The first stage ignition delay of the experiment. Will be zero
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The first stage ignition delay of the experiment. Will be zero
 for a non-reactive experiment of if there is no first-stage
 ignition.</p>
 </dd></dl>
@@ -211,7 +211,7 @@ ignition.</p>
 <dl class="attribute">
 <dt id="uconnrcmpy.experiments.Experiment.T_EOC">
 <code class="descname">T_EOC</code><a class="headerlink" href="#uconnrcmpy.experiments.Experiment.T_EOC" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The temperature estimated at the end of compression</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The temperature estimated at the end of compression</p>
 </dd></dl>
 
 <dl class="method">
@@ -229,7 +229,7 @@ ignition.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The new value of the EOC time</li>
+<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The new value of the EOC time</li>
 <li><strong>is_reactive</strong> (<code class="xref py py-obj docutils literal"><span class="pre">boolean</span></code>) – The experiment is reactive or not</li>
 </ul>
 </td>
@@ -246,7 +246,7 @@ ignition.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The new value of the cutoff frequency</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The new value of the cutoff frequency</td>
 </tr>
 </tbody>
 </table>
@@ -280,7 +280,7 @@ The information is ordered by columns in the following way:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">pathlib.Path</span></code></a>) – <p>The Path object that contains the path of the current experimental data file.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">pathlib.Path</span></code></a>) – <p>The Path object that contains the path of the current experimental data file.
 The filename associated with the path should be in the following format:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">NR_</span><span class="p">]</span><span class="n">XX_in_YY_mm_ZZZK</span><span class="o">-</span><span class="n">AAAAt</span><span class="o">-</span><span class="n">BBBx</span><span class="o">-</span><span class="n">DD</span><span class="o">-</span><span class="n">Mon</span><span class="o">-</span><span class="n">YY</span><span class="o">-</span><span class="n">Time</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
@@ -310,7 +310,7 @@ following names:<ul class="simple">
 </ul>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
 </tr>
 </tbody>
 </table>

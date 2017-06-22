@@ -59,7 +59,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – Filename of the file with the voltage trace of the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – Filename of the file with the voltage trace of the
 experiment to be added.</td>
 </tr>
 </tbody>
@@ -97,10 +97,10 @@ replaced. If neither of these is true, nothing is done.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) – The location of the CTI file to use for Cantera. If it is
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>, optional) – The location of the CTI file to use for Cantera. If it is
 not specified, the default is <code class="docutils literal"><span class="pre">./species.cti</span></code>, but if that
 file cannot be found, the user is prompted for a filename.</li>
-<li><strong>plotting</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – Set to True to enable plotting when experiments are added</li>
+<li><strong>plotting</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – Set to True to enable plotting when experiments are added</li>
 </ul>
 </td>
 </tr>
@@ -109,7 +109,7 @@ file cannot be found, the user is prompted for a filename.</li>
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.reactive_experiments">
 <code class="descname">reactive_experiments</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.reactive_experiments" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> – Dictionary of instances of class <code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> containing
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> – Dictionary of instances of class <code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> containing
 reactive experiments. Indexed by the file name of the
 underlying voltage trace from the experiment.</p>
 </dd></dl>
@@ -117,7 +117,7 @@ underlying voltage trace from the experiment.</p>
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.nonreactive_experiments">
 <code class="descname">nonreactive_experiments</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.nonreactive_experiments" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> – Dictionary of instances of class <code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> containing
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a> – Dictionary of instances of class <code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> containing
 nonreactive experiments. Indexed by the file name of the
 underlying voltage trace from the experiment.</p>
 </dd></dl>
@@ -163,33 +163,33 @@ the mean of all of the experiments.</p>
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.plotting">
 <code class="descname">plotting</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.plotting" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a> – Set to True when plotting of experiments is enabled</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a> – Set to True when plotting of experiments is enabled</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.all_runs_figure">
 <code class="descname">all_runs_figure</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.all_runs_figure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Figure showing all the runs at a condition</p>
+<dd><p><a class="reference external" href="http://matplotlib.org/2.0.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Figure showing all the runs at a condition</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.nonreactive_figure">
 <code class="descname">nonreactive_figure</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.nonreactive_figure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Figure showing a comparison of the nonreactive pressure trace
+<dd><p><a class="reference external" href="http://matplotlib.org/2.0.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Figure showing a comparison of the nonreactive pressure trace
 with the reactive_case</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.pressure_comparison_figure">
 <code class="descname">pressure_comparison_figure</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.pressure_comparison_figure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Comparison figure of the reactive_case pressure and the
+<dd><p><a class="reference external" href="http://matplotlib.org/2.0.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Comparison figure of the reactive_case pressure and the
 pressure calculated by the volume trace routine</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.simulation_figure">
 <code class="descname">simulation_figure</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.simulation_figure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="http://matplotlib.org/1.5.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v1.5.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Comparison of the simulation with the reactive_case pressure</p>
+<dd><p><a class="reference external" href="http://matplotlib.org/2.0.1/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> – Comparison of the simulation with the reactive_case pressure</p>
 </dd></dl>
 
 <dl class="method">
@@ -200,7 +200,7 @@ pressure calculated by the volume trace routine</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – Filename of the file with the voltage trace of the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_name</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – Filename of the file with the voltage trace of the
 experiment to be added.</td>
 </tr>
 </tbody>
@@ -236,9 +236,9 @@ replaced. If neither of these is true, nothing is done.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>experiment</strong> (<code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> or <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – The experiment to be modified, either as a filename
+<li><strong>experiment</strong> (<code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> or <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – The experiment to be modified, either as a filename
 or as the instance of an <code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> class.</li>
-<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The value for the EOC time</li>
+<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The value for the EOC time</li>
 <li><strong>is_reactive</strong> (<code class="xref py py-obj docutils literal"><span class="pre">boolean</span></code>) – The experiment is reactive or not</li>
 </ul>
 </td>
@@ -256,9 +256,9 @@ or as the instance of an <code class="xref py py-obj docutils literal"><span cla
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>experiment</strong> (<code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> or <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – The experiment to be modified, either as a filename
+<li><strong>experiment</strong> (<code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> or <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – The experiment to be modified, either as a filename
 or as the instance of an <code class="xref py py-obj docutils literal"><span class="pre">Experiment</span></code> class.</li>
-<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The value for the cutoff frequency</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The value for the cutoff frequency</li>
 </ul>
 </td>
 </tr>
@@ -277,8 +277,8 @@ generate the comparison plot.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>run_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the reactive comparison. False by default.</li>
-<li><strong>run_nonreactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the nonreactive comparison. True by default.</li>
+<li><strong>run_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the reactive comparison. False by default.</li>
+<li><strong>run_nonreactive</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the nonreactive comparison. True by default.</li>
 </ul>
 </td>
 </tr>
@@ -399,22 +399,22 @@ Type: Integer</dd>
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.nonreactive_end_time">
 <code class="descname">nonreactive_end_time</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.nonreactive_end_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The end time for the output of the nonreactive case to a file, relative to
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The end time for the output of the nonreactive case to a file, relative to
 the end of compression in milliseconds</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.nonreactive_file">
 <code class="descname">nonreactive_file</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.nonreactive_file" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> – File name of the non-reactive case that best matches
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> – File name of the non-reactive case that best matches
 the pressure trace of the <a class="reference internal" href="#uconnrcmpy.conditions.Condition.reactive_case" title="uconnrcmpy.conditions.Condition.reactive_case"><code class="xref py py-obj docutils literal"><span class="pre">reactive_case</span></code></a>. Can be set with a
-<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a>.</p>
+<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.nonreactive_offset_points">
 <code class="descname">nonreactive_offset_points</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.nonreactive_offset_points" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> – The number of points to offset the end of compression, to better
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> – The number of points to offset the end of compression, to better
 match the non-reactive and reactive pressure traces together</p>
 </dd></dl>
 
@@ -455,27 +455,27 @@ derivative for a single experiment.</p>
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.reactive_compression_time">
 <code class="descname">reactive_compression_time</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.reactive_compression_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The compression time for the reactive case, in milliseconds</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The compression time for the reactive case, in milliseconds</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.reactive_end_time">
 <code class="descname">reactive_end_time</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.reactive_end_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The end time for the output of the reactive case to a file, relative to
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The end time for the output of the reactive case to a file, relative to
 the end of compression in milliseconds</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.reactive_file">
 <code class="descname">reactive_file</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.reactive_file" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> – File name of the case that is the closest to the mean of all
-the experiments. Can be set with a <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a>.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a> – File name of the case that is the closest to the mean of all
+the experiments. Can be set with a <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Path</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.conditions.Condition.reactive_offset_points">
 <code class="descname">reactive_offset_points</code><a class="headerlink" href="#uconnrcmpy.conditions.Condition.reactive_offset_points" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> – The number of points to offset the end of compression, to better
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> – The number of points to offset the end of compression, to better
 match the non-reactive and reactive pressure traces together</p>
 </dd></dl>
 
@@ -488,10 +488,10 @@ match the non-reactive and reactive pressure traces together</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>run_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the reactive case. False by default.</li>
-<li><strong>run_nonreactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the nonreactive case. True by default.</li>
-<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Temperature at which the simulation is ended</li>
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Time at which the simulation is ended.</li>
+<li><strong>run_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the reactive case. False by default.</li>
+<li><strong>run_nonreactive</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to run the nonreactive case. True by default.</li>
+<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Temperature at which the simulation is ended</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Time at which the simulation is ended.</li>
 </ul>
 </td>
 </tr>
@@ -535,9 +535,9 @@ to the clipboard.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – File containing the CTI for Cantera</li>
-<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – Path to folder to be analyzed. Defaults to the current folder.</li>
-<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to enable plotting. False by default.</li>
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – File containing the CTI for Cantera</li>
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – Path to folder to be analyzed. Defaults to the current folder.</li>
+<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to enable plotting. False by default.</li>
 </ul>
 </td>
 </tr>
@@ -557,9 +557,9 @@ to the clipboard.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/pathlib.html#pathlib.Path" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – File containing the CTI for Cantera</li>
-<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – Path to folder to be analyzed. Defaults to the current folder.</li>
-<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to enable plotting. False by default.</li>
+<li><strong>cti_file</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/pathlib.html#pathlib.Path" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">pathlib.Path</span></code></a>) – File containing the CTI for Cantera</li>
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – Path to folder to be analyzed. Defaults to the current folder.</li>
+<li><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>, optional) – True to enable plotting. False by default.</li>
 </ul>
 </td>
 </tr>

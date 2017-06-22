@@ -56,18 +56,18 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initial_temperature</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The initial temperature of the simulation</li>
-<li><strong>initial_pressure</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The initial pressure of the simulation</li>
-<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> or <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – The volume trace to be used for the simulation. Must be
-supplied, but if the input value is <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, the volume trace
+<li><strong>initial_temperature</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The initial temperature of the simulation</li>
+<li><strong>initial_pressure</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>) – The initial pressure of the simulation</li>
+<li><strong>volume</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></code></a> or <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) – The volume trace to be used for the simulation. Must be
+supplied, but if the input value is <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, the volume trace
 will be read from the file <code class="docutils literal"><span class="pre">volume.csv</span></code>. The first column
 should be the time, the second column should be the volume.</li>
-<li><strong>is_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>) – If the simulation should be reactive or non-reactive. If <a class="reference external" href="https://docs.python.org/3.5/library/constants.html#False" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">False</span></code></a>
+<li><strong>is_reactive</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a>) – If the simulation should be reactive or non-reactive. If <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">False</span></code></a>
 sets the Cantera reaction rate multiplier to 0.0 via the
-<a class="reference external" href="http://cantera.github.io/dev-docs/sphinx/html/cython/kinetics.html#cantera.Kinetics.set_multiplier" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">set_multiplier</span></code></a> function.</li>
-<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Reactor temperature at which the simulation will be ended</li>
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Time at which the simulation will be ended</li>
-<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – String filename of the chemistry file to use</li>
+<a class="reference external" href="http://cantera.github.io/docs/sphinx/html/cython/kinetics.html#cantera.Kinetics.set_multiplier" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">set_multiplier</span></code></a> function.</li>
+<li><strong>end_temp</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Reactor temperature at which the simulation will be ended</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a>, optional) – Time at which the simulation will be ended</li>
+<li><strong>chem_file</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, optional) – String filename of the chemistry file to use</li>
 </ul>
 </td>
 </tr>
@@ -106,31 +106,31 @@ sets the Cantera reaction rate multiplier to 0.0 via the
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.end_temp">
 <code class="descname">end_temp</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.end_temp" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – Reactor temperature at which the simulation will be ended</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – Reactor temperature at which the simulation will be ended</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.end_time">
 <code class="descname">end_time</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.end_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – Time at which the simulation will be ended</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – Time at which the simulation will be ended</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.chem_file">
 <code class="descname">chem_file</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.chem_file" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> – String filename of the chemistry file to use</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> – String filename of the chemistry file to use</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.initial_temperature">
 <code class="descname">initial_temperature</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.initial_temperature" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The initial temperature of the simulation</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The initial temperature of the simulation</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="uconnrcmpy.simulations.Simulation.initial_pressure">
 <code class="descname">initial_pressure</code><a class="headerlink" href="#uconnrcmpy.simulations.Simulation.initial_pressure" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The initial pressure of the simulation</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> – The initial pressure of the simulation</p>
 </dd></dl>
 
 <dl class="method">
@@ -159,7 +159,11 @@ sets the Cantera reaction rate multiplier to 0.0 via the
 <p>The derivative is calculated by computing the first-order
 Lagrange polynomial fit to the point under consideration and
 its nearest neighbors. The Lagrange polynomial is used because
-of the unequal spacing of the simulated data.</p>
+of the unequal spacing of the simulated data. The formula, from
+Chapra and Canale is:</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}\left(\frac{dy}{dt}\right)_i =
+y_{i-1}\frac{(x_{i} - x_{i+1})}{(x_{i-1} - x_{i})(x_{i-1} - x_{i+1})} +\\y_{i}\frac{(2x_{i} - x_{i-1} - x_{i+1})}{(x_{i} - x_{i-1})(x_{i} - x_{i+1})} +\\y_{i+1}\frac{(x_{i} - x_{i-1})}{(x_{i+1} - x_{i-1})(x_{i+1} - x_{i})}\end{aligned}\end{align} \]</div>
 </dd></dl>
 
 </dd></dl>
@@ -169,7 +173,7 @@ of the unequal spacing of the simulated data.</p>
 <em class="property">class </em><code class="descclassname">uconnrcmpy.simulations.</code><code class="descname">VolumeProfile</code><span class="sig-paren">(</span><em>time</em>, <em>volume</em><span class="sig-paren">)</span><a class="headerlink" href="#uconnrcmpy.simulations.VolumeProfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the velocity of the piston by using a user specified volume
 profile. The initialization and calling of this class are handled
-by the <a class="reference external" href="http://cantera.github.io/dev-docs/sphinx/html/cython/zerodim.html#cantera.Func1" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">cantera.Func1</span></code></a> interface of Cantera.</p>
+by the <a class="reference external" href="http://cantera.github.io/docs/sphinx/html/cython/zerodim.html#cantera.Func1" title="(in Cantera v2.3)"><code class="xref py py-obj docutils literal"><span class="pre">cantera.Func1</span></code></a> interface of Cantera.</p>
 <p>The velocity is calculated by assuming a unit area and using the
 forward difference, calculated by <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.13)"><code class="xref py py-obj docutils literal"><span class="pre">numpy.diff</span></code></a>. This function is
 only called once when the class is initialized at the beginning of
