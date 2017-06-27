@@ -294,7 +294,7 @@ class Condition(object):
                 self.reactive_case = self.reactive_experiments[self.reactive_file.name]
             else:
                 self.reactive_case = Experiment(self.reactive_file, cti_file=self.cti_file)
-                self.reactive_experiments[self.reactive_file] = self.reactive_case
+                self.reactive_experiments[self.reactive_file.name] = self.reactive_case
 
     def add_nonreactive_case(self):
         """Add the `~Condition.nonreactive_case` to the `Condition` if
@@ -305,11 +305,11 @@ class Condition(object):
         """
         if (self.nonreactive_case is None or
                 self.nonreactive_case.file_path.name != self.nonreactive_file.name):
-            if self.nonreactive_file in self.nonreactive_experiments:
-                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
+            if self.nonreactive_file.name in self.nonreactive_experiments:
+                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file.name]
             else:
                 self.nonreactive_case = Experiment(self.nonreactive_file, cti_file=self.cti_file)
-                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
+                self.nonreactive_experiments[self.nonreactive_file.name] = self.nonreactive_case
 
     def add_experiment(self, file_name=None, **kwargs):
         """Add an experiment to the Condition.
@@ -937,7 +937,7 @@ class AltCondition(Condition):
                 self.reactive_case = self.reactive_experiments[self.reactive_file.name]
             else:
                 self.reactive_case = AltExperiment(self.reactive_file, cti_file=self.cti_file)
-                self.reactive_experiments[self.reactive_file] = self.reactive_case
+                self.reactive_experiments[self.reactive_file.name] = self.reactive_case
 
     def add_nonreactive_case(self):
         """Add the `~AltCondition.nonreactive_case` to the `AltCondition` if
@@ -948,11 +948,11 @@ class AltCondition(Condition):
         """
         if (self.nonreactive_case is None or
                 self.nonreactive_case.file_path.name != self.nonreactive_file.name):
-            if self.nonreactive_file in self.nonreactive_experiments:
-                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file]
+            if self.nonreactive_file.name in self.nonreactive_experiments:
+                self.nonreactive_case = self.nonreactive_experiments[self.nonreactive_file.name]
             else:
                 self.nonreactive_case = AltExperiment(self.nonreactive_file, cti_file=self.cti_file)
-                self.nonreactive_experiments[self.nonreactive_file] = self.nonreactive_case
+                self.nonreactive_experiments[self.nonreactive_file.name] = self.nonreactive_case
 
     def __repr__(self):
         return 'AltCondition(plotting={!r})'.format(self.plotting)

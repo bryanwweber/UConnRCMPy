@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Fixed
+- `KeyError`s in the `*_experiments` dictionaries because `Path`s were used as keys
 
 ### Changed
 - Vectorize derivative computation in `Simulation` class
