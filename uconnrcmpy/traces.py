@@ -10,9 +10,9 @@ from scipy.interpolate import UnivariateSpline
 from scipy.stats import linregress
 
 # Local imports
-from .constants import (one_atm_in_bar,
-                        one_atm_in_torr,
-                        one_bar_in_pa,
+from .constants import (ONE_ATM_IN_BAR,
+                        ONE_ATM_IN_TORR,
+                        ONE_BAR_IN_PA,
                         )
 
 
@@ -223,7 +223,7 @@ class ExperimentalPressureTrace(object):
         the end of compression.
     """
     def __init__(self, voltage_trace, initial_pressure_in_torr, factor):
-        initial_pressure_in_bar = initial_pressure_in_torr*one_atm_in_bar/one_atm_in_torr
+        initial_pressure_in_bar = initial_pressure_in_torr*ONE_ATM_IN_BAR/ONE_ATM_IN_TORR
         self.pressure = (voltage_trace.filtered_voltage - voltage_trace.filtered_voltage[0])
         self.pressure *= factor
         self.pressure += initial_pressure_in_bar
@@ -385,12 +385,12 @@ class AltExperimentalPressureTrace(ExperimentalPressureTrace):
         self.pressure = pressure_trace.filtered_voltage
         pressure_start = np.mean(self.pressure[20:500])
         self.pressure -= pressure_start
-        self.pressure += initial_pressure_in_torr*one_atm_in_bar/one_atm_in_torr
+        self.pressure += initial_pressure_in_torr*ONE_ATM_IN_BAR/ONE_ATM_IN_TORR
 
         self.raw_pressure = pressure_trace.signal[:, 1]
         raw_pressure_start = np.mean(self.raw_pressure[20:500])
         self.raw_pressure -= raw_pressure_start
-        self.raw_pressure += initial_pressure_in_torr*one_atm_in_bar/one_atm_in_torr
+        self.raw_pressure += initial_pressure_in_torr*ONE_ATM_IN_BAR/ONE_ATM_IN_TORR
 
         self.p_EOC, self.EOC_idx, self.is_reactive = self.find_EOC()
         self.derivative = self.calculate_derivative(self.pressure, self.time)
@@ -441,7 +441,7 @@ class PressureFromVolume(object):
         self.pressure = np.zeros((len(volume)))
         for i, v in enumerate(volume):
             gas.SV = initial_entropy, v*initial_volume
-            self.pressure[i] = gas.P/one_bar_in_pa
+            self.pressure[i] = gas.P/ONE_BAR_IN_PA
 
     def __repr__(self):
         return 'PressureFromVolume(pressure={self.pressure!r})'.format(self=self)
@@ -486,12 +486,12 @@ class VolumeFromPressure(object):
             gas = ct.Solution(chem_file)
         else:
             gas = ct.Solution(source=cti_source)
-        gas.TP = T_initial, pressure[0]*one_bar_in_pa
+        gas.TP = T_initial, pressure[0]*ONE_BAR_IN_PA
         initial_entropy = gas.entropy_mass
         initial_density = gas.density
         self.volume = np.zeros((len(pressure)))
         for i, p in enumerate(pressure):
-            gas.SP = initial_entropy, p*one_bar_in_pa
+            gas.SP = initial_entropy, p*ONE_BAR_IN_PA
             self.volume[i] = v_initial*initial_density/gas.density
 
     def __repr__(self):
@@ -530,11 +530,11 @@ class TemperatureFromPressure(object):
             gas = ct.Solution(chem_file)
         else:
             gas = ct.Solution(source=cti_source)
-        gas.TP = T_initial, pressure[0]*one_bar_in_pa
+        gas.TP = T_initial, pressure[0]*ONE_BAR_IN_PA
         initial_entropy = gas.entropy_mass
         self.temperature = np.zeros((len(pressure)))
         for i, p in enumerate(pressure):
-            gas.SP = initial_entropy, p*one_bar_in_pa
+            gas.SP = initial_entropy, p*ONE_BAR_IN_PA
             self.temperature[i] = gas.T
 
     def __repr__(self):
