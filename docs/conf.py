@@ -49,11 +49,15 @@ napoleon_numpy_docstring = True
 napoleon_google_docstring = False
 # napoleon_use_ivar = True
 intersphinx_mapping = {'python': ('https://docs.python.org/3.6', None),
-                       'numpy': ('http://docs.scipy.org/doc/numpy/', None),
-                       'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
-                       'matplotlib': ('http://matplotlib.org/2.0.1/', None),
-                       'cantera': ('http://cantera.github.io/docs/sphinx/html/', None),
+                       'numpy': ('https://docs.scipy.org/doc/numpy/', None),
+                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+                       'matplotlib': ('https://matplotlib.org/2.0.2/', None),
+                       'cantera': ('https://cantera.github.io/docs/sphinx/html/', None),
                        }
+
+# Make the module index more useful by sorting on the module name
+# instead of the package name
+modindex_common_prefix = ['uconnrcmpy.']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
