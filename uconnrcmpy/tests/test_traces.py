@@ -7,6 +7,7 @@ import os
 import platform
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 import numpy as np
 from ..traces import VoltageTrace, ExperimentalPressureTrace, AltExperimentalPressureTrace, PressureFromVolume, TemperatureFromPressure, VolumeFromPressure
 from ..traces import ONE_ATM_IN_TORR, ONE_ATM_IN_BAR, ONE_BAR_IN_PA
@@ -32,6 +33,18 @@ class TestVoltageTrace(object):
         filename = pkg_resources.resource_filename(__name__, file_path)
 
         return VoltageTrace(Path(filename))
+
+    def test_filtering(self):
+        nyquist_freq = 1000
+        time = np.linspace(0, 1, 2*nyquist_freq+1)
+        noise_freq = 5000
+        signal = np.sin(2*np.pi*noise_freq*time)
+        with patch.object(VoltageTrace, '__init__', lambda x, y: None, None):
+            vt = VoltageTrace(None)
+            vt.frequency = 2*nyquist_freq
+            vt.filter_frequency = 500
+            filt_sig = vt.filtering(signal)
+        assert all(np.isclose(filt_sig, 0.0))
 
     @pytest.mark.parametrize('voltage_trace', [
         '00_in_00_mm_333K-1146t-100x-21-Jul-15-1226.txt',
