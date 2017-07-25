@@ -207,7 +207,6 @@ class Experiment(object):
                                 self.pressure_trace.derivative/1000.0,
                                 'm', label="Derivative")
 
-
     def change_filter_freq(self, value):
         """Change the cutoff frequency of the filter for the voltage trace
 
