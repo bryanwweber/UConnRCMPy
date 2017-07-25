@@ -8,6 +8,18 @@ import platform
 from pathlib import Path
 from numpy import isclose
 from ..traces import VoltageTrace, ExperimentalPressureTrace, AltExperimentalPressureTrace, PressureFromVolume, TemperatureFromPressure, VolumeFromPressure
+from ..traces import ONE_ATM_IN_TORR, ONE_ATM_IN_BAR, ONE_BAR_IN_PA
+
+
+class TestConstants(object):
+    def test_one_atm_in_torr(self):
+        assert ONE_ATM_IN_TORR == 760.0
+
+    def test_one_atm_in_bar(self):
+        assert ONE_ATM_IN_BAR == 1.01325
+
+    def test_one_bar_in_pa(self):
+        assert ONE_BAR_IN_PA == 1.0E5
 
 
 class TestVoltageTrace(object):

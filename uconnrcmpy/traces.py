@@ -9,11 +9,12 @@ from scipy import signal as sig
 from scipy.interpolate import UnivariateSpline
 from scipy.stats import linregress
 
-# Local imports
-from .constants import (ONE_ATM_IN_BAR,
-                        ONE_ATM_IN_TORR,
-                        ONE_BAR_IN_PA,
-                        )
+ONE_ATM_IN_TORR = 760.0
+"""`float`: Conversion between atmosphere and Torr."""
+ONE_ATM_IN_BAR = 1.01325
+"""`float`: Conversion between atmosphere and bar."""
+ONE_BAR_IN_PA = 1.0E5
+"""`float`: Conversion between bar and Pascal."""
 
 
 class VoltageTrace(object):

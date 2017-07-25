@@ -1,5 +1,0 @@
-=========
-Constants
-=========
-
-.. automodule:: uconnrcmpy.constants
