@@ -243,7 +243,7 @@ class ExperimentalPressureTrace(object):
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
     def __repr__(self):
-        return ('ExperimentalPressureTrace(p_EOC={self.p_EOC!r}, '
+        return ('ExperimentalPressureTrace(p_EOC={self.p_EOC:5.2f}, '
                 'is_reactive={self.is_reactive!r})').format(self=self)
 
     def savetxt(self, filename, **kwargs):

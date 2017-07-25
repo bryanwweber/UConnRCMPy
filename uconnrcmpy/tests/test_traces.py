@@ -128,8 +128,8 @@ class TestExperimentalPressureTrace(object):
         assert np.isclose(pressure_trace.p_EOC, p_EOC)
 
     @pytest.mark.parametrize('pressure_trace, is_reactive, p_EOC', [
-        ('00_in_00_mm_333K-1146t-100x-21-Jul-15-1226.txt', 'True', '30.110942557214699'),
-        ('NR_00_in_00_mm_333K-1137t-100x-21-Jul-15-1251.txt', 'False', '30.184215533916884'),
+        ('00_in_00_mm_333K-1146t-100x-21-Jul-15-1226.txt', 'True', '30.11'),
+        ('NR_00_in_00_mm_333K-1137t-100x-21-Jul-15-1251.txt', 'False', '30.18'),
     ], indirect=['pressure_trace'])
     def test_repr(self, pressure_trace, is_reactive, p_EOC):
         repr_str = "ExperimentalPressureTrace(p_EOC={}, is_reactive={})".format(p_EOC, is_reactive)
