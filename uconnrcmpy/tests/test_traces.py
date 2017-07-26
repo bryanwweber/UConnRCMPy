@@ -53,10 +53,12 @@ class TestVoltageTrace(object):
     def test_repr(self, voltage_trace):
         if platform.system() in ['Darwin', 'Linux']:
             path_str = 'PosixPath'
+            pth = str(voltage_trace.file_path)
         else:
             path_str = 'WindowsPath'
+            pth = str(voltage_trace.file_path).replace('\\', '/')
 
-        repr_str = "VoltageTrace(file_path={}('{}'))".format(path_str, voltage_trace.file_path)
+        repr_str = "VoltageTrace(file_path={}('{}'))".format(path_str, pth)
         assert repr(voltage_trace) == repr_str
 
     @pytest.mark.parametrize('voltage_trace, frequency', [
