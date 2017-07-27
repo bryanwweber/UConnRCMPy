@@ -208,12 +208,6 @@ class VolumeProfile(object):
         self.velocity = np.diff(self.volume)/np.diff(self.time)
         self.velocity = np.append(self.velocity, 0)
 
-    def __repr__(self):
-        return ('VolumeProfile(time={self.time!r}, volume={self.volume!r}, '
-                'velocity={self.velocity!r}').format(
-                    self=self,
-                )
-
     def __call__(self, t):
         """Return the velocity when called during a time step.
 
