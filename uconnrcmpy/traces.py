@@ -445,9 +445,6 @@ class PressureFromVolume(object):
             gas.SV = initial_entropy, v*initial_volume
             self.pressure[i] = gas.P/ONE_BAR_IN_PA
 
-    def __repr__(self):
-        return 'PressureFromVolume(pressure={self.pressure!r})'.format(self=self)
-
 
 class VolumeFromPressure(object):
     r"""Create a volume trace given a pressure trace.
@@ -496,9 +493,6 @@ class VolumeFromPressure(object):
             gas.SP = initial_entropy, p*ONE_BAR_IN_PA
             self.volume[i] = v_initial*initial_density/gas.density
 
-    def __repr__(self):
-        return 'VolumeFromPressure(volume={self.volume!r})'.format(self=self)
-
 
 class TemperatureFromPressure(object):
     """Create a temperature trace given a pressure trace.
@@ -538,6 +532,3 @@ class TemperatureFromPressure(object):
         for i, p in enumerate(pressure):
             gas.SP = initial_entropy, p*ONE_BAR_IN_PA
             self.temperature[i] = gas.T
-
-    def __repr__(self):
-        return 'TemperatureFromPressure(temperature={self.temperature!r})'.format(self=self)
