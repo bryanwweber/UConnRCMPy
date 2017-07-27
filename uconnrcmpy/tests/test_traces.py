@@ -9,7 +9,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 import numpy as np
-from ..traces import VoltageTrace, ExperimentalPressureTrace, AltExperimentalPressureTrace, PressureFromVolume, TemperatureFromPressure, VolumeFromPressure
+from ..traces import VoltageTrace, ExperimentalPressureTrace as EPT, AltExperimentalPressureTrace, PressureFromVolume, TemperatureFromPressure, VolumeFromPressure
 from ..traces import ONE_ATM_IN_TORR, ONE_ATM_IN_BAR, ONE_BAR_IN_PA
 
 
@@ -45,6 +45,22 @@ class TestVoltageTrace(object):
             vt.filter_frequency = 500
             filt_sig = vt.filtering(signal)
         assert all(np.isclose(filt_sig, 0.0))
+
+    def test_file_output(self, tmpdir):
+        p = tmpdir.mkdir('volt-trace').join('test-output.txt')
+        nyquist_freq = 1000
+        time = np.linspace(0, 1, 2*nyquist_freq+1)
+        noise_freq = 5000
+        signal = np.sin(2*np.pi*noise_freq*time)
+        with patch.object(VoltageTrace, '__init__', lambda x, y: None, None):
+            vt = VoltageTrace(None)
+            vt.time = time
+            vt.filtered_voltage = signal
+            vt.savetxt(str(p))
+
+        read_signal = np.genfromtxt(str(p))
+        assert all(np.isclose(read_signal[:, 1], signal))
+        assert all(np.isclose(read_signal[:, 0], time))
 
     @pytest.mark.parametrize('voltage_trace', [
         '00_in_00_mm_333K-1146t-100x-21-Jul-15-1226.txt',
@@ -92,7 +108,7 @@ class TestExperimentalPressureTrace(object):
     def test_pressure_trace(self, voltage_trace):
         P0 = 760.0  # Torr
         factor = 100
-        ep = ExperimentalPressureTrace(voltage_trace, P0, factor)
+        ep = EPT(voltage_trace, P0, factor)
         pressure = (voltage_trace.filtered_voltage - voltage_trace.filtered_voltage[0])
         pressure *= factor
         pressure += P0/760.0*101325/1.0E5
@@ -103,9 +119,25 @@ class TestExperimentalPressureTrace(object):
     def test_calculate_derivative(self):
         dep_var = np.linspace(0.0, 1.0, 501)
         indep_var = np.arange(0, 501)
-        ddt = ExperimentalPressureTrace.calculate_derivative(None, dep_var, indep_var)
+        ddt = EPT.calculate_derivative(None, dep_var, indep_var)
         assert all(np.isclose(ddt[:-2], 0.002))
         assert all(np.isclose(ddt[-2:], 0.0))
+
+    def test_file_output(self, tmpdir):
+        p = tmpdir.mkdir('exp-pres-trace').join('test-output.txt')
+        nyquist_freq = 1000
+        time = np.linspace(0, 1, 2*nyquist_freq+1)
+        noise_freq = 5000
+        signal = np.sin(2*np.pi*noise_freq*time)
+        with patch.object(EPT, '__init__', lambda x, y, z, a: None, None, None, None):
+            pt = EPT(None, None, None)
+            pt.time = time
+            pt.pressure = signal
+            pt.savetxt(str(p))
+
+        read_signal = np.genfromtxt(str(p))
+        assert all(np.isclose(read_signal[:, 1], signal))
+        assert all(np.isclose(read_signal[:, 0], time))
 
     @pytest.fixture(scope='class')
     def pressure_trace(self, request):
@@ -117,7 +149,7 @@ class TestExperimentalPressureTrace(object):
         spl = filename.name.split('-')
         P0 = float(spl[1].strip('t'))
         factor = int(spl[2].strip('x'))
-        return ExperimentalPressureTrace(v, P0, factor)
+        return EPT(v, P0, factor)
 
     @pytest.mark.parametrize('pressure_trace, frequency, is_reactive, EOC_idx, p_EOC', [
         ('00_in_00_mm_333K-1146t-100x-21-Jul-15-1226.txt', 100E3, True, 16702, 30.110942557214699),
