@@ -29,7 +29,7 @@ class Simulation(object):
         Time at which the simulation will be ended
     chem_file : `str`, optional
         String filename of the chemistry file to use
-    cti_source : `str`, optional
+    cti_string : `str`, optional
         String representation of the contents of a CTI file
 
     Attributes
@@ -49,7 +49,8 @@ class Simulation(object):
     end_time : `float`
         Time at which the simulation will be ended
     chem_file : `str`
-        String filename of the chemistry file to use
+        String filename of the chemistry file to use, or ``'cti_string'`` to indicate that
+        the string of the CTI file was passed directly
     initial_temperature : `float`
         The initial temperature of the simulation
     initial_pressure : `float`
@@ -57,7 +58,7 @@ class Simulation(object):
     """
 
     def __init__(self, initial_temperature, initial_pressure, volume, is_reactive,
-                 end_temp=2500., end_time=0.2, chem_file='species.cti', cti_source=None):
+                 end_temp=2500., end_time=0.2, chem_file='species.cti', cti_string=None):
 
         if volume is None:
             volume = np.genfromtxt('volume.csv', delimiter=',')
@@ -73,14 +74,15 @@ class Simulation(object):
         self.end_temp = end_temp
         self.end_time = end_time
         self.is_reactive = is_reactive
-        self.chem_file = chem_file
         self.initial_temperature = initial_temperature
         self.initial_pressure = initial_pressure
 
-        if cti_source is None:
+        if cti_string is None:
             gas = ct.Solution(chem_file)
+            self.chem_file = chem_file
         else:
-            gas = ct.Solution(source=cti_source)
+            gas = ct.Solution(source=cti_string)
+            self.chem_file = 'cti_string'
         gas.TP = self.initial_temperature, self.initial_pressure
         if not self.is_reactive:
             gas.set_multiplier(0)
@@ -109,7 +111,7 @@ class Simulation(object):
 
     def __repr__(self):
         return ('Simulation(initial_temperature={self.initial_temperature!r}, '
-                'initial_pressure={self.initial_pressure!r}, volume={self.input_volume!r}, '
+                'initial_pressure={self.initial_pressure!r}, '
                 'is_reactive={self.is_reactive!r}, end_temp={self.end_temp!r}, '
                 'end_time={self.end_time!r}, chem_file={self.chem_file!r})').format(
                     self=self,
