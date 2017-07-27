@@ -9,7 +9,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 import numpy as np
-from ..traces import VoltageTrace, ExperimentalPressureTrace as EPT, AltExperimentalPressureTrace, PressureFromVolume, TemperatureFromPressure, VolumeFromPressure
+from ..traces import VoltageTrace, ExperimentalPressureTrace as EPT, AltExperimentalPressureTrace as aEPT, PressureFromVolume, TemperatureFromPressure, VolumeFromPressure
 from ..traces import ONE_ATM_IN_TORR, ONE_ATM_IN_BAR, ONE_BAR_IN_PA
 
 
@@ -194,3 +194,42 @@ class TestExperimentalPressureTrace(object):
     def test_change_EOC_time_fail(self, pressure_trace, time):
         with pytest.raises(ValueError):
             pressure_trace.change_EOC_time(time)
+
+
+class TestAltExperimentalPressureTrace(object):
+    """These tests rely on the voltage traces in the test directory,
+    which will be treated as pressure traces for the purposes of these
+    tests.
+    """
+    @pytest.fixture(scope='class')
+    def pressure_trace(self, request, tmpdir):
+        file_path = os.path.join(request.param)
+        filename = Path(pkg_resources.resource_filename(__name__, file_path))
+        signal = np.genfromtxt(str(filename))
+
+        spl = filename.name.split('-')
+        P0 = float(spl[1].strip('t'))
+        factor = int(spl[2].strip('x'))
+        p = tmpdir.mkdir('alt-exp-pres-tr').join(request.param)
+        signal[:, 1] *= factor
+        np.savetxt(str(p), X=signal)
+
+        return aEPT(str(p), P0)
+
+    @pytest.mark.parametrize('pressure_trace, frequency, is_reactive, EOC_idx, p_EOC', [
+        ('00_in_00_mm_333K-1146t-100x-21-Jul-15-1226.txt', 100E3, True, 16702, 30.11208160359319),
+        ('NR_00_in_00_mm_333K-1137t-100x-21-Jul-15-1251.txt', 100E3, False, 16546, 30.184880619962),
+    ], indirect=['pressure_trace'])
+    def test_create(self, pressure_trace, frequency, is_reactive, EOC_idx, p_EOC):
+        assert pressure_trace.frequency == frequency
+        assert pressure_trace.is_reactive == is_reactive
+        assert pressure_trace.EOC_idx == EOC_idx
+        assert np.isclose(pressure_trace.p_EOC, p_EOC)
+
+    @pytest.mark.parametrize('pressure_trace, is_reactive, p_EOC', [
+        ('00_in_00_mm_333K-1146t-100x-21-Jul-15-1226.txt', 'True', '30.11'),
+        ('NR_00_in_00_mm_333K-1137t-100x-21-Jul-15-1251.txt', 'False', '30.18'),
+    ], indirect=['pressure_trace'])
+    def test_repr(self, pressure_trace, is_reactive, p_EOC):
+        repr_str = "AltExperimentalPressureTrace(p_EOC={}, is_reactive={})".format(p_EOC, is_reactive)  # NOQA
+        assert repr(pressure_trace) == repr_str

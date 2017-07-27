@@ -398,7 +398,7 @@ class AltExperimentalPressureTrace(ExperimentalPressureTrace):
         self.zeroed_time = self.time - self.time[self.EOC_idx]
 
     def __repr__(self):
-        return ('AltExperimentalPressureTrace(p_EOC={self.p_EOC!r}, '
+        return ('AltExperimentalPressureTrace(p_EOC={self.p_EOC:5.2f}, '
                 'is_reactive={self.is_reactive!r})').format(self=self)
 
 
