@@ -161,7 +161,7 @@ class VoltageTrace(object):
         filename : `str`
             Filename of the output file
         """
-        np.savetxt(fname=filename, X=np.vstack(self.time, self.filtered_voltage).T, **kwargs)
+        np.savetxt(fname=filename, X=np.vstack((self.time, self.filtered_voltage)).T, **kwargs)
 
     def filtering(self, data):
         """Filter the input using a low-pass filter.
@@ -258,7 +258,7 @@ class ExperimentalPressureTrace(object):
         filename : `str`
             Filename of the output file
         """
-        np.savetxt(fname=filename, X=np.vstack(self.time, self.pressure).T, **kwargs)
+        np.savetxt(fname=filename, X=np.vstack((self.time, self.pressure)).T, **kwargs)
 
     def pressure_fit(self, comptime=0.08):
         """Fit a line to the pressure trace before compression starts.
