@@ -233,3 +233,58 @@ class TestAltExperimentalPressureTrace(object):
     def test_repr(self, pressure_trace, is_reactive, p_EOC):
         repr_str = "AltExperimentalPressureTrace(p_EOC={}, is_reactive={})".format(p_EOC, is_reactive)  # NOQA
         assert repr(pressure_trace) == repr_str
+
+
+class TestPressureFromVolume(object):
+    """
+    """
+    def test_pressure_from_volume(self):
+        volume = np.array([1.0, 0.5])
+        T_initial = 300
+        p_initial = 101325
+        known_p = np.array([1.01325, 3.21687])
+        cti_file = pkg_resources.resource_filename(__name__, 'ar.cti')
+        calc_p = PressureFromVolume(volume, p_initial, T_initial, chem_file=cti_file)
+        assert all(np.isclose(calc_p.pressure, known_p))
+
+        with open(cti_file, 'r') as infile:
+            cti_source = infile.read()
+
+        calc_p = PressureFromVolume(volume, p_initial, T_initial, cti_source=cti_source)
+        assert all(np.isclose(calc_p.pressure, known_p))
+
+
+class TestVolumeFromPressure(object):
+    """
+    """
+    def test_volume_from_pressure(self):
+        known_v = np.array([1.0, 0.5])
+        T_initial = 300
+        v_initial = 1.0
+        pressure = np.array([1.01325, 3.21687])
+        cti_file = pkg_resources.resource_filename(__name__, 'ar.cti')
+        calc_v = VolumeFromPressure(pressure, v_initial, T_initial, chem_file=cti_file)
+        assert all(np.isclose(calc_v.volume, known_v))
+
+        with open(cti_file, 'r') as infile:
+            cti_source = infile.read()
+
+        calc_v = VolumeFromPressure(pressure, v_initial, T_initial, cti_source=cti_source)
+        assert all(np.isclose(calc_v.volume, known_v))
+
+
+class TestTemperatureFromPressure(object):
+    """
+    """
+    def test_temperature_from_pressure(self):
+        known_T = np.array([300.0, 476.22])
+        pressure = np.array([1.01325, 3.21687])
+        cti_file = pkg_resources.resource_filename(__name__, 'ar.cti')
+        calc_T = TemperatureFromPressure(pressure, known_T[0], chem_file=cti_file)
+        assert all(np.isclose(calc_T.temperature, known_T))
+
+        with open(cti_file, 'r') as infile:
+            cti_source = infile.read()
+
+        calc_T = TemperatureFromPressure(pressure, known_T[0], cti_source=cti_source)
+        assert all(np.isclose(calc_T.temperature, known_T))
