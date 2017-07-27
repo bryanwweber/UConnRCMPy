@@ -9,8 +9,11 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 import numpy as np
-from ..traces import VoltageTrace, ExperimentalPressureTrace as EPT, AltExperimentalPressureTrace as aEPT, PressureFromVolume, TemperatureFromPressure, VolumeFromPressure
-from ..traces import ONE_ATM_IN_TORR, ONE_ATM_IN_BAR, ONE_BAR_IN_PA
+from ..traces import (
+    VoltageTrace, ExperimentalPressureTrace as EPT, AltExperimentalPressureTrace as aEPT,
+    PressureFromVolume, TemperatureFromPressure, VolumeFromPressure, ONE_ATM_IN_TORR,
+    ONE_ATM_IN_BAR, ONE_BAR_IN_PA
+)
 
 
 class TestConstants(object):
