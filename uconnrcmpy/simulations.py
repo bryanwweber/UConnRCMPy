@@ -29,6 +29,8 @@ class Simulation(object):
         Time at which the simulation will be ended
     chem_file : `str`, optional
         String filename of the chemistry file to use
+    cti_source : `str`, optional
+        String representation of the contents of a CTI file
 
     Attributes
     ----------
