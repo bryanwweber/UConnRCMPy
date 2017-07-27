@@ -458,11 +458,12 @@ class VolumeFromPressure(object):
         1-D array containing the reactor pressure
     v_initial : `float`
         Initial volume of the experiment, in m**3
-    T_initial : `float`, optional
-        Initial temperature of the experiment, in Kelvin. Optional for
-        Cantera versions greater than 2.2.0.
+    T_initial : `float`
+        Initial temperature of the experiment, in Kelvin.
     chem_file : `str`, optional
         Filename of the chemistry file to be used
+    cti_source : `str`, optional
+        String representation of the contents of a CTI file
 
     Attributes
     ----------
@@ -506,9 +507,10 @@ class TemperatureFromPressure(object):
         1-D array containing the pressure
     T_initial : `float`
         Initial temperature of the experiment, in Kelvin.
-        Optional for Cantera versions greater than 2.2.0.
     chem_file : `str`, optional
         Filename of the chemistry file to be used
+    cti_source : `str`, optional
+        String representation of the contents of a CTI file
 
     Attributes
     ----------
